@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nawapara Rajim 33/11 kV Substation — CSPDCL</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --primary:#005BAC;--success:#16A34A;--warning:#D97706;--danger:#DC2626;
+    --bg:#F5F7FA;--card:#FFFFFF;--sidebar:#0D1B2E;--text:#1E293B;--border:#E2E8F0;
+    --sidebar-w:240px;
+  }
+  body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+  
+  /* SIDEBAR */
+  .sidebar{width:var(--sidebar-w);background:var(--sidebar);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:.3s}
+  .sidebar-header{padding:20px 16px;border-bottom:1px solid #1e3a5f}
+  .sidebar-header .logo{font-size:13px;font-weight:700;color:#fff;line-height:1.4}
+  .sidebar-header .sub-logo{font-size:11px;color:#7a9cc0;margin-top:4px}
+  .sidebar nav{flex:1;overflow-y:auto;padding:12px 0}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;cursor:pointer;font-size:13.5px;color:#a8c0d8;transition:.15s;border-left:3px solid transparent}
+  .nav-item:hover{background:#1e3a5f;color:#fff}
+  .nav-item.active{background:#1a3356;color:#fff;border-left-color:var(--primary)}
+  .nav-item .icon{width:18px;text-align:center;font-size:15px}
+  
+  /* MAIN */
+  .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+  .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+  .topbar-title{font-size:15px;font-weight:600;color:var(--primary)}
+  .topbar-right{display:flex;align-items:center;gap:12px;font-size:13px;color:#64748b}
+  .hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text)}
+  .badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+  .badge-success{background:#dcfce7;color:var(--success)}
+  .badge-warning{background:#fef3c7;color:var(--warning)}
+  .badge-danger{background:#fee2e2;color:var(--danger)}
+  .badge-primary{background:#dbeafe;color:var(--primary)}
+  
+  .content{padding:24px;flex:1}
+  .section{display:none}
+  .section.active{display:block}
+  .section-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
+  .section-sub{font-size:13px;color:#64748b;margin-bottom:20px}
+  
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px}
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:6px}
+  .stat-card .stat-label{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
+  .stat-card .stat-value{font-size:28px;font-weight:700;color:var(--primary)}
+  .stat-card .stat-info{font-size:12px;color:#64748b}
+  
+  /* HERO */
+  .hero-img{width:100%;height:220px;object-fit:cover;border-radius:8px;border:1px solid var(--border);display:block;background:#dbeafe;margin-bottom:24px;position:relative;overflow:hidden}
+  .hero-placeholder{width:100%;height:220px;background:linear-gradient(135deg,#0D1B2E 0%,#1e3a5f 100%);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;color:#7a9cc0;font-size:14px;border:1px solid var(--border);text-align:center;flex-direction:column;gap:8px}
+  .hero-placeholder .big-text{font-size:28px;font-weight:700;color:#fff}
+  .hero-placeholder .sm-text{font-size:12px;color:#7a9cc0}
+
+  /* STATUS ROW */
+  .status-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+  .status-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px}
+  .status-box .sb-label{font-size:12px;color:#64748b;margin-bottom:4px}
+  .status-box .sb-val{font-size:16px;font-weight:700}
+  .text-success{color:var(--success)}
+  .text-warning{color:var(--warning)}
+  .text-danger{color:var(--danger)}
+  .text-primary{color:var(--primary)}
+  
+  /* PROGRESS */
+  .progress-bar{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:6px}
+  .progress-fill{height:100%;border-radius:4px;background:var(--primary);transition:.3s}
+  
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .info-table{width:100%;border-collapse:collapse}
+  .info-table tr{border-bottom:1px solid var(--border)}
+  .info-table td{padding:10px 4px;font-size:13.5px}
+  .info-table td:first-child{color:#64748b;width:45%;font-weight:500}
+  .info-table td:last-child{color:var(--text);font-weight:600}
+  
+  /* SLD */
+  .sld-container{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;overflow-x:auto}
+  .sld-svg{min-width:700px;display:block;margin:0 auto}
+  .sld-elem{cursor:pointer}
+  .sld-elem:hover rect,.sld-elem:hover line{opacity:.8}
+  
+  /* FEEDERS GRID */
+  .feeders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+  .feeder-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:.15s}
+  .feeder-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-2px)}
+  .feeder-img{width:100%;height:120px;object-fit:cover;background:#dbeafe;display:flex;align-items:center;justify-content:center;color:#005BAC;font-size:32px;font-weight:700}
+  .feeder-body{padding:14px}
+  .feeder-name{font-size:14px;font-weight:700;margin-bottom:6px}
+  .feeder-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+  .feeder-info{font-size:12px;color:#64748b;margin-bottom:2px}
+  
+  /* TRANSFORMER */
+  .transformer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .tx-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .tx-img{width:100%;height:150px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:48px;color:#cbd5e1}
+  .tx-body{padding:16px}
+  .tx-name{font-size:16px;font-weight:700;margin-bottom:12px}
+  .tx-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .tx-row:last-child{border-bottom:none}
+  .tx-label{color:#64748b}
+  .tx-val{font-weight:600}
+  
+  /* EQUIPMENT TABLE */
+  .eq-table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .eq-table th{background:#f8fafc;text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#64748b}
+  .eq-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+  .eq-table tr{cursor:pointer;transition:.1s}
+  .eq-table tr:hover td{background:#f8fafc}
+  
+  /* GALLERY */
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+  .gallery-item{border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:40px;cursor:pointer;border:1px solid var(--border);position:relative}
+  .gallery-item:hover .gallery-overlay{opacity:1}
+  .gallery-overlay{position:absolute;inset:0;background:rgba(0,91,172,.7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;opacity:0;transition:.2s}
+  
+  /* REPORTS */
+  .reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+  .report-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;cursor:pointer;transition:.15s;display:flex;gap:14px;align-items:flex-start}
+  .report-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+  .report-icon{width:40px;height:40px;border-radius:8px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .report-title{font-size:14px;font-weight:700;margin-bottom:4px}
+  .report-desc{font-size:12px;color:#64748b}
+  
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--card);border-radius:10px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto}
+  .modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .modal-title{font-size:16px;font-weight:700}
+  .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#64748b;line-height:1}
+  .modal-body{padding:20px}
+  .modal-img{width:100%;height:160px;object-fit:cover;border-radius:6px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px}
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .detail-row{padding:8px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
+  .detail-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
+  .detail-val{font-size:13.5px;font-weight:600}
+
+  /* TABS */
+  .tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:0}
+  .tab-btn{padding:8px 16px;border:none;background:none;cursor:pointer;font-size:13px;color:#64748b;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.1s}
+  .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:600}
+  
+  /* SIDEBAR OVERLAY (mobile) */
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+
+  /* RESPONSIVE */
+  @media(max-width:768px){
+    .sidebar{left:calc(-1 * var(--sidebar-w))}
+    .sidebar.open{left:0}
+    .sidebar-overlay.open{display:block}
+    .main{margin-left:0}
+    .hamburger{display:block}
+    .about-grid{grid-template-columns:1fr}
+    .cards-grid{grid-template-columns:repeat(2,1fr)}
+    .content{padding:16px}
+    .detail-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:480px){
+    .cards-grid{grid-template-columns:1fr 1fr}
+    .feeders-grid{grid-template-columns:1fr 1fr}
+    .status-row{grid-template-columns:1fr 1fr}
+  }
+  
+  .eq-category-title{font-size:15px;font-weight:700;color:var(--primary);margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+  .table-wrap{overflow-x:auto}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">⚡ NAWAPARA RAJIM</div>
+    <div class="sub-logo">33/11 kV Substation · CSPDCL</div>
+  </div>
+  <nav>
+    <div class="nav-item active" onclick="showSection('dashboard')"><span class="icon">▦</span> Dashboard</div>
+    <div class="nav-item" onclick="showSection('sld')"><span class="icon">⊞</span> Single Line Diagram</div>
+    <div class="nav-item" onclick="showSection('feeders')"><span class="icon">⇌</span> Feeders</div>
+    <div class="nav-item" onclick="showSection('transformers')"><span class="icon">◎</span> Transformers</div>
+    <div class="nav-item" onclick="showSection('equipment')"><span class="icon">⚙</span> Equipment</div>
+    <div class="nav-item" onclick="showSection('gallery')"><span class="icon">▣</span> Gallery</div>
+    <div class="nav-item" onclick="showSection('about')"><span class="icon">ℹ</span> About Substation</div>
+    <div class="nav-item" onclick="showSection('reports')"><span class="icon">📋</span> Reports</div>
+  </nav>
+  <div style="padding:16px;font-size:11px;color:#4a6580;border-top:1px solid #1e3a5f">CSPDCL · Rajim Division</div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <span id="currentTime"></span>
+      <span class="badge badge-success">System Normal</span>
+      <a href="admin.html" style="font-size:12px;color:var(--primary);text-decoration:none;font-weight:600">Admin →</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="section active" id="sec-dashboard">
+      <div class="section-title">Dashboard</div>
+      <div class="section-sub">Nawapara Rajim 33/11 kV Substation — Live Overview</div>
+
+      <div class="hero-placeholder">
+        <div class="big-text">⚡ 33/11 kV</div>
+        <div class="sm-text">NAWAPARA RAJIM SUBSTATION · CSPDCL · RAIPUR ZONE</div>
+        <div class="sm-text" style="margin-top:4px">Installed Capacity: 2 × 5 MVA</div>
+      </div>
+
+      <div class="cards-grid" id="dashboardCards">
+        <div class="stat-card"><div class="stat-label">Total Feeders</div><div class="stat-value" id="dc-total">16</div><div class="stat-info">Incoming + Outgoing</div></div>
+        <div class="stat-card"><div class="stat-label">Incoming Feeders</div><div class="stat-value text-primary" id="dc-incoming">3</div><div class="stat-info">33 kV Incoming</div></div>
+        <div class="stat-card"><div class="stat-label">Outgoing Feeders</div><div class="stat-value text-success" id="dc-outgoing">13</div><div class="stat-info">33kV + 11kV</div></div>
+        <div class="stat-card"><div class="stat-label">Transformers</div><div class="stat-value text-primary" id="dc-tx">2</div><div class="stat-info">2 × 5 MVA, ON</div></div>
+        <div class="stat-card"><div class="stat-label">Equipment</div><div class="stat-value" id="dc-eq">24</div><div class="stat-info">CB, CT, PT, LA</div></div>
+        <div class="stat-card"><div class="stat-label">System Status</div><div class="stat-value text-success" style="font-size:18px">NORMAL</div><div class="stat-info">All systems operational</div></div>
+      </div>
+
+      <div class="status-row">
+        <div class="status-box"><div class="sb-label">33 kV Bus Status</div><div class="sb-val text-success">● ENERGIZED</div><div style="font-size:12px;color:#64748b;margin-top:4px">Voltage: 33.4 kV</div></div>
+        <div class="status-box"><div class="sb-label">11 kV Bus Status</div><div class="sb-val text-success">● ENERGIZED</div><div style="font-size:12px;color:#64748b;margin-top:4px">Voltage: 11.2 kV</div></div>
+        <div class="status-box">
+          <div class="sb-label">Total Load</div>
+          <div class="sb-val text-warning">72%</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:72%;background:var(--warning)"></div></div>
+        </div>
+        <div class="status-box"><div class="sb-label">Power Availability</div><div class="sb-val text-success">96.4%</div><div style="font-size:12px;color:#64748b;margin-top:4px">This month</div></div>
+      </div>
+    </div>
+
+    <!-- SLD -->
+    <div class="section" id="sec-sld">
+      <div class="section-title">Single Line Diagram</div>
+      <div class="section-sub">Nawapara Rajim 33/11 kV Substation — Click elements for details</div>
+      <div class="sld-container">
+        <svg class="sld-svg" viewBox="0 0 780 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#005BAC"/>
+            </marker>
+          </defs>
+
+          <!-- BG -->
+          <rect width="780" height="600" fill="#f8fafc"/>
+
+          <!-- Title -->
+          <text x="390" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#0D1B2E">NAWAPARA RAJIM 33/11 kV SUBSTATION — SINGLE LINE DIAGRAM</text>
+          <text x="390" y="44" text-anchor="middle" font-size="10" fill="#64748b">CSPDCL · Rajim Division · Raipur Circle</text>
+
+          <!-- 33kV BUS BAR -->
+          <rect x="80" y="200" width="620" height="10" fill="#005BAC" rx="2"/>
+          <text x="40" y="208" font-size="11" font-weight="700" fill="#005BAC">33 kV BUS</text>
+
+          <!-- INCOMING FEEDERS -->
+          <g class="sld-elem" onclick="showSLDInfo('I.ABHANPUR')" style="cursor:pointer">
+            <rect x="90" y="80" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
+            <text x="140" y="100" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.ABHANPUR</text>
+            <line x1="140" y1="110" x2="140" y2="200" stroke="#005BAC" stroke-width="2"/>
+            <rect x="128" y="150" width="24" height="14" rx="3" fill="#16A34A"/>
+            <text x="140" y="161" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <text x="140" y="72" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+          </g>
+
+          <g class="sld-elem" onclick="showSLDInfo('I.PARAGAON')" style="cursor:pointer">
+            <rect x="220" y="80" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
+            <text x="270" y="100" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.PARAGAON</text>
+            <line x1="270" y1="110" x2="270" y2="200" stroke="#005BAC" stroke-width="2"/>
+            <rect x="258" y="150" width="24" height="14" rx="3" fill="#16A34A"/>
+            <text x="270" y="161" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <text x="270" y="72" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+          </g>
+
+          <g class="sld-elem" onclick="showSLDInfo('I.ASHRAM')" style="cursor:pointer">
+            <rect x="350" y="80" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
+            <text x="400" y="100" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.ASHRAM</text>
+            <line x1="400" y1="110" x2="400" y2="200" stroke="#005BAC" stroke-width="2"/>
+            <rect x="388" y="150" width="24" height="14" rx="3" fill="#16A34A"/>
+            <text x="400" y="161" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <text x="400" y="72" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+          </g>
+
+          <!-- TRANSFORMERS -->
+          <g class="sld-elem" onclick="showSLDInfo('T1')" style="cursor:pointer">
+            <line x1="560" y1="200" x2="560" y2="230" stroke="#1E293B" stroke-width="2"/>
+            <circle cx="560" cy="248" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
+            <text x="560" y="253" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">T1</text>
+            <circle cx="560" cy="285" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
+            <text x="560" y="290" text-anchor="middle" font-size="10" fill="#64748b">5MVA</text>
+            <line x1="560" y1="303" x2="560" y2="330" stroke="#1E293B" stroke-width="2"/>
+            <text x="560" y="240" text-anchor="start" font-size="9" fill="#64748b" dx="22">33/11kV</text>
+          </g>
+
+          <g class="sld-elem" onclick="showSLDInfo('T2')" style="cursor:pointer">
+            <line x1="660" y1="200" x2="660" y2="230" stroke="#1E293B" stroke-width="2"/>
+            <circle cx="660" cy="248" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
+            <text x="660" y="253" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">T2</text>
+            <circle cx="660" cy="285" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
+            <text x="660" y="290" text-anchor="middle" font-size="10" fill="#64748b">5MVA</text>
+            <line x1="660" y1="303" x2="660" y2="330" stroke="#1E293B" stroke-width="2"/>
+          </g>
+
+          <!-- 11kV BUS -->
+          <rect x="80" y="330" width="620" height="10" fill="#16A34A" rx="2"/>
+          <text x="40" y="338" font-size="11" font-weight="700" fill="#16A34A">11 kV BUS</text>
+
+          <!-- 33kV Outgoing -->
+          <text x="100" y="190" font-size="9" fill="#DC2626" font-weight="600">33kV OUT→</text>
+          
+          <!-- F-09 to F-13 (33kV) — above bus area shown as taps -->
+          <!-- Actually 33kV outgoing go from 33kV bus down left side -->
+          <!-- Let's put 33kV outgoing below 33kV bus on left -->
+
+          <!-- 11kV Outgoing Feeders -->
+          <!-- Row of 8 feeders below 11kV bus -->
+          <g class="sld-elem" onclick="showSLDInfo('F-01 Pump')" style="cursor:pointer">
+            <line x1="100" y1="340" x2="100" y2="380" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="83" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="100" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="78" y="380" width="44" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="100" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-01</text>
+            <text x="100" y="404" text-anchor="middle" font-size="8" fill="#64748b">Pump</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-02 Pond')" style="cursor:pointer">
+            <line x1="175" y1="340" x2="175" y2="380" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="158" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="175" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="153" y="380" width="44" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="175" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-02</text>
+            <text x="175" y="404" text-anchor="middle" font-size="8" fill="#64748b">Pond</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-03 Champaran')" style="cursor:pointer">
+            <line x1="250" y1="340" x2="250" y2="380" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="233" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="250" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="225" y="380" width="50" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="250" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-03</text>
+            <text x="250" y="404" text-anchor="middle" font-size="8" fill="#64748b">Champaran</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-04 Hightech')" style="cursor:pointer">
+            <line x1="325" y1="340" x2="325" y2="380" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="308" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="325" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="303" y="380" width="44" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="325" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-04</text>
+            <text x="325" y="404" text-anchor="middle" font-size="8" fill="#64748b">Hightech</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-05 New Town')" style="cursor:pointer">
+            <line x1="400" y1="340" x2="400" y2="380" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="383" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="400" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="376" y="380" width="48" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="400" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-05</text>
+            <text x="400" y="404" text-anchor="middle" font-size="8" fill="#64748b">New Town</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-06 Rajim')" style="cursor:pointer">
+            <line x1="475" y1="340" x2="475" y2="380" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="458" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="475" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="453" y="380" width="44" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="475" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-06</text>
+            <text x="475" y="404" text-anchor="middle" font-size="8" fill="#64748b">Rajim</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-07 Ganj Road')" style="cursor:pointer">
+            <line x1="550" y1="340" x2="550" y2="380" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="533" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="550" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="524" y="380" width="52" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="550" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-07</text>
+            <text x="550" y="404" text-anchor="middle" font-size="8" fill="#64748b">Ganj Road</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-08 Nawapara')" style="cursor:pointer">
+            <line x1="640" y1="340" x2="640" y2="380" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="623" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="640" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="616" y="380" width="48" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="640" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-08</text>
+            <text x="640" y="404" text-anchor="middle" font-size="8" fill="#64748b">Nawapara</text>
+          </g>
+
+          <!-- 33kV Outgoing (below diagram as list) -->
+          <rect x="80" y="440" width="620" height="140" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="100" y="462" font-size="12" font-weight="700" fill="#005BAC">33 kV OUTGOING FEEDERS</text>
+
+          <g class="sld-elem" onclick="showSLDInfo('F-09 Gobra')" style="cursor:pointer">
+            <rect x="100" y="470" width="100" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
+            <text x="150" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-09 Gobra</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-10 Abhanpur')" style="cursor:pointer">
+            <rect x="215" y="470" width="110" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
+            <text x="270" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-10 Abhanpur</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-11 Hanuman Agro')" style="cursor:pointer">
+            <rect x="340" y="470" width="120" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
+            <text x="400" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-11 Hanuman Agro</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-12 Champaran')" style="cursor:pointer">
+            <rect x="475" y="470" width="115" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
+            <text x="532" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-12 Champaran</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-13 Rice Mill')" style="cursor:pointer">
+            <rect x="605" y="470" width="80" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
+            <text x="645" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-13 Rice Mill</text>
+          </g>
+
+          <!-- Legend -->
+          <rect x="100" y="505" width="10" height="10" fill="#005BAC" rx="2"/>
+          <text x="116" y="515" font-size="9" fill="#64748b">33 kV Feeder</text>
+          <rect x="200" y="505" width="10" height="10" fill="#16A34A" rx="2"/>
+          <text x="216" y="515" font-size="9" fill="#64748b">11 kV Feeder</text>
+          <rect x="300" y="505" width="10" height="10" fill="#D97706" rx="2"/>
+          <text x="316" y="515" font-size="9" fill="#64748b">Transformer</text>
+          <circle cx="405" cy="510" r="6" fill="none" stroke="#16A34A" stroke-width="1.5"/>
+          <text x="416" y="515" font-size="9" fill="#64748b">Winding</text>
+
+          <text x="390" y="555" text-anchor="middle" font-size="9" fill="#94a3b8">Click on any element for details | CSPDCL — Nawapara Rajim Substation</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- FEEDERS -->
+    <div class="section" id="sec-feeders">
+      <div class="section-title">Feeders</div>
+      <div class="section-sub">All incoming and outgoing feeders</div>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchFeederTab('all',this)">All (16)</button>
+        <button class="tab-btn" onclick="switchFeederTab('incoming',this)">Incoming (3)</button>
+        <button class="tab-btn" onclick="switchFeederTab('33kv',this)">33 kV Outgoing (5)</button>
+        <button class="tab-btn" onclick="switchFeederTab('11kv',this)">11 kV Outgoing (8)</button>
+      </div>
+      <div class="feeders-grid" id="feedersGrid"></div>
+    </div>
+
+    <!-- TRANSFORMERS -->
+    <div class="section" id="sec-transformers">
+      <div class="section-title">Transformers</div>
+      <div class="section-sub">Power transformers — 33/11 kV</div>
+      <div class="transformer-grid" id="txGrid"></div>
+    </div>
+
+    <!-- EQUIPMENT -->
+    <div class="section" id="sec-equipment">
+      <div class="section-title">Equipment</div>
+      <div class="section-sub">Circuit Breakers, CTs, PTs, Lightning Arresters</div>
+      <div id="equipmentContent"></div>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="section" id="sec-gallery">
+      <div class="section-title">Gallery</div>
+      <div class="section-sub">Substation photo gallery</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><span>🏭</span><div class="gallery-overlay">Substation</div></div>
+        <div class="gallery-item"><span>⚡</span><div class="gallery-overlay">Switchyard</div></div>
+        <div class="gallery-item"><span>🔌</span><div class="gallery-overlay">Transformer</div></div>
+        <div class="gallery-item"><span>🖥️</span><div class="gallery-overlay">Control Room</div></div>
+        <div class="gallery-item"><span>📊</span><div class="gallery-overlay">Panels</div></div>
+        <div class="gallery-item"><span>⚙️</span><div class="gallery-overlay">Circuit Breakers</div></div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="section" id="sec-about">
+      <div class="section-title">About Substation</div>
+      <div class="section-sub">Nawapara Rajim 33/11 kV Substation — CSPDCL</div>
+      <div class="hero-placeholder" style="height:160px;margin-bottom:20px">
+        <div class="big-text" style="font-size:20px">🏭 Nawapara Rajim Substation</div>
+        <div class="sm-text">Nawapara Rajim, Chhattisgarh · Since 2010</div>
+      </div>
+      <div class="about-grid">
+        <div class="card">
+          <table class="info-table">
+            <tr><td>Substation Name</td><td>Nawapara Rajim 33/11 kV Substation</td></tr>
+            <tr><td>Location</td><td>Nawapara Rajim, Chhattisgarh</td></tr>
+            <tr><td>Division</td><td>Rajim Division</td></tr>
+            <tr><td>Circle</td><td>Raipur Circle</td></tr>
+            <tr><td>Zone</td><td>Raipur Zone</td></tr>
+            <tr><td>Utility</td><td>CSPDCL</td></tr>
+            <tr><td>Voltage Level</td><td>33/11 kV</td></tr>
+            <tr><td>Frequency</td><td>50 Hz</td></tr>
+            <tr><td>System</td><td>3 Phase</td></tr>
+            <tr><td>Commission Year</td><td>2010</td></tr>
+            <tr><td>Installed Capacity</td><td>2 × 5 MVA</td></tr>
+            <tr><td>Power Transformers</td><td>2</td></tr>
+            <tr><td>Incoming Feeders</td><td>3</td></tr>
+            <tr><td>Outgoing Feeders</td><td>13</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--primary)">Substation Summary</div>
+          <p style="font-size:13.5px;line-height:1.7;color:#475569">The Nawapara Rajim 33/11 kV Substation is operated by Chhattisgarh State Power Distribution Company Limited (CSPDCL) under the Rajim Division, Raipur Circle. Commissioned in 2010, it plays a vital role in distributing power to Nawapara Rajim and surrounding rural and urban areas.</p>
+          <br>
+          <p style="font-size:13.5px;line-height:1.7;color:#475569">The substation is equipped with two 5 MVA power transformers operating at 33/11 kV, with three incoming feeders sourced from major grid substations and thirteen outgoing feeders serving residential, agricultural, commercial, and industrial consumers.</p>
+          <br>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
+            <div style="background:#f0f9ff;border-radius:6px;padding:12px;text-align:center">
+              <div style="font-size:22px;font-weight:700;color:var(--primary)">10 MVA</div>
+              <div style="font-size:11px;color:#64748b">Total Capacity</div>
+            </div>
+            <div style="background:#f0fdf4;border-radius:6px;padding:12px;text-align:center">
+              <div style="font-size:22px;font-weight:700;color:var(--success)">13</div>
+              <div style="font-size:11px;color:#64748b">Outgoing Feeders</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div class="section" id="sec-reports">
+      <div class="section-title">Reports</div>
+      <div class="section-sub">Download and view substation reports</div>
+      <div class="reports-grid">
+        <div class="report-card"><div class="report-icon">📅</div><div><div class="report-title">Daily Load Report</div><div class="report-desc">24-hour load profile and consumption data</div></div></div>
+        <div class="report-card"><div class="report-icon">⚠️</div><div><div class="report-title">Outage Report</div><div class="report-desc">Feeder trip and interruption records</div></div></div>
+        <div class="report-card"><div class="report-icon">🔧</div><div><div class="report-title">Maintenance Report</div><div class="report-desc">Scheduled and emergency maintenance logs</div></div></div>
+        <div class="report-card"><div class="report-icon">📊</div><div><div class="report-title">Monthly Report</div><div class="report-desc">Monthly energy and performance summary</div></div></div>
+        <div class="report-card"><div class="report-icon">⚡</div><div><div class="report-title">Trip History</div><div class="report-desc">Historical CB trip and protection events</div></div></div>
+        <div class="report-card"><div class="report-icon">🧪</div><div><div class="report-title">Equipment Test Report</div><div class="report-desc">Oil BDV, IR, CT/PT calibration records</div></div></div>
+      </div>
+    </div>
+
+  </div><!-- content -->
+</div><!-- main -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Details</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ============ DATA ============
+const defaultFeeders = [
+  {id:'I-ABH',code:'I.ABHANPUR',name:'Abhanpur Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'280A',load:'65%',area:'Abhanpur GSS',source:'Abhanpur 132/33 kV GSS',destination:'33 kV Bus',length:'18 km',conductor:'Panther ACSR',consumers:'—',pf:'0.92',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Primary source'},
+  {id:'I-PAR',code:'I.PARAGAON',name:'Paragaon Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'210A',load:'48%',area:'Paragaon GSS',source:'Paragaon 132/33 kV GSS',destination:'33 kV Bus',length:'22 km',conductor:'Panther ACSR',consumers:'—',pf:'0.91',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Alternate source'},
+  {id:'I-ASH',code:'I.ASHRAM',name:'Ashram Incoming',type:'incoming',voltage:'33 kV',status:'OFF',current:'0A',load:'0%',area:'Ashram GSS',source:'Ashram 132/33 kV GSS',destination:'33 kV Bus',length:'14 km',conductor:'Panther ACSR',consumers:'—',pf:'—',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Standby source'},
+  {id:'F-09',code:'F-09',name:'Gobra',type:'33kv',voltage:'33 kV',status:'ON',current:'95A',load:'55%',area:'Gobra Area',source:'33 kV Bus',destination:'Gobra',length:'12 km',conductor:'Rabbit ACSR',consumers:'1240',pf:'0.89',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Rural feeder'},
+  {id:'F-10',code:'F-10',name:'Abhanpur',type:'33kv',voltage:'33 kV',status:'ON',current:'110A',load:'62%',area:'Abhanpur Area',source:'33 kV Bus',destination:'Abhanpur',length:'8 km',conductor:'Rabbit ACSR',consumers:'2100',pf:'0.91',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Town feeder'},
+  {id:'F-11',code:'F-11',name:'Hanuman Agro',type:'33kv',voltage:'33 kV',status:'ON',current:'78A',load:'45%',area:'Agro Belt',source:'33 kV Bus',destination:'Hanuman Agro',length:'15 km',conductor:'Rabbit ACSR',consumers:'890',pf:'0.87',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Agricultural feeder'},
+  {id:'F-12',code:'F-12',name:'Champaran (33kV)',type:'33kv',voltage:'33 kV',status:'OFF',current:'0A',load:'0%',area:'Champaran',source:'33 kV Bus',destination:'Champaran',length:'19 km',conductor:'Rabbit ACSR',consumers:'1560',pf:'—',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Under maintenance'},
+  {id:'F-13',code:'F-13',name:'Rice Mill',type:'33kv',voltage:'33 kV',status:'ON',current:'130A',load:'70%',area:'Industrial Area',source:'33 kV Bus',destination:'Rice Mill',length:'6 km',conductor:'Dog ACSR',consumers:'320',pf:'0.93',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Industrial feeder'},
+  {id:'F-01',code:'F-01',name:'Pump',type:'11kv',voltage:'11 kV',status:'ON',current:'85A',load:'58%',area:'Pump Area',source:'11 kV Bus',destination:'Pump Station',length:'4 km',conductor:'Rabbit ACSR',consumers:'340',pf:'0.88',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Irrigation pumps'},
+  {id:'F-02',code:'F-02',name:'Pond',type:'11kv',voltage:'11 kV',status:'ON',current:'62A',load:'42%',area:'Pond Area',source:'11 kV Bus',destination:'Pond Colony',length:'3.5 km',conductor:'Rabbit ACSR',consumers:'780',pf:'0.90',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Residential'},
+  {id:'F-03',code:'F-03',name:'Champaran (11kV)',type:'11kv',voltage:'11 kV',status:'ON',current:'95A',load:'64%',area:'Champaran',source:'11 kV Bus',destination:'Champaran Town',length:'7 km',conductor:'Weasel ACSR',consumers:'1900',pf:'0.91',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Mixed load'},
+  {id:'F-04',code:'F-04',name:'Hightech',type:'11kv',voltage:'11 kV',status:'ON',current:'110A',load:'74%',area:'Hightech Zone',source:'11 kV Bus',destination:'Hightech Colony',length:'2 km',conductor:'Weasel ACSR',consumers:'1200',pf:'0.92',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Urban residential'},
+  {id:'F-05',code:'F-05',name:'New Town',type:'11kv',voltage:'11 kV',status:'ON',current:'100A',load:'68%',area:'New Town',source:'11 kV Bus',destination:'New Town Area',length:'3 km',conductor:'Weasel ACSR',consumers:'1450',pf:'0.90',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Urban residential'},
+  {id:'F-06',code:'F-06',name:'Rajim',type:'11kv',voltage:'11 kV',status:'ON',current:'120A',load:'81%',area:'Rajim Town',source:'11 kV Bus',destination:'Rajim Town',length:'5 km',conductor:'Dog ACSR',consumers:'3200',pf:'0.89',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'City feeder'},
+  {id:'F-07',code:'F-07',name:'Ganj Road',type:'11kv',voltage:'11 kV',status:'OFF',current:'0A',load:'0%',area:'Ganj Road',source:'11 kV Bus',destination:'Ganj Road',length:'4 km',conductor:'Rabbit ACSR',consumers:'980',pf:'—',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Tripped — relay operated'},
+  {id:'F-08',code:'F-08',name:'Nawapara',type:'11kv',voltage:'11 kV',status:'ON',current:'88A',load:'59%',area:'Nawapara',source:'11 kV Bus',destination:'Nawapara Town',length:'2.5 km',conductor:'Weasel ACSR',consumers:'1100',pf:'0.91',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Town feeder'},
+];
+
+const defaultTransformers = [
+  {id:'T1',name:'Transformer T1',rating:'5 MVA',voltage:'33/11 kV',vector:'Dyn11',cooling:'ONAN',make:'BHEL',status:'ON',load:'72%',oilLevel:'Normal',temp:'58°C',lastMaint:'15 Mar 2024'},
+  {id:'T2',name:'Transformer T2',rating:'5 MVA',voltage:'33/11 kV',vector:'Dyn11',cooling:'ONAN',make:'BHEL',status:'ON',load:'68%',oilLevel:'Normal',temp:'55°C',lastMaint:'15 Mar 2024'},
+];
+
+const defaultEquipment = [
+  {cat:'CB',id:'CB-01',name:'Incoming CB — Abhanpur',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-02',name:'Incoming CB — Paragaon',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-03',name:'Incoming CB — Ashram',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-04',name:'T1 HV CB',make:'Siemens',model:'3AH3',voltage:'33 kV',rating:'630A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-05',name:'T2 HV CB',make:'Siemens',model:'3AH3',voltage:'33 kV',rating:'630A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-06',name:'T1 LV CB',make:'L&T',model:'Unigear ZS1',voltage:'11 kV',rating:'800A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-07',name:'T2 LV CB',make:'L&T',model:'Unigear ZS1',voltage:'11 kV',rating:'800A',year:'2010',status:'Faulty'},
+  {cat:'CT',id:'CT-01',name:'CT — Incoming Abhanpur',make:'BHEL',model:'EMU-33',voltage:'33 kV',rating:'400/1A',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-02',name:'CT — T1 HV',make:'BHEL',model:'EMU-33',voltage:'33 kV',rating:'200/1A',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-03',name:'CT — T1 LV',make:'BHEL',model:'EMU-11',voltage:'11 kV',rating:'800/1A',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-04',name:'CT — Bus PT',make:'BHEL',model:'EMU-11',voltage:'11 kV',rating:'600/1A',year:'2010',status:'Healthy'},
+  {cat:'PT',id:'PT-01',name:'PT — 33 kV Bus',make:'BHEL',model:'EPT-33',voltage:'33/√3 kV',rating:'50 VA',year:'2010',status:'Healthy'},
+  {cat:'PT',id:'PT-02',name:'PT — 11 kV Bus',make:'BHEL',model:'EPT-11',voltage:'11/√3 kV',rating:'50 VA',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-01',name:'LA — Incoming Abhanpur',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-02',name:'LA — Incoming Paragaon',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-03',name:'LA — Incoming Ashram',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-04',name:'LA — T1 HV',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-05',name:'LA — 11 kV Bus',make:'Elpro',model:'ZnO Polymer',voltage:'11 kV',rating:'12 kV',year:'2010',status:'Healthy'},
+];
+
+function getData(key, def){ try{ return JSON.parse(localStorage.getItem(key)) || def; }catch(e){ return def; }}
+let feeders = getData('feeders', defaultFeeders);
+let transformers = getData('transformers', defaultTransformers);
+let equipment = getData('equipment', defaultEquipment);
+
+// ============ NAV ============
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.getElementById('topbarTitle').textContent = event.currentTarget.textContent.trim();
+  if(id==='feeders') renderFeeders('all');
+  if(id==='transformers') renderTransformers();
+  if(id==='equipment') renderEquipment();
+  closeSidebar();
+}
+
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
+function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
+
+// ============ FEEDERS ============
+let activeFeederTab = 'all';
+function switchFeederTab(tab,btn){ 
+  activeFeederTab=tab; 
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFeeders(tab);
+}
+
+function renderFeeders(tab){
+  feeders = getData('feeders', defaultFeeders);
+  const grid = document.getElementById('feedersGrid');
+  let list = feeders;
+  if(tab==='incoming') list=feeders.filter(f=>f.type==='incoming');
+  else if(tab==='33kv') list=feeders.filter(f=>f.type==='33kv');
+  else if(tab==='11kv') list=feeders.filter(f=>f.type==='11kv');
+  
+  grid.innerHTML = list.map(f=>`
+    <div class="feeder-card" onclick="openFeederModal('${f.id}')">
+      <div class="feeder-img" style="background:${f.type==='incoming'?'#dbeafe':f.type==='33kv'?'#e0f2fe':'#dcfce7'};color:${f.type==='incoming'?'#005BAC':f.type==='33kv'?'#0369a1':'#16A34A'}">${f.code}</div>
+      <div class="feeder-body">
+        <div class="feeder-name">${f.name}</div>
+        <div class="feeder-info">Code: ${f.code} | ${f.voltage}</div>
+        <div class="feeder-info">Area: ${f.area}</div>
+        <div class="feeder-info">Current: ${f.current} | Load: ${f.load}</div>
+        <div class="feeder-meta">
+          <span class="badge ${f.status==='ON'?'badge-success':'badge-danger'}">${f.status}</span>
+          <span style="font-size:11px;color:#64748b">${f.type==='incoming'?'Incoming':f.type==='33kv'?'33kV Out':'11kV Out'}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openFeederModal(id){
+  const f = feeders.find(x=>x.id===id); if(!f) return;
+  document.getElementById('modalTitle').textContent = f.code+' — '+f.name;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-img" style="background:${f.type==='incoming'?'#dbeafe':f.type==='33kv'?'#e0f2fe':'#dcfce7'};color:${f.type==='incoming'?'#005BAC':f.type==='33kv'?'#0369a1':'#16A34A'};font-size:36px;font-weight:700;display:flex;align-items:center;justify-content:center">${f.code}</div>
+    <div class="detail-grid">
+      ${[['Source',f.source],['Destination',f.destination],['Length',f.length],['Conductor',f.conductor],['Consumers',f.consumers],['Current',f.current],['Load',f.load],['Power Factor',f.pf],['CB Model',f.cbModel],['CT Ratio',f.ctRatio],['PT Ratio',f.ptRatio],['LA Rating',f.la],['Status',f.status],['Remarks',f.remarks]].map(([l,v])=>`
+      <div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val ${l==='Status'?(v==='ON'?'text-success':'text-danger'):''}">${v}</div></div>`).join('')}
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+// ============ TRANSFORMERS ============
+function renderTransformers(){
+  transformers = getData('transformers', defaultTransformers);
+  const g = document.getElementById('txGrid');
+  g.innerHTML = transformers.map(t=>`
+    <div class="tx-card">
+      <div class="tx-img" style="background:#fef9c3;font-size:56px">🔌</div>
+      <div class="tx-body">
+        <div class="tx-name">${t.name} <span class="badge ${t.status==='ON'?'badge-success':'badge-danger'}" style="font-size:11px">${t.status}</span></div>
+        ${[['Rating',t.rating],['Voltage Ratio',t.voltage],['Vector Group',t.vector],['Cooling',t.cooling],['Make',t.make],['Load',`<div style="display:flex;align-items:center;gap:8px">${t.load}<div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${t.load};background:${parseInt(t.load)>80?'var(--danger)':parseInt(t.load)>60?'var(--warning)':'var(--success)'}"></div></div></div>`],['Oil Level',t.oilLevel],['Temperature',t.temp],['Last Maintenance',t.lastMaint]].map(([l,v])=>`
+        <div class="tx-row"><span class="tx-label">${l}</span><span class="tx-val">${v}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ============ EQUIPMENT ============
+function renderEquipment(){
+  equipment = getData('equipment', defaultEquipment);
+  const cats = [{key:'CB',label:'Circuit Breakers',icon:'CB.jpg'},{key:'CT',label:'Current Transformers',icon:'CT.jpg'},{key:'PT',label:'Potential Transformers',icon:'PT.jpg'},{key:'LA',label:'Lightning Arresters',icon:'LA.jpg'}];
+  const c = document.getElementById('equipmentContent');
+  c.innerHTML = cats.map(cat=>{
+    const items = equipment.filter(e=>e.cat===cat.key);
+    return `<div class="eq-category-title">${cat.label}</div>
+    <div class="card" style="padding:0;margin-bottom:16px">
+      <div class="table-wrap">
+      <table class="eq-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Make</th><th>Model</th><th>Voltage</th><th>Rating</th><th>Year</th><th>Status</th></tr></thead>
+        <tbody>${items.map(e=>`<tr onclick="openEqModal('${e.id}')"><td>${e.id}</td><td>${e.name}</td><td>${e.make}</td><td>${e.model}</td><td>${e.voltage}</td><td>${e.rating}</td><td>${e.year}</td><td><span class="badge ${e.status==='Healthy'?'badge-success':'badge-danger'}">${e.status}</span></td></tr>`).join('')}</tbody>
+      </table></div></div>`;
+  }).join('');
+}
+
+function openEqModal(id){
+  const e = equipment.find(x=>x.id===id); if(!e) return;
+  document.getElementById('modalTitle').textContent = e.id+' — '+e.name;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-img" style="background:#f1f5f9;font-size:48px;display:flex;align-items:center;justify-content:center">${{CB:'⚡',CT:'🔄',PT:'📐',LA:'🛡️'}[e.cat]||'⚙️'}</div>
+    <div class="detail-grid">
+      ${[['ID',e.id],['Name',e.name],['Category',e.cat],['Make',e.make],['Model',e.model],['Voltage',e.voltage],['Rating',e.rating],['Year',e.year],['Status',e.status]].map(([l,v])=>`
+      <div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val ${l==='Status'?(v==='Healthy'?'text-success':'text-danger'):''}">${v}</div></div>`).join('')}
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+// ============ SLD CLICK ============
+function showSLDInfo(name){
+  const feeder = feeders.find(f=>f.name===name||f.code===name||(f.code+' '+f.name)===name||name.includes(f.name)||name.includes(f.code));
+  const tx = transformers.find(t=>t.id===name);
+  if(feeder){ openFeederModal(feeder.id); return; }
+  if(tx){
+    document.getElementById('modalTitle').textContent = tx.name;
+    document.getElementById('modalBody').innerHTML = `
+      <div class="modal-img" style="background:#fef9c3;font-size:48px;display:flex;align-items:center;justify-content:center">🔌</div>
+      <div class="detail-grid">
+        ${[['ID',tx.id],['Rating',tx.rating],['Voltage Ratio',tx.voltage],['Vector Group',tx.vector],['Cooling',tx.cooling],['Make',tx.make],['Status',tx.status],['Load',tx.load],['Temperature',tx.temp],['Last Maintenance',tx.lastMaint]].map(([l,v])=>`
+        <div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val ${l==='Status'?(v==='ON'?'text-success':'text-danger'):''}">${v}</div></div>`).join('')}
+      </div>`;
+    document.getElementById('modalOverlay').classList.add('open');
+  } else {
+    document.getElementById('modalTitle').textContent = name;
+    document.getElementById('modalBody').innerHTML = `<p style="color:#64748b;font-size:13px;padding:8px 0">${name} — No additional data available.</p>`;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+}
+
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+function closeModalOutside(e){ if(e.target===document.getElementById('modalOverlay')) closeModal(); }
+
+// ============ CLOCK ============
+function updateTime(){
+  const now = new Date();
+  document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}) + ' | ' + now.toLocaleDateString('en-IN');
+}
+setInterval(updateTime,1000); updateTime();
+
+// Init render
+renderFeeders('all');
+</script>
+</body>
+</html>

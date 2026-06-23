@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Nawapara Rajim Substation</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--primary:#005BAC;--success:#16A34A;--warning:#D97706;--danger:#DC2626;--bg:#F5F7FA;--card:#FFFFFF;--sidebar:#0D1B2E;--text:#1E293B;--border:#E2E8F0;--sidebar-w:240px}
+  body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
+
+  /* LOGIN */
+  .login-page{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--sidebar)}
+  .login-box{background:var(--card);border-radius:10px;padding:36px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .login-logo{text-align:center;margin-bottom:24px}
+  .login-logo .icon{font-size:36px;margin-bottom:8px}
+  .login-logo h2{font-size:17px;font-weight:700;color:var(--text)}
+  .login-logo p{font-size:12px;color:#64748b;margin-top:2px}
+  .form-group{margin-bottom:16px}
+  .form-group label{display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+  .form-group input{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;transition:.15s}
+  .form-group input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,91,172,.1)}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:.15s}
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-primary:hover{background:#0049a0}
+  .btn-success{background:var(--success);color:#fff}
+  .btn-danger{background:var(--danger);color:#fff}
+  .btn-sm{padding:6px 12px;font-size:12px}
+  .btn-outline{background:none;border:1px solid var(--border);color:var(--text)}
+  .btn-outline:hover{background:var(--bg)}
+  .btn-block{width:100%;justify-content:center}
+  .error-msg{background:#fee2e2;color:var(--danger);padding:10px 14px;border-radius:6px;font-size:13px;margin-bottom:16px;display:none}
+
+  /* ADMIN LAYOUT */
+  .admin-layout{display:flex;min-height:100vh;display:none}
+  .admin-layout.show{display:flex}
+  .sidebar{width:var(--sidebar-w);background:var(--sidebar);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:.3s}
+  .sidebar-header{padding:20px 16px;border-bottom:1px solid #1e3a5f}
+  .sidebar-header .logo{font-size:13px;font-weight:700;color:#fff;line-height:1.4}
+  .sidebar-header .sub-logo{font-size:11px;color:#7a9cc0;margin-top:4px}
+  .sidebar nav{flex:1;padding:12px 0}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;cursor:pointer;font-size:13.5px;color:#a8c0d8;transition:.15s;border-left:3px solid transparent}
+  .nav-item:hover{background:#1e3a5f;color:#fff}
+  .nav-item.active{background:#1a3356;color:#fff;border-left-color:var(--primary)}
+  .nav-item.danger{color:#fca5a5}
+  .nav-item.danger:hover{background:#7f1d1d}
+
+  .main{margin-left:var(--sidebar-w);flex:1}
+  .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+  .topbar-title{font-size:15px;font-weight:600;color:var(--primary)}
+  .topbar-right{font-size:13px;color:#64748b;display:flex;align-items:center;gap:12px}
+  .hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text)}
+  .content{padding:24px}
+  .section{display:none}
+  .section.active{display:block}
+  .section-title{font-size:20px;font-weight:700;margin-bottom:6px}
+  .section-sub{font-size:13px;color:#64748b;margin-bottom:20px}
+
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px}
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px}
+  .stat-label{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .stat-value{font-size:28px;font-weight:700;color:var(--primary)}
+  .badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+  .badge-success{background:#dcfce7;color:var(--success)}
+  .badge-warning{background:#fef3c7;color:var(--warning)}
+  .badge-danger{background:#fee2e2;color:var(--danger)}
+  .badge-primary{background:#dbeafe;color:var(--primary)}
+
+  /* TABLE */
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{background:#f8fafc;text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#64748b}
+  td{padding:10px 12px;border-bottom:1px solid var(--border)}
+  tr:hover td{background:#f8fafc}
+  
+  /* FORM */
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .form-full{grid-column:1/-1}
+  select{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;background:var(--card)}
+  select:focus{border-color:var(--primary)}
+  textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;resize:vertical}
+  textarea:focus{border-color:var(--primary)}
+  .form-actions{display:flex;gap:10px;margin-top:4px}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--card);border-radius:10px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto}
+  .modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .modal-title{font-size:16px;font-weight:700}
+  .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#64748b;line-height:1}
+  .modal-body{padding:20px}
+  
+  .success-toast{position:fixed;bottom:24px;right:24px;background:var(--success);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+
+  /* Sidebar overlay (mobile) */
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+
+  @media(max-width:768px){
+    .sidebar{left:calc(-1 * var(--sidebar-w))}
+    .sidebar.open{left:0}
+    .sidebar-overlay.open{display:block}
+    .main{margin-left:0}
+    .hamburger{display:block}
+    .form-row{grid-template-columns:1fr}
+    .content{padding:16px}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-page" id="loginPage">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">⚡</div>
+      <h2>Admin Panel</h2>
+      <p>Nawapara Rajim 33/11 kV Substation — CSPDCL</p>
+    </div>
+    <div class="error-msg" id="errorMsg">Invalid username or password.</div>
+    <div class="form-group"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn btn-primary btn-block" onclick="doLogin()">Login to Admin Panel</button>
+    <div style="margin-top:16px;text-align:center"><a href="index.html" style="font-size:12px;color:#64748b">← Back to User Portal</a></div>
+  </div>
+</div>
+
+<!-- ADMIN LAYOUT -->
+<div class="admin-layout" id="adminLayout">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">⚡ ADMIN PANEL</div>
+      <div class="sub-logo">Nawapara Rajim Substation</div>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="showSection('dashboard')"><span>▦</span> Dashboard</div>
+      <div class="nav-item" onclick="showSection('feeders')"><span>⇌</span> Manage Feeders</div>
+      <div class="nav-item" onclick="showSection('transformers')"><span>◎</span> Manage Transformers</div>
+      <div class="nav-item" onclick="showSection('equipment')"><span>⚙</span> Manage Equipment</div>
+      <div class="nav-item" onclick="showSection('gallery')"><span>▣</span> Manage Gallery</div>
+      <div class="nav-item" onclick="showSection('reports')"><span>📋</span> Reports</div>
+      <div class="nav-item danger" onclick="doLogout()"><span>⎋</span> Logout</div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-title" id="topbarTitle">Admin Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <span id="adminUser" style="font-weight:600;color:var(--primary)"></span>
+        <span id="currentTime"></span>
+        <a href="index.html" target="_blank" style="font-size:12px;color:var(--primary);text-decoration:none">View Portal →</a>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="section active" id="sec-dashboard">
+        <div class="section-title">Admin Dashboard</div>
+        <div class="section-sub">System overview and quick stats</div>
+        <div class="cards-grid">
+          <div class="stat-card"><div class="stat-label">Total Feeders</div><div class="stat-value" id="adm-total">—</div></div>
+          <div class="stat-card"><div class="stat-label">Active Feeders</div><div class="stat-value" style="color:var(--success)" id="adm-on">—</div></div>
+          <div class="stat-card"><div class="stat-label">Tripped/Off</div><div class="stat-value" style="color:var(--danger)" id="adm-off">—</div></div>
+          <div class="stat-card"><div class="stat-label">Transformers</div><div class="stat-value" id="adm-tx">—</div></div>
+          <div class="stat-card"><div class="stat-label">Equipment</div><div class="stat-value" id="adm-eq">—</div></div>
+          <div class="stat-card"><div class="stat-label">Faulty Equipment</div><div class="stat-value" style="color:var(--danger)" id="adm-faulty">—</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" class="card" style="padding:0">
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px">Quick Actions</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn btn-primary" onclick="showSection('feeders');openAddFeeder()">+ Add Feeder</button>
+              <button class="btn btn-outline" onclick="showSection('transformers')">Manage Transformers</button>
+              <button class="btn btn-outline" onclick="showSection('equipment')">Manage Equipment</button>
+              <button class="btn btn-outline" style="color:var(--danger);border-color:var(--danger)" onclick="resetAll()">⚠ Reset All Data to Default</button>
+            </div>
+          </div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px">System Info</div>
+            <table style="font-size:13px">
+              <tr><td style="color:#64748b;padding:4px 0">Substation</td><td style="font-weight:600;padding:4px 8px">Nawapara Rajim 33/11 kV</td></tr>
+              <tr><td style="color:#64748b;padding:4px 0">Utility</td><td style="font-weight:600;padding:4px 8px">CSPDCL</td></tr>
+              <tr><td style="color:#64748b;padding:4px 0">Division</td><td style="font-weight:600;padding:4px 8px">Rajim Division</td></tr>
+              <tr><td style="color:#64748b;padding:4px 0">Capacity</td><td style="font-weight:600;padding:4px 8px">2 × 5 MVA</td></tr>
+              <tr><td style="color:#64748b;padding:4px 0">Data Store</td><td style="font-weight:600;padding:4px 8px">LocalStorage</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEEDERS -->
+      <div class="section" id="sec-feeders">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div><div class="section-title">Manage Feeders</div><div class="section-sub" style="margin:0">Add, edit, delete feeder records</div></div>
+          <button class="btn btn-primary" onclick="openAddFeeder()">+ Add Feeder</button>
+        </div>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table id="feedersTable">
+              <thead><tr><th>Code</th><th>Name</th><th>Type</th><th>Voltage</th><th>Status</th><th>Current</th><th>Load</th><th>Actions</th></tr></thead>
+              <tbody id="feedersTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRANSFORMERS -->
+      <div class="section" id="sec-transformers">
+        <div class="section-title">Manage Transformers</div>
+        <div class="section-sub">Edit transformer details and status</div>
+        <div id="txForms"></div>
+      </div>
+
+      <!-- EQUIPMENT -->
+      <div class="section" id="sec-equipment">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div><div class="section-title">Manage Equipment</div><div class="section-sub" style="margin:0">Circuit Breakers, CTs, PTs, Lightning Arresters</div></div>
+          <button class="btn btn-primary" onclick="openAddEquipment()">+ Add Equipment</button>
+        </div>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Make</th><th>Model</th><th>Voltage</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="eqTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- GALLERY -->
+      <div class="section" id="sec-gallery">
+        <div class="section-title">Manage Gallery</div>
+        <div class="section-sub">Update image paths for gallery display</div>
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--primary)">Image Path Settings</div>
+          <p style="font-size:13px;color:#64748b;margin-bottom:16px">Update the relative paths for images used in the portal. Images must be placed in the respective folders.</p>
+          <div style="display:grid;gap:12px">
+            ${['images/substation.jpg','images/substation-overview.jpg','images/gallery/1.jpg','images/gallery/2.jpg','images/gallery/3.jpg','images/gallery/4.jpg','images/gallery/5.jpg','images/gallery/6.jpg','images/feeders/F-01.jpg','images/transformers/T1.jpg','images/equipment/CB.jpg'].map(p=>`
+            <div class="form-group" style="margin:0">
+              <label>${p}</label>
+              <input type="text" placeholder="${p}" value="${p}" style="font-size:12px;font-family:monospace">
+            </div>`).join('')}
+          </div>
+          <div class="form-actions" style="margin-top:16px">
+            <button class="btn btn-primary" onclick="toast('Image paths noted — place actual image files in the corresponding folders.')">Save Paths</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="section" id="sec-reports">
+        <div class="section-title">Reports</div>
+        <div class="section-sub">Generate and export substation reports</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px">
+          ${[['Daily Load Report','📅','24-hr load data'],['Outage Report','⚠️','Trip & interruption log'],['Maintenance Report','🔧','Maintenance records'],['Monthly Report','📊','Monthly energy summary'],['Trip History','⚡','CB trip events'],['Equipment Test','🧪','Oil BDV, IR, CT/PT']].map(([t,i,d])=>`
+          <div class="card" style="cursor:pointer;display:flex;gap:14px;align-items:flex-start" onclick="toast('Report generation: ${t} — feature available in full deployment.')">
+            <div style="width:40px;height:40px;background:#dbeafe;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${i}</div>
+            <div><div style="font-size:14px;font-weight:700;margin-bottom:4px">${t}</div><div style="font-size:12px;color:#64748b">${d}</div><button class="btn btn-sm btn-primary" style="margin-top:10px">Generate</button></div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+    </div><!-- content -->
+  </div><!-- main -->
+</div><!-- admin layout -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Form</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="success-toast" id="toast"></div>
+
+<script>
+// ============ DATA ============
+const defaultFeeders = [
+  {id:'I-ABH',code:'I.ABHANPUR',name:'Abhanpur Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'280A',load:'65%',area:'Abhanpur GSS',source:'Abhanpur 132/33 kV GSS',destination:'33 kV Bus',length:'18 km',conductor:'Panther ACSR',consumers:'—',pf:'0.92',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Primary source'},
+  {id:'I-PAR',code:'I.PARAGAON',name:'Paragaon Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'210A',load:'48%',area:'Paragaon GSS',source:'Paragaon 132/33 kV GSS',destination:'33 kV Bus',length:'22 km',conductor:'Panther ACSR',consumers:'—',pf:'0.91',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Alternate source'},
+  {id:'I-ASH',code:'I.ASHRAM',name:'Ashram Incoming',type:'incoming',voltage:'33 kV',status:'OFF',current:'0A',load:'0%',area:'Ashram GSS',source:'Ashram 132/33 kV GSS',destination:'33 kV Bus',length:'14 km',conductor:'Panther ACSR',consumers:'—',pf:'—',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Standby source'},
+  {id:'F-09',code:'F-09',name:'Gobra',type:'33kv',voltage:'33 kV',status:'ON',current:'95A',load:'55%',area:'Gobra Area',source:'33 kV Bus',destination:'Gobra',length:'12 km',conductor:'Rabbit ACSR',consumers:'1240',pf:'0.89',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Rural feeder'},
+  {id:'F-10',code:'F-10',name:'Abhanpur',type:'33kv',voltage:'33 kV',status:'ON',current:'110A',load:'62%',area:'Abhanpur Area',source:'33 kV Bus',destination:'Abhanpur',length:'8 km',conductor:'Rabbit ACSR',consumers:'2100',pf:'0.91',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Town feeder'},
+  {id:'F-11',code:'F-11',name:'Hanuman Agro',type:'33kv',voltage:'33 kV',status:'ON',current:'78A',load:'45%',area:'Agro Belt',source:'33 kV Bus',destination:'Hanuman Agro',length:'15 km',conductor:'Rabbit ACSR',consumers:'890',pf:'0.87',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Agricultural feeder'},
+  {id:'F-12',code:'F-12',name:'Champaran (33kV)',type:'33kv',voltage:'33 kV',status:'OFF',current:'0A',load:'0%',area:'Champaran',source:'33 kV Bus',destination:'Champaran',length:'19 km',conductor:'Rabbit ACSR',consumers:'1560',pf:'—',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Under maintenance'},
+  {id:'F-13',code:'F-13',name:'Rice Mill',type:'33kv',voltage:'33 kV',status:'ON',current:'130A',load:'70%',area:'Industrial Area',source:'33 kV Bus',destination:'Rice Mill',length:'6 km',conductor:'Dog ACSR',consumers:'320',pf:'0.93',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Industrial feeder'},
+  {id:'F-01',code:'F-01',name:'Pump',type:'11kv',voltage:'11 kV',status:'ON',current:'85A',load:'58%',area:'Pump Area',source:'11 kV Bus',destination:'Pump Station',length:'4 km',conductor:'Rabbit ACSR',consumers:'340',pf:'0.88',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Irrigation pumps'},
+  {id:'F-02',code:'F-02',name:'Pond',type:'11kv',voltage:'11 kV',status:'ON',current:'62A',load:'42%',area:'Pond Area',source:'11 kV Bus',destination:'Pond Colony',length:'3.5 km',conductor:'Rabbit ACSR',consumers:'780',pf:'0.90',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Residential'},
+  {id:'F-03',code:'F-03',name:'Champaran (11kV)',type:'11kv',voltage:'11 kV',status:'ON',current:'95A',load:'64%',area:'Champaran',source:'11 kV Bus',destination:'Champaran Town',length:'7 km',conductor:'Weasel ACSR',consumers:'1900',pf:'0.91',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Mixed load'},
+  {id:'F-04',code:'F-04',name:'Hightech',type:'11kv',voltage:'11 kV',status:'ON',current:'110A',load:'74%',area:'Hightech Zone',source:'11 kV Bus',destination:'Hightech Colony',length:'2 km',conductor:'Weasel ACSR',consumers:'1200',pf:'0.92',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Urban residential'},
+  {id:'F-05',code:'F-05',name:'New Town',type:'11kv',voltage:'11 kV',status:'ON',current:'100A',load:'68%',area:'New Town',source:'11 kV Bus',destination:'New Town Area',length:'3 km',conductor:'Weasel ACSR',consumers:'1450',pf:'0.90',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Urban residential'},
+  {id:'F-06',code:'F-06',name:'Rajim',type:'11kv',voltage:'11 kV',status:'ON',current:'120A',load:'81%',area:'Rajim Town',source:'11 kV Bus',destination:'Rajim Town',length:'5 km',conductor:'Dog ACSR',consumers:'3200',pf:'0.89',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'City feeder'},
+  {id:'F-07',code:'F-07',name:'Ganj Road',type:'11kv',voltage:'11 kV',status:'OFF',current:'0A',load:'0%',area:'Ganj Road',source:'11 kV Bus',destination:'Ganj Road',length:'4 km',conductor:'Rabbit ACSR',consumers:'980',pf:'—',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Tripped — relay operated'},
+  {id:'F-08',code:'F-08',name:'Nawapara',type:'11kv',voltage:'11 kV',status:'ON',current:'88A',load:'59%',area:'Nawapara',source:'11 kV Bus',destination:'Nawapara Town',length:'2.5 km',conductor:'Weasel ACSR',consumers:'1100',pf:'0.91',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Town feeder'},
+];
+const defaultTransformers = [
+  {id:'T1',name:'Transformer T1',rating:'5 MVA',voltage:'33/11 kV',vector:'Dyn11',cooling:'ONAN',make:'BHEL',status:'ON',load:'72%',oilLevel:'Normal',temp:'58°C',lastMaint:'15 Mar 2024'},
+  {id:'T2',name:'Transformer T2',rating:'5 MVA',voltage:'33/11 kV',vector:'Dyn11',cooling:'ONAN',make:'BHEL',status:'ON',load:'68%',oilLevel:'Normal',temp:'55°C',lastMaint:'15 Mar 2024'},
+];
+const defaultEquipment = [
+  {cat:'CB',id:'CB-01',name:'Incoming CB — Abhanpur',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-02',name:'Incoming CB — Paragaon',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-03',name:'Incoming CB — Ashram',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-04',name:'T1 HV CB',make:'Siemens',model:'3AH3',voltage:'33 kV',rating:'630A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-05',name:'T2 HV CB',make:'Siemens',model:'3AH3',voltage:'33 kV',rating:'630A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-06',name:'T1 LV CB',make:'L&T',model:'Unigear ZS1',voltage:'11 kV',rating:'800A',year:'2010',status:'Healthy'},
+  {cat:'CB',id:'CB-07',name:'T2 LV CB',make:'L&T',model:'Unigear ZS1',voltage:'11 kV',rating:'800A',year:'2010',status:'Faulty'},
+  {cat:'CT',id:'CT-01',name:'CT — Incoming Abhanpur',make:'BHEL',model:'EMU-33',voltage:'33 kV',rating:'400/1A',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-02',name:'CT — T1 HV',make:'BHEL',model:'EMU-33',voltage:'33 kV',rating:'200/1A',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-03',name:'CT — T1 LV',make:'BHEL',model:'EMU-11',voltage:'11 kV',rating:'800/1A',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-04',name:'CT — Bus PT',make:'BHEL',model:'EMU-11',voltage:'11 kV',rating:'600/1A',year:'2010',status:'Healthy'},
+  {cat:'PT',id:'PT-01',name:'PT — 33 kV Bus',make:'BHEL',model:'EPT-33',voltage:'33/√3 kV',rating:'50 VA',year:'2010',status:'Healthy'},
+  {cat:'PT',id:'PT-02',name:'PT — 11 kV Bus',make:'BHEL',model:'EPT-11',voltage:'11/√3 kV',rating:'50 VA',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-01',name:'LA — Incoming Abhanpur',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-02',name:'LA — Incoming Paragaon',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-03',name:'LA — Incoming Ashram',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-04',name:'LA — T1 HV',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
+  {cat:'LA',id:'LA-05',name:'LA — 11 kV Bus',make:'Elpro',model:'ZnO Polymer',voltage:'11 kV',rating:'12 kV',year:'2010',status:'Healthy'},
+];
+
+function getData(key,def){try{return JSON.parse(localStorage.getItem(key))||def;}catch(e){return def;}}
+function setData(key,val){localStorage.setItem(key,JSON.stringify(val));}
+let feeders = getData('feeders', defaultFeeders);
+let transformers = getData('transformers', defaultTransformers);
+let equipment = getData('equipment', defaultEquipment);
+
+// ============ LOGIN ============
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value.trim();
+  if(u==='admin'&&p==='admin123'){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('adminLayout').classList.add('show');
+    document.getElementById('adminUser').textContent='Admin';
+    sessionStorage.setItem('adminLoggedIn','1');
+    refreshAll();
+  } else {
+    document.getElementById('errorMsg').style.display='block';
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('adminLoggedIn');
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('adminLayout').classList.remove('show');
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+}
+if(sessionStorage.getItem('adminLoggedIn')){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('adminLayout').classList.add('show');
+  document.getElementById('adminUser').textContent='Admin';
+  refreshAll();
+}
+
+// ============ NAV ============
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.getElementById('topbarTitle').textContent = event.currentTarget.textContent.trim();
+  closeSidebar();
+  if(id==='feeders') renderFeedersTable();
+  if(id==='transformers') renderTxForms();
+  if(id==='equipment') renderEqTable();
+  if(id==='dashboard') refreshDashboard();
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+
+// ============ DASHBOARD ============
+function refreshDashboard(){
+  feeders=getData('feeders',defaultFeeders);
+  equipment=getData('equipment',defaultEquipment);
+  transformers=getData('transformers',defaultTransformers);
+  document.getElementById('adm-total').textContent=feeders.length;
+  document.getElementById('adm-on').textContent=feeders.filter(f=>f.status==='ON').length;
+  document.getElementById('adm-off').textContent=feeders.filter(f=>f.status==='OFF').length;
+  document.getElementById('adm-tx').textContent=transformers.length;
+  document.getElementById('adm-eq').textContent=equipment.length;
+  document.getElementById('adm-faulty').textContent=equipment.filter(e=>e.status!=='Healthy').length;
+}
+function refreshAll(){refreshDashboard();renderFeedersTable();renderTxForms();renderEqTable();}
+
+// ============ FEEDERS ============
+function renderFeedersTable(){
+  feeders=getData('feeders',defaultFeeders);
+  const tbody=document.getElementById('feedersTbody');
+  tbody.innerHTML=feeders.map(f=>`
+    <tr>
+      <td><strong>${f.code}</strong></td>
+      <td>${f.name}</td>
+      <td>${{incoming:'Incoming',  '33kv':'33kV Out','11kv':'11kV Out'}[f.type]||f.type}</td>
+      <td>${f.voltage}</td>
+      <td><span class="badge ${f.status==='ON'?'badge-success':'badge-danger'}">${f.status}</span></td>
+      <td>${f.current}</td>
+      <td>${f.load}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-sm btn-outline" onclick="openEditFeeder('${f.id}')">Edit</button>
+        <button class="btn btn-sm" style="background:#fee2e2;color:var(--danger);margin-left:4px" onclick="deleteFeeder('${f.id}')">Del</button>
+        <button class="btn btn-sm btn-outline" style="margin-left:4px" onclick="toggleFeederStatus('${f.id}')">${f.status==='ON'?'Trip':'Restore'}</button>
+      </td>
+    </tr>`).join('');
+}
+
+function openAddFeeder(){
+  document.getElementById('modalTitle').textContent='Add New Feeder';
+  document.getElementById('modalBody').innerHTML=feederForm(null);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function openEditFeeder(id){
+  const f=feeders.find(x=>x.id===id);
+  document.getElementById('modalTitle').textContent='Edit Feeder — '+f.code;
+  document.getElementById('modalBody').innerHTML=feederForm(f);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function feederForm(f){
+  const v=(k,d='')=>f?f[k]||'':d;
+  return `
+  <div class="form-row">
+    <div class="form-group"><label>Feeder Code</label><input id="f_code" value="${v('code')}" placeholder="F-01"></div>
+    <div class="form-group"><label>Feeder Name</label><input id="f_name" value="${v('name')}" placeholder="Pump"></div>
+    <div class="form-group"><label>Type</label><select id="f_type"><option value="incoming" ${v('type')==='incoming'?'selected':''}>Incoming</option><option value="33kv" ${v('type')==='33kv'?'selected':''}>33kV Outgoing</option><option value="11kv" ${v('type')==='11kv'?'selected':''}>11kV Outgoing</option></select></div>
+    <div class="form-group"><label>Voltage</label><input id="f_voltage" value="${v('voltage','11 kV')}" placeholder="11 kV"></div>
+    <div class="form-group"><label>Status</label><select id="f_status"><option value="ON" ${v('status')==='ON'?'selected':''}>ON</option><option value="OFF" ${v('status')==='OFF'?'selected':''}>OFF</option></select></div>
+    <div class="form-group"><label>Current</label><input id="f_current" value="${v('current','—')}" placeholder="100A"></div>
+    <div class="form-group"><label>Load</label><input id="f_load" value="${v('load','—')}" placeholder="65%"></div>
+    <div class="form-group"><label>Area</label><input id="f_area" value="${v('area')}" placeholder="Area name"></div>
+    <div class="form-group"><label>Source</label><input id="f_source" value="${v('source')}" placeholder="Source"></div>
+    <div class="form-group"><label>Destination</label><input id="f_dest" value="${v('destination')}" placeholder="Destination"></div>
+    <div class="form-group"><label>Length</label><input id="f_length" value="${v('length')}" placeholder="5 km"></div>
+    <div class="form-group"><label>Conductor</label><input id="f_conductor" value="${v('conductor')}" placeholder="Rabbit ACSR"></div>
+    <div class="form-group"><label>Consumers</label><input id="f_consumers" value="${v('consumers','—')}" placeholder="500"></div>
+    <div class="form-group"><label>Power Factor</label><input id="f_pf" value="${v('pf','—')}" placeholder="0.90"></div>
+    <div class="form-group"><label>CB Model</label><input id="f_cb" value="${v('cbModel')}" placeholder="ABB VCB"></div>
+    <div class="form-group"><label>CT Ratio</label><input id="f_ct" value="${v('ctRatio')}" placeholder="200/1"></div>
+    <div class="form-group"><label>PT Ratio</label><input id="f_pt" value="${v('ptRatio')}" placeholder="11000/110"></div>
+    <div class="form-group"><label>LA Rating</label><input id="f_la" value="${v('la')}" placeholder="12 kV"></div>
+    <div class="form-group form-full"><label>Remarks</label><textarea id="f_remarks" rows="2">${v('remarks')}</textarea></div>
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-primary" onclick="saveFeeder('${f?f.id:''}')">Save Feeder</button>
+    <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+  </div>`;
+}
+function saveFeeder(id){
+  const o={code:g('f_code'),name:g('f_name'),type:g('f_type'),voltage:g('f_voltage'),status:g('f_status'),current:g('f_current'),load:g('f_load'),area:g('f_area'),source:g('f_source'),destination:g('f_dest'),length:g('f_length'),conductor:g('f_conductor'),consumers:g('f_consumers'),pf:g('f_pf'),cbModel:g('f_cb'),ctRatio:g('f_ct'),ptRatio:g('f_pt'),la:g('f_la'),remarks:g('f_remarks')};
+  if(id){o.id=id; const i=feeders.findIndex(f=>f.id===id); feeders[i]=o;}
+  else {o.id='F-'+Date.now(); feeders.push(o);}
+  setData('feeders',feeders); renderFeedersTable(); refreshDashboard(); closeModal(); toast('Feeder saved!');
+}
+function deleteFeeder(id){
+  if(!confirm('Delete this feeder?')) return;
+  feeders=feeders.filter(f=>f.id!==id);
+  setData('feeders',feeders); renderFeedersTable(); refreshDashboard(); toast('Feeder deleted.');
+}
+function toggleFeederStatus(id){
+  const f=feeders.find(x=>x.id===id);
+  f.status=f.status==='ON'?'OFF':'ON';
+  if(f.status==='OFF'){f.current='0A';f.load='0%';}
+  setData('feeders',feeders); renderFeedersTable(); toast('Feeder status updated.');
+}
+
+// ============ TRANSFORMERS ============
+function renderTxForms(){
+  transformers=getData('transformers',defaultTransformers);
+  document.getElementById('txForms').innerHTML=transformers.map(t=>`
+    <div class="card" style="margin-bottom:16px">
+      <div style="font-size:15px;font-weight:700;margin-bottom:16px;color:var(--primary)">${t.name}</div>
+      <div class="form-row">
+        <div class="form-group"><label>Status</label><select id="tx_status_${t.id}"><option value="ON" ${t.status==='ON'?'selected':''}>ON</option><option value="OFF" ${t.status==='OFF'?'selected':''}>OFF</option></select></div>
+        <div class="form-group"><label>Load %</label><input id="tx_load_${t.id}" value="${t.load}" placeholder="72%"></div>
+        <div class="form-group"><label>Oil Level</label><select id="tx_oil_${t.id}"><option ${t.oilLevel==='Normal'?'selected':''}>Normal</option><option ${t.oilLevel==='Low'?'selected':''}>Low</option><option ${t.oilLevel==='Critical'?'selected':''}>Critical</option></select></div>
+        <div class="form-group"><label>Temperature (°C)</label><input id="tx_temp_${t.id}" value="${t.temp}" placeholder="55°C"></div>
+        <div class="form-group"><label>Last Maintenance</label><input id="tx_maint_${t.id}" value="${t.lastMaint}" placeholder="dd MMM yyyy"></div>
+        <div class="form-group"><label>Make</label><input id="tx_make_${t.id}" value="${t.make}" placeholder="BHEL"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveTx('${t.id}')">Save ${t.id}</button>
+    </div>`).join('');
+}
+function saveTx(id){
+  const t=transformers.find(x=>x.id===id);
+  t.status=document.getElementById('tx_status_'+id).value;
+  t.load=document.getElementById('tx_load_'+id).value;
+  t.oilLevel=document.getElementById('tx_oil_'+id).value;
+  t.temp=document.getElementById('tx_temp_'+id).value;
+  t.lastMaint=document.getElementById('tx_maint_'+id).value;
+  t.make=document.getElementById('tx_make_'+id).value;
+  setData('transformers',transformers); toast('Transformer '+id+' saved!');
+}
+
+// ============ EQUIPMENT ============
+function renderEqTable(){
+  equipment=getData('equipment',defaultEquipment);
+  document.getElementById('eqTbody').innerHTML=equipment.map(e=>`
+    <tr>
+      <td><strong>${e.id}</strong></td>
+      <td>${e.name}</td>
+      <td>${e.cat}</td>
+      <td>${e.make}</td>
+      <td>${e.model}</td>
+      <td>${e.voltage}</td>
+      <td><span class="badge ${e.status==='Healthy'?'badge-success':'badge-danger'}">${e.status}</span></td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-sm btn-outline" onclick="openEditEq('${e.id}')">Edit</button>
+        <button class="btn btn-sm" style="background:#fee2e2;color:var(--danger);margin-left:4px" onclick="deleteEq('${e.id}')">Del</button>
+      </td>
+    </tr>`).join('');
+}
+function openAddEquipment(){
+  document.getElementById('modalTitle').textContent='Add Equipment';
+  document.getElementById('modalBody').innerHTML=eqForm(null);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function openEditEq(id){
+  const e=equipment.find(x=>x.id===id);
+  document.getElementById('modalTitle').textContent='Edit — '+e.id;
+  document.getElementById('modalBody').innerHTML=eqForm(e);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function eqForm(e){
+  const v=(k,d='')=>e?e[k]||'':d;
+  return `<div class="form-row">
+    <div class="form-group"><label>ID</label><input id="eq_id" value="${v('id')}" placeholder="CB-08"></div>
+    <div class="form-group"><label>Category</label><select id="eq_cat"><option value="CB" ${v('cat')==='CB'?'selected':''}>Circuit Breaker</option><option value="CT" ${v('cat')==='CT'?'selected':''}>Current Transformer</option><option value="PT" ${v('cat')==='PT'?'selected':''}>Potential Transformer</option><option value="LA" ${v('cat')==='LA'?'selected':''}>Lightning Arrester</option></select></div>
+    <div class="form-group form-full"><label>Name</label><input id="eq_name" value="${v('name')}" placeholder="Equipment name"></div>
+    <div class="form-group"><label>Make</label><input id="eq_make" value="${v('make')}" placeholder="ABB"></div>
+    <div class="form-group"><label>Model</label><input id="eq_model" value="${v('model')}" placeholder="VD4 12"></div>
+    <div class="form-group"><label>Voltage</label><input id="eq_voltage" value="${v('voltage')}" placeholder="33 kV"></div>
+    <div class="form-group"><label>Rating</label><input id="eq_rating" value="${v('rating')}" placeholder="400A"></div>
+    <div class="form-group"><label>Year</label><input id="eq_year" value="${v('year','2010')}" placeholder="2010"></div>
+    <div class="form-group"><label>Status</label><select id="eq_status"><option value="Healthy" ${v('status')==='Healthy'?'selected':''}>Healthy</option><option value="Faulty" ${v('status')==='Faulty'?'selected':''}>Faulty</option><option value="Under Test" ${v('status')==='Under Test'?'selected':''}>Under Test</option></select></div>
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-primary" onclick="saveEq('${e?e.id:''}')">Save Equipment</button>
+    <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+  </div>`;
+}
+function saveEq(oldId){
+  const o={id:g('eq_id'),cat:g('eq_cat'),name:g('eq_name'),make:g('eq_make'),model:g('eq_model'),voltage:g('eq_voltage'),rating:g('eq_rating'),year:g('eq_year'),status:g('eq_status')};
+  if(oldId){const i=equipment.findIndex(e=>e.id===oldId);equipment[i]=o;}
+  else equipment.push(o);
+  setData('equipment',equipment); renderEqTable(); refreshDashboard(); closeModal(); toast('Equipment saved!');
+}
+function deleteEq(id){
+  if(!confirm('Delete this equipment?')) return;
+  equipment=equipment.filter(e=>e.id!==id);
+  setData('equipment',equipment); renderEqTable(); refreshDashboard(); toast('Equipment deleted.');
+}
+
+// ============ UTILS ============
+function g(id){const el=document.getElementById(id);return el?el.value:'';}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2800);}
+function resetAll(){
+  if(!confirm('Reset ALL data to factory defaults? This cannot be undone.')) return;
+  localStorage.removeItem('feeders'); localStorage.removeItem('transformers'); localStorage.removeItem('equipment');
+  feeders=defaultFeeders; transformers=defaultTransformers; equipment=defaultEquipment;
+  refreshAll(); toast('Data reset to defaults.');
+}
+function updateTime(){const n=new Date();document.getElementById('currentTime').textContent=n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+setInterval(updateTime,1000); updateTime();
+function openAddFeeder(){document.getElementById('modalTitle').textContent='Add New Feeder';document.getElementById('modalBody').innerHTML=feederForm(null);document.getElementById('modalOverlay').classList.add('open');}
+</script>
+</body>
+</html>
