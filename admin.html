@@ -6,112 +6,177 @@
 <title>Admin — Nawapara Rajim Substation</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  :root{--primary:#005BAC;--success:#16A34A;--warning:#D97706;--danger:#DC2626;--bg:#F5F7FA;--card:#FFFFFF;--sidebar:#0D1B2E;--text:#1E293B;--border:#E2E8F0;--sidebar-w:240px}
-  body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
+  :root{
+    --primary:#005BAC;--success:#16A34A;--warning:#D97706;--danger:#DC2626;
+    --bg:#F0F4F8;--card:#FFFFFF;--sidebar:#0D1B2E;--text:#1E293B;--border:#E2E8F0;
+    --sidebar-w:250px;--topbar-h:56px;
+  }
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-  /* LOGIN */
-  .login-page{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--sidebar)}
-  .login-box{background:var(--card);border-radius:10px;padding:36px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-  .login-logo{text-align:center;margin-bottom:24px}
-  .login-logo .icon{font-size:36px;margin-bottom:8px}
-  .login-logo h2{font-size:17px;font-weight:700;color:var(--text)}
-  .login-logo p{font-size:12px;color:#64748b;margin-top:2px}
+  /* ===== LOGIN ===== */
+  .login-page{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0D1B2E 0%,#1a3a6e 100%);padding:16px}
+  .login-box{background:var(--card);border-radius:14px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,.4)}
+  .login-logo{text-align:center;margin-bottom:28px}
+  .login-logo .icon{font-size:40px;margin-bottom:10px}
+  .login-logo h2{font-size:18px;font-weight:700;color:var(--text)}
+  .login-logo p{font-size:12px;color:#64748b;margin-top:3px}
   .form-group{margin-bottom:16px}
-  .form-group label{display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-  .form-group input{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;transition:.15s}
-  .form-group input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,91,172,.1)}
-  .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:.15s}
-  .btn-primary{background:var(--primary);color:#fff}
-  .btn-primary:hover{background:#0049a0}
-  .btn-success{background:var(--success);color:#fff}
-  .btn-danger{background:var(--danger);color:#fff}
-  .btn-sm{padding:6px 12px;font-size:12px}
-  .btn-outline{background:none;border:1px solid var(--border);color:var(--text)}
-  .btn-outline:hover{background:var(--bg)}
+  .form-group label{display:block;font-size:11px;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+  .form-group input,.form-group select,.form-group textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;transition:.15s;background:#fff;font-family:inherit}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,91,172,.1)}
+  .form-group textarea{resize:vertical;min-height:70px}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:.15s;font-family:inherit;text-decoration:none}
+  .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:#0049a0}
+  .btn-success{background:var(--success);color:#fff}.btn-success:hover{background:#15803d}
+  .btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{background:#b91c1c}
+  .btn-outline{background:none;border:1.5px solid var(--border);color:var(--text)}.btn-outline:hover{background:var(--bg)}
+  .btn-sm{padding:5px 12px;font-size:12px;border-radius:6px}
   .btn-block{width:100%;justify-content:center}
-  .error-msg{background:#fee2e2;color:var(--danger);padding:10px 14px;border-radius:6px;font-size:13px;margin-bottom:16px;display:none}
+  .error-msg{background:#fee2e2;color:var(--danger);padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none}
 
-  /* ADMIN LAYOUT */
-  .admin-layout{display:flex;min-height:100vh;display:none}
-  .admin-layout.show{display:flex}
-  .sidebar{width:var(--sidebar-w);background:var(--sidebar);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:.3s}
-  .sidebar-header{padding:20px 16px;border-bottom:1px solid #1e3a5f}
-  .sidebar-header .logo{font-size:13px;font-weight:700;color:#fff;line-height:1.4}
-  .sidebar-header .sub-logo{font-size:11px;color:#7a9cc0;margin-top:4px}
-  .sidebar nav{flex:1;padding:12px 0}
-  .nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;cursor:pointer;font-size:13.5px;color:#a8c0d8;transition:.15s;border-left:3px solid transparent}
+  /* ===== LAYOUT ===== */
+  .admin-layout{display:none;min-height:100vh}
+  .admin-layout.show{display:block}
+
+  /* ===== SIDEBAR ===== */
+  .sidebar{width:var(--sidebar-w);background:var(--sidebar);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:300;transition:left .28s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+  .sidebar-header{padding:20px 18px 16px;border-bottom:1px solid #1e3a5f;flex-shrink:0}
+  .sidebar-header .logo{font-size:13px;font-weight:700;color:#fff;line-height:1.5}
+  .sidebar-header .sub-logo{font-size:11px;color:#7a9cc0;margin-top:3px}
+  .sidebar nav{flex:1;padding:10px 0}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;cursor:pointer;font-size:13.5px;color:#a8c0d8;transition:.15s;border-left:3px solid transparent;user-select:none}
   .nav-item:hover{background:#1e3a5f;color:#fff}
   .nav-item.active{background:#1a3356;color:#fff;border-left-color:var(--primary)}
-  .nav-item.danger{color:#fca5a5}
-  .nav-item.danger:hover{background:#7f1d1d}
+  .nav-item.nav-danger{color:#fca5a5}.nav-item.nav-danger:hover{background:#7f1d1d;color:#fff}
+  .nav-footer{padding:14px 18px;font-size:11px;color:#4a6580;border-top:1px solid #1e3a5f;flex-shrink:0}
 
-  .main{margin-left:var(--sidebar-w);flex:1}
-  .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-  .topbar-title{font-size:15px;font-weight:600;color:var(--primary)}
-  .topbar-right{font-size:13px;color:#64748b;display:flex;align-items:center;gap:12px}
-  .hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text)}
-  .content{padding:24px}
+  /* ===== MAIN ===== */
+  .main{margin-left:var(--sidebar-w);display:flex;flex-direction:column;min-height:100vh}
+  .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;gap:12px}
+  .topbar-left{display:flex;align-items:center;gap:12px;min-width:0}
+  .topbar-title{font-size:15px;font-weight:700;color:var(--primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .topbar-right{display:flex;align-items:center;gap:10px;font-size:13px;color:#64748b;flex-shrink:0;flex-wrap:wrap}
+  .hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text);padding:4px;flex-shrink:0;line-height:1}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:250;transition:opacity .2s}
+  .sidebar-overlay.open{display:block}
+
+  /* ===== CONTENT ===== */
+  .content{padding:24px;flex:1}
   .section{display:none}
   .section.active{display:block}
-  .section-title{font-size:20px;font-weight:700;margin-bottom:6px}
-  .section-sub{font-size:13px;color:#64748b;margin-bottom:20px}
+  .section-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+  .section-title{font-size:20px;font-weight:700;margin-bottom:4px}
+  .section-sub{font-size:13px;color:#64748b}
 
-  /* CARDS */
-  .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px}
-  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px}
-  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px}
-  .stat-label{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-  .stat-value{font-size:28px;font-weight:700;color:var(--primary)}
-  .badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+  /* ===== CARDS ===== */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px}
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px}
+  .stat-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+  .stat-value{font-size:28px;font-weight:700;color:var(--primary);line-height:1.1}
+  .stat-info{font-size:11px;color:#94a3b8;margin-top:3px}
+  .badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
   .badge-success{background:#dcfce7;color:var(--success)}
   .badge-warning{background:#fef3c7;color:var(--warning)}
   .badge-danger{background:#fee2e2;color:var(--danger)}
   .badge-primary{background:#dbeafe;color:var(--primary)}
 
-  /* TABLE */
-  .table-wrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;font-size:13.5px}
-  th{background:#f8fafc;text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#64748b}
-  td{padding:10px 12px;border-bottom:1px solid var(--border)}
+  /* ===== TABLES ===== */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+  th{background:#f8fafc;text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#64748b;white-space:nowrap}
+  td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
   tr:hover td{background:#f8fafc}
-  
-  /* FORM */
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .actions-cell{white-space:nowrap;display:flex;gap:6px;flex-wrap:wrap}
+
+  /* ===== FORMS ===== */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form-full{grid-column:1/-1}
-  select{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;background:var(--card)}
-  select:focus{border-color:var(--primary)}
-  textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;resize:vertical}
-  textarea:focus{border-color:var(--primary)}
-  .form-actions{display:flex;gap:10px;margin-top:4px}
+  .form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 
-  /* MODAL */
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
+  /* ===== IMAGE UPLOAD ===== */
+  .img-upload-section{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px}
+  .img-upload-header{padding:14px 18px;background:#f8fafc;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .img-upload-header h3{font-size:14px;font-weight:700;color:var(--text)}
+  .img-upload-header p{font-size:12px;color:#64748b;margin-top:2px}
+  .img-upload-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0;padding:0}
+  .img-upload-item{padding:16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+  .img-upload-item:last-child{border-bottom:none}
+  .img-label{font-size:12px;font-weight:600;color:#374151}
+  .img-sublabel{font-size:11px;color:#64748b;margin-top:1px}
+  .img-preview-wrap{width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#f1f5f9;border:1.5px dashed var(--border);position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;cursor:pointer;transition:.15s}
+  .img-preview-wrap:hover{border-color:var(--primary);background:#eff6ff}
+  .img-preview-wrap img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .img-preview-wrap .upload-placeholder{text-align:center;color:#94a3b8;font-size:12px;pointer-events:none;position:relative;z-index:1}
+  .img-preview-wrap .upload-placeholder .upload-icon{font-size:28px;display:block;margin-bottom:4px}
+  .img-preview-wrap .img-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;gap:8px;z-index:2}
+  .img-preview-wrap:hover .img-overlay{display:flex}
+  .img-preview-wrap.has-img .upload-placeholder{display:none}
+  .img-file-input{display:none}
+  .img-status{font-size:11px;color:var(--success);font-weight:600;display:none}
+  .img-path-display{font-size:11px;color:#64748b;font-family:monospace;word-break:break-all;margin-top:2px;display:none}
+
+  /* ===== TABS ===== */
+  .tabs{display:flex;gap:2px;margin-bottom:18px;border-bottom:2px solid var(--border);overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab-btn{padding:9px 18px;border:none;background:none;cursor:pointer;font-size:13px;color:#64748b;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.12s;white-space:nowrap;font-family:inherit;font-weight:500}
+  .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:700}
+
+  /* ===== MODAL ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
   .modal-overlay.open{display:flex}
-  .modal{background:var(--card);border-radius:10px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto}
-  .modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-  .modal-title{font-size:16px;font-weight:700}
-  .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#64748b;line-height:1}
+  .modal{background:var(--card);border-radius:12px;width:100%;max-width:600px;margin:auto;max-height:calc(100vh - 32px);overflow-y:auto;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+  .modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:10;border-radius:12px 12px 0 0}
+  .modal-title{font-size:16px;font-weight:700;word-break:break-word;padding-right:8px}
+  .modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:#94a3b8;line-height:1;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:.1s}
+  .modal-close:hover{background:#f1f5f9;color:var(--text)}
   .modal-body{padding:20px}
-  
-  .success-toast{position:fixed;bottom:24px;right:24px;background:var(--success);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,.2)}
 
-  /* Sidebar overlay (mobile) */
-  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+  /* ===== TOAST ===== */
+  .toast{position:fixed;bottom:24px;right:24px;background:#1E293B;color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;display:none;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(0);transition:.3s;max-width:320px}
+  .toast.success{background:var(--success)}
+  .toast.danger{background:var(--danger)}
+  .toast.show{display:flex;align-items:center;gap:8px}
 
+  /* ===== QUICK ACTIONS ===== */
+  .quick-actions{display:flex;flex-direction:column;gap:8px}
+  .dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:900px){
+    .dashboard-grid{grid-template-columns:1fr}
+    .img-upload-grid{grid-template-columns:1fr 1fr}
+  }
   @media(max-width:768px){
     .sidebar{left:calc(-1 * var(--sidebar-w))}
-    .sidebar.open{left:0}
-    .sidebar-overlay.open{display:block}
+    .sidebar.open{left:0;box-shadow:4px 0 24px rgba(0,0,0,.3)}
     .main{margin-left:0}
     .hamburger{display:block}
-    .form-row{grid-template-columns:1fr}
-    .content{padding:16px}
+    .topbar{padding:0 16px}
+    .content{padding:14px}
+    .cards-grid{grid-template-columns:repeat(2,1fr)}
+    .form-grid{grid-template-columns:1fr}
+    .modal{margin:6px;max-height:calc(100vh - 12px)}
+    .modal-overlay{padding:6px}
+    .dashboard-grid{grid-template-columns:1fr}
+    .img-upload-grid{grid-template-columns:1fr 1fr}
+    .section-title{font-size:17px}
+    .stat-value{font-size:22px}
+  }
+  @media(max-width:480px){
+    .cards-grid{grid-template-columns:repeat(2,1fr)}
+    .img-upload-grid{grid-template-columns:1fr}
+    .form-actions{flex-direction:column}
+    .form-actions .btn{width:100%;justify-content:center}
+    .topbar-right .topbar-time{display:none}
+    .topbar-right .portal-link{display:none}
   }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ===== LOGIN ===== -->
 <div class="login-page" id="loginPage">
   <div class="login-box">
     <div class="login-logo">
@@ -122,89 +187,95 @@
     <div class="error-msg" id="errorMsg">Invalid username or password.</div>
     <div class="form-group"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <button class="btn btn-primary btn-block" onclick="doLogin()">Login to Admin Panel</button>
-    <div style="margin-top:16px;text-align:center"><a href="index.html" style="font-size:12px;color:#64748b">← Back to User Portal</a></div>
+    <button class="btn btn-primary btn-block" onclick="doLogin()" style="margin-top:4px">Login to Admin Panel</button>
+    <div style="margin-top:16px;text-align:center"><a href="index.html" style="font-size:12px;color:#64748b;text-decoration:none">← Back to User Portal</a></div>
   </div>
 </div>
 
-<!-- ADMIN LAYOUT -->
+<!-- ===== ADMIN LAYOUT ===== -->
 <div class="admin-layout" id="adminLayout">
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="logo">⚡ ADMIN PANEL</div>
       <div class="sub-logo">Nawapara Rajim Substation</div>
     </div>
     <nav>
-      <div class="nav-item active" onclick="showSection('dashboard')"><span>▦</span> Dashboard</div>
-      <div class="nav-item" onclick="showSection('feeders')"><span>⇌</span> Manage Feeders</div>
-      <div class="nav-item" onclick="showSection('transformers')"><span>◎</span> Manage Transformers</div>
-      <div class="nav-item" onclick="showSection('equipment')"><span>⚙</span> Manage Equipment</div>
-      <div class="nav-item" onclick="showSection('gallery')"><span>▣</span> Manage Gallery</div>
-      <div class="nav-item" onclick="showSection('reports')"><span>📋</span> Reports</div>
-      <div class="nav-item danger" onclick="doLogout()"><span>⎋</span> Logout</div>
+      <div class="nav-item active" data-section="dashboard"><span>▦</span> Dashboard</div>
+      <div class="nav-item" data-section="feeders"><span>⇌</span> Manage Feeders</div>
+      <div class="nav-item" data-section="transformers"><span>◎</span> Manage Transformers</div>
+      <div class="nav-item" data-section="equipment"><span>⚙</span> Manage Equipment</div>
+      <div class="nav-item" data-section="images"><span>🖼️</span> Manage Images</div>
+      <div class="nav-item" data-section="reports"><span>📋</span> Reports</div>
+      <div class="nav-item nav-danger" id="logoutBtn"><span>⎋</span> Logout</div>
     </nav>
+    <div class="nav-footer">CSPDCL · Rajim Division</div>
   </aside>
 
   <div class="main">
     <header class="topbar">
-      <div style="display:flex;align-items:center;gap:12px">
+      <div class="topbar-left">
         <button class="hamburger" onclick="toggleSidebar()">☰</button>
         <div class="topbar-title" id="topbarTitle">Admin Dashboard</div>
       </div>
       <div class="topbar-right">
-        <span id="adminUser" style="font-weight:600;color:var(--primary)"></span>
-        <span id="currentTime"></span>
-        <a href="index.html" target="_blank" style="font-size:12px;color:var(--primary);text-decoration:none">View Portal →</a>
+        <span style="font-weight:700;color:var(--primary)" id="adminUser">Admin</span>
+        <span class="topbar-time" id="currentTime"></span>
+        <a href="index.html" target="_blank" class="portal-link btn btn-sm btn-outline" style="font-size:12px">Portal ↗</a>
       </div>
     </header>
 
     <div class="content">
 
-      <!-- DASHBOARD -->
+      <!-- ===== DASHBOARD ===== -->
       <div class="section active" id="sec-dashboard">
         <div class="section-title">Admin Dashboard</div>
-        <div class="section-sub">System overview and quick stats</div>
+        <div class="section-sub" style="margin-bottom:18px">System overview and quick actions</div>
         <div class="cards-grid">
-          <div class="stat-card"><div class="stat-label">Total Feeders</div><div class="stat-value" id="adm-total">—</div></div>
-          <div class="stat-card"><div class="stat-label">Active Feeders</div><div class="stat-value" style="color:var(--success)" id="adm-on">—</div></div>
-          <div class="stat-card"><div class="stat-label">Tripped/Off</div><div class="stat-value" style="color:var(--danger)" id="adm-off">—</div></div>
-          <div class="stat-card"><div class="stat-label">Transformers</div><div class="stat-value" id="adm-tx">—</div></div>
-          <div class="stat-card"><div class="stat-label">Equipment</div><div class="stat-value" id="adm-eq">—</div></div>
-          <div class="stat-card"><div class="stat-label">Faulty Equipment</div><div class="stat-value" style="color:var(--danger)" id="adm-faulty">—</div></div>
+          <div class="stat-card"><div class="stat-label">Total Feeders</div><div class="stat-value" id="adm-total">—</div><div class="stat-info">Incoming + Outgoing</div></div>
+          <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value" style="color:var(--success)" id="adm-on">—</div><div class="stat-info">Status ON</div></div>
+          <div class="stat-card"><div class="stat-label">Tripped/Off</div><div class="stat-value" style="color:var(--danger)" id="adm-off">—</div><div class="stat-info">Status OFF</div></div>
+          <div class="stat-card"><div class="stat-label">Transformers</div><div class="stat-value" id="adm-tx">—</div><div class="stat-info">Power TXs</div></div>
+          <div class="stat-card"><div class="stat-label">Equipment</div><div class="stat-value" id="adm-eq">—</div><div class="stat-info">CB, CT, PT, LA</div></div>
+          <div class="stat-card"><div class="stat-label">Faulty</div><div class="stat-value" style="color:var(--danger)" id="adm-faulty">—</div><div class="stat-info">Equipment</div></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" class="card" style="padding:0">
+        <div class="dashboard-grid">
           <div class="card">
-            <div style="font-size:14px;font-weight:700;margin-bottom:12px">Quick Actions</div>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <button class="btn btn-primary" onclick="showSection('feeders');openAddFeeder()">+ Add Feeder</button>
-              <button class="btn btn-outline" onclick="showSection('transformers')">Manage Transformers</button>
-              <button class="btn btn-outline" onclick="showSection('equipment')">Manage Equipment</button>
-              <button class="btn btn-outline" style="color:var(--danger);border-color:var(--danger)" onclick="resetAll()">⚠ Reset All Data to Default</button>
+            <div style="font-size:14px;font-weight:700;margin-bottom:14px;color:var(--primary)">Quick Actions</div>
+            <div class="quick-actions">
+              <button class="btn btn-primary" onclick="navTo('feeders');openAddFeeder()">＋ Add Feeder</button>
+              <button class="btn btn-outline" onclick="navTo('transformers')">◎ Manage Transformers</button>
+              <button class="btn btn-outline" onclick="navTo('equipment')">⚙ Manage Equipment</button>
+              <button class="btn btn-outline" onclick="navTo('images')">🖼️ Manage Images</button>
+              <button class="btn btn-sm" style="background:#fee2e2;color:var(--danger);border:1.5px solid #fecaca;width:100%;justify-content:center;display:flex;align-items:center;gap:6px;font-weight:700;padding:10px 18px;border-radius:8px;cursor:pointer;font-family:inherit" onclick="resetAll()">⚠ Reset All Data to Default</button>
             </div>
           </div>
           <div class="card">
-            <div style="font-size:14px;font-weight:700;margin-bottom:12px">System Info</div>
-            <table style="font-size:13px">
-              <tr><td style="color:#64748b;padding:4px 0">Substation</td><td style="font-weight:600;padding:4px 8px">Nawapara Rajim 33/11 kV</td></tr>
-              <tr><td style="color:#64748b;padding:4px 0">Utility</td><td style="font-weight:600;padding:4px 8px">CSPDCL</td></tr>
-              <tr><td style="color:#64748b;padding:4px 0">Division</td><td style="font-weight:600;padding:4px 8px">Rajim Division</td></tr>
-              <tr><td style="color:#64748b;padding:4px 0">Capacity</td><td style="font-weight:600;padding:4px 8px">2 × 5 MVA</td></tr>
-              <tr><td style="color:#64748b;padding:4px 0">Data Store</td><td style="font-weight:600;padding:4px 8px">LocalStorage</td></tr>
+            <div style="font-size:14px;font-weight:700;margin-bottom:14px;color:var(--primary)">System Info</div>
+            <table style="min-width:unset;font-size:13px">
+              <tr><td style="color:#64748b;padding:5px 0;border:none">Substation</td><td style="font-weight:600;padding:5px 8px;border:none">Nawapara Rajim 33/11 kV</td></tr>
+              <tr><td style="color:#64748b;padding:5px 0;border:none">Utility</td><td style="font-weight:600;padding:5px 8px;border:none">CSPDCL</td></tr>
+              <tr><td style="color:#64748b;padding:5px 0;border:none">Division</td><td style="font-weight:600;padding:5px 8px;border:none">Rajim Division</td></tr>
+              <tr><td style="color:#64748b;padding:5px 0;border:none">Capacity</td><td style="font-weight:600;padding:5px 8px;border:none">2 × 5 MVA</td></tr>
+              <tr><td style="color:#64748b;padding:5px 0;border:none">Data Store</td><td style="font-weight:600;padding:5px 8px;border:none">IndexedDB / LocalStorage</td></tr>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- FEEDERS -->
+      <!-- ===== FEEDERS ===== -->
       <div class="section" id="sec-feeders">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px">
-          <div><div class="section-title">Manage Feeders</div><div class="section-sub" style="margin:0">Add, edit, delete feeder records</div></div>
-          <button class="btn btn-primary" onclick="openAddFeeder()">+ Add Feeder</button>
+        <div class="section-header">
+          <div>
+            <div class="section-title">Manage Feeders</div>
+            <div class="section-sub">Add, edit, delete feeder records</div>
+          </div>
+          <button class="btn btn-primary" onclick="openAddFeeder()">＋ Add Feeder</button>
         </div>
-        <div class="card" style="padding:0">
+        <div class="card" style="padding:0;overflow:hidden">
           <div class="table-wrap">
-            <table id="feedersTable">
+            <table>
               <thead><tr><th>Code</th><th>Name</th><th>Type</th><th>Voltage</th><th>Status</th><th>Current</th><th>Load</th><th>Actions</th></tr></thead>
               <tbody id="feedersTbody"></tbody>
             </table>
@@ -212,20 +283,23 @@
         </div>
       </div>
 
-      <!-- TRANSFORMERS -->
+      <!-- ===== TRANSFORMERS ===== -->
       <div class="section" id="sec-transformers">
         <div class="section-title">Manage Transformers</div>
-        <div class="section-sub">Edit transformer details and status</div>
+        <div class="section-sub" style="margin-bottom:18px">Edit transformer details and status</div>
         <div id="txForms"></div>
       </div>
 
-      <!-- EQUIPMENT -->
+      <!-- ===== EQUIPMENT ===== -->
       <div class="section" id="sec-equipment">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px">
-          <div><div class="section-title">Manage Equipment</div><div class="section-sub" style="margin:0">Circuit Breakers, CTs, PTs, Lightning Arresters</div></div>
-          <button class="btn btn-primary" onclick="openAddEquipment()">+ Add Equipment</button>
+        <div class="section-header">
+          <div>
+            <div class="section-title">Manage Equipment</div>
+            <div class="section-sub">Circuit Breakers, CTs, PTs, Lightning Arresters</div>
+          </div>
+          <button class="btn btn-primary" onclick="openAddEquipment()">＋ Add Equipment</button>
         </div>
-        <div class="card" style="padding:0">
+        <div class="card" style="padding:0;overflow:hidden">
           <div class="table-wrap">
             <table>
               <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Make</th><th>Model</th><th>Voltage</th><th>Status</th><th>Actions</th></tr></thead>
@@ -235,35 +309,87 @@
         </div>
       </div>
 
-      <!-- GALLERY -->
-      <div class="section" id="sec-gallery">
-        <div class="section-title">Manage Gallery</div>
-        <div class="section-sub">Update image paths for gallery display</div>
-        <div class="card">
-          <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--primary)">Image Path Settings</div>
-          <p style="font-size:13px;color:#64748b;margin-bottom:16px">Update the relative paths for images used in the portal. Images must be placed in the respective folders.</p>
-          <div style="display:grid;gap:12px">
-            ${['images/substation.jpg','images/substation-overview.jpg','images/gallery/1.jpg','images/gallery/2.jpg','images/gallery/3.jpg','images/gallery/4.jpg','images/gallery/5.jpg','images/gallery/6.jpg','images/feeders/F-01.jpg','images/transformers/T1.jpg','images/equipment/CB.jpg'].map(p=>`
-            <div class="form-group" style="margin:0">
-              <label>${p}</label>
-              <input type="text" placeholder="${p}" value="${p}" style="font-size:12px;font-family:monospace">
-            </div>`).join('')}
+      <!-- ===== IMAGES ===== -->
+      <div class="section" id="sec-images">
+        <div class="section-title">Manage Images</div>
+        <div class="section-sub" style="margin-bottom:18px">Upload photos for substation portal — images are stored locally in browser</div>
+
+        <!-- Hero Images -->
+        <div class="img-upload-section">
+          <div class="img-upload-header">
+            <div>
+              <h3>🏭 Hero / Overview Images</h3>
+              <p>Main dashboard and About page hero banners</p>
+            </div>
           </div>
-          <div class="form-actions" style="margin-top:16px">
-            <button class="btn btn-primary" onclick="toast('Image paths noted — place actual image files in the corresponding folders.')">Save Paths</button>
+          <div class="img-upload-grid" id="heroImagesGrid"></div>
+        </div>
+
+        <!-- Gallery Images -->
+        <div class="img-upload-section">
+          <div class="img-upload-header">
+            <div>
+              <h3>📷 Gallery Photos</h3>
+              <p>Public gallery — switchyard, control room, equipment photos</p>
+            </div>
           </div>
+          <div class="img-upload-grid" id="galleryImagesGrid"></div>
+        </div>
+
+        <!-- Feeder Images -->
+        <div class="img-upload-section">
+          <div class="img-upload-header">
+            <div>
+              <h3>⇌ Feeder Images</h3>
+              <p>One image per feeder card</p>
+            </div>
+            <button class="btn btn-sm btn-outline" onclick="renderFeederImages()">↻ Refresh</button>
+          </div>
+          <div class="img-upload-grid" id="feederImagesGrid"></div>
+        </div>
+
+        <!-- Transformer Images -->
+        <div class="img-upload-section">
+          <div class="img-upload-header">
+            <div>
+              <h3>◎ Transformer Images</h3>
+              <p>T1 and T2 transformer photos</p>
+            </div>
+          </div>
+          <div class="img-upload-grid" id="txImagesGrid"></div>
+        </div>
+
+        <!-- Equipment Images -->
+        <div class="img-upload-section">
+          <div class="img-upload-header">
+            <div>
+              <h3>⚙ Equipment Images</h3>
+              <p>Category-level images for CB, CT, PT, LA</p>
+            </div>
+          </div>
+          <div class="img-upload-grid" id="eqImagesGrid"></div>
+        </div>
+
+        <div class="card" style="background:#fffbeb;border-color:#fde68a;margin-top:16px">
+          <p style="font-size:13px;color:#92400e;line-height:1.7">
+            <strong>📌 Storage Info:</strong> Images are stored as Base64 in IndexedDB (browser local storage). They persist across sessions but are tied to this browser/device. For production deployment, move images to <code>images/</code> subfolder and serve via web server — the portal auto-reads from <code>images/feeders/F-01.jpg</code>, <code>images/transformers/T1.jpg</code> etc.
+          </p>
         </div>
       </div>
 
-      <!-- REPORTS -->
+      <!-- ===== REPORTS ===== -->
       <div class="section" id="sec-reports">
         <div class="section-title">Reports</div>
-        <div class="section-sub">Generate and export substation reports</div>
+        <div class="section-sub" style="margin-bottom:18px">Generate and export substation reports</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px">
-          ${[['Daily Load Report','📅','24-hr load data'],['Outage Report','⚠️','Trip & interruption log'],['Maintenance Report','🔧','Maintenance records'],['Monthly Report','📊','Monthly energy summary'],['Trip History','⚡','CB trip events'],['Equipment Test','🧪','Oil BDV, IR, CT/PT']].map(([t,i,d])=>`
-          <div class="card" style="cursor:pointer;display:flex;gap:14px;align-items:flex-start" onclick="toast('Report generation: ${t} — feature available in full deployment.')">
-            <div style="width:40px;height:40px;background:#dbeafe;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${i}</div>
-            <div><div style="font-size:14px;font-weight:700;margin-bottom:4px">${t}</div><div style="font-size:12px;color:#64748b">${d}</div><button class="btn btn-sm btn-primary" style="margin-top:10px">Generate</button></div>
+          ${[['Daily Load Report','📅','24-hr load data'],['Outage Report','⚠️','Trip & interruption log'],['Maintenance Report','🔧','Maintenance records'],['Monthly Report','📊','Monthly energy summary'],['Trip History','⚡','CB trip events'],['Equipment Test','🧪','Oil BDV, IR, CT/PT calibration']].map(([t,i,d])=>`
+          <div class="card" style="cursor:pointer;display:flex;gap:14px;align-items:flex-start" onclick="toast('${t} — report generation available in full deployment.','success')">
+            <div style="width:42px;height:42px;background:#dbeafe;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${i}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14px;font-weight:700;margin-bottom:4px">${t}</div>
+              <div style="font-size:12px;color:#64748b;margin-bottom:10px">${d}</div>
+              <button class="btn btn-sm btn-primary">Generate</button>
+            </div>
           </div>`).join('')}
         </div>
       </div>
@@ -272,7 +398,7 @@
   </div><!-- main -->
 </div><!-- admin layout -->
 
-<!-- MODAL -->
+<!-- ===== MODAL ===== -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-header">
@@ -283,11 +409,12 @@
   </div>
 </div>
 
-<div class="success-toast" id="toast"></div>
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
 
 <script>
-// ============ DATA ============
-const defaultFeeders = [
+// ========== DEFAULT DATA ==========
+const defaultFeeders=[
   {id:'I-ABH',code:'I.ABHANPUR',name:'Abhanpur Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'280A',load:'65%',area:'Abhanpur GSS',source:'Abhanpur 132/33 kV GSS',destination:'33 kV Bus',length:'18 km',conductor:'Panther ACSR',consumers:'—',pf:'0.92',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Primary source'},
   {id:'I-PAR',code:'I.PARAGAON',name:'Paragaon Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'210A',load:'48%',area:'Paragaon GSS',source:'Paragaon 132/33 kV GSS',destination:'33 kV Bus',length:'22 km',conductor:'Panther ACSR',consumers:'—',pf:'0.91',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Alternate source'},
   {id:'I-ASH',code:'I.ASHRAM',name:'Ashram Incoming',type:'incoming',voltage:'33 kV',status:'OFF',current:'0A',load:'0%',area:'Ashram GSS',source:'Ashram 132/33 kV GSS',destination:'33 kV Bus',length:'14 km',conductor:'Panther ACSR',consumers:'—',pf:'—',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Standby source'},
@@ -305,11 +432,11 @@ const defaultFeeders = [
   {id:'F-07',code:'F-07',name:'Ganj Road',type:'11kv',voltage:'11 kV',status:'OFF',current:'0A',load:'0%',area:'Ganj Road',source:'11 kV Bus',destination:'Ganj Road',length:'4 km',conductor:'Rabbit ACSR',consumers:'980',pf:'—',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Tripped — relay operated'},
   {id:'F-08',code:'F-08',name:'Nawapara',type:'11kv',voltage:'11 kV',status:'ON',current:'88A',load:'59%',area:'Nawapara',source:'11 kV Bus',destination:'Nawapara Town',length:'2.5 km',conductor:'Weasel ACSR',consumers:'1100',pf:'0.91',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Town feeder'},
 ];
-const defaultTransformers = [
+const defaultTransformers=[
   {id:'T1',name:'Transformer T1',rating:'5 MVA',voltage:'33/11 kV',vector:'Dyn11',cooling:'ONAN',make:'BHEL',status:'ON',load:'72%',oilLevel:'Normal',temp:'58°C',lastMaint:'15 Mar 2024'},
   {id:'T2',name:'Transformer T2',rating:'5 MVA',voltage:'33/11 kV',vector:'Dyn11',cooling:'ONAN',make:'BHEL',status:'ON',load:'68%',oilLevel:'Normal',temp:'55°C',lastMaint:'15 Mar 2024'},
 ];
-const defaultEquipment = [
+const defaultEquipment=[
   {cat:'CB',id:'CB-01',name:'Incoming CB — Abhanpur',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
   {cat:'CB',id:'CB-02',name:'Incoming CB — Paragaon',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
   {cat:'CB',id:'CB-03',name:'Incoming CB — Ashram',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
@@ -330,24 +457,36 @@ const defaultEquipment = [
   {cat:'LA',id:'LA-05',name:'LA — 11 kV Bus',make:'Elpro',model:'ZnO Polymer',voltage:'11 kV',rating:'12 kV',year:'2010',status:'Healthy'},
 ];
 
-function getData(key,def){try{return JSON.parse(localStorage.getItem(key))||def;}catch(e){return def;}}
-function setData(key,val){localStorage.setItem(key,JSON.stringify(val));}
-let feeders = getData('feeders', defaultFeeders);
-let transformers = getData('transformers', defaultTransformers);
-let equipment = getData('equipment', defaultEquipment);
+// ========== LS HELPERS ==========
+function getData(k,d){try{return JSON.parse(localStorage.getItem(k))||d;}catch(e){return d;}}
+function setData(k,v){localStorage.setItem(k,JSON.stringify(v));}
+function getImg(k){return localStorage.getItem('img_'+k)||null;}
+function setImg(k,v){
+  try{localStorage.setItem('img_'+k,v);}
+  catch(e){
+    // If localStorage full, try removing old images first
+    toast('Storage full — try clearing old images or use smaller photos.','danger');
+  }
+}
+function removeImg(k){localStorage.removeItem('img_'+k);}
 
-// ============ LOGIN ============
+let feeders=getData('feeders',defaultFeeders);
+let transformers=getData('transformers',defaultTransformers);
+let equipment=getData('equipment',defaultEquipment);
+
+// ========== LOGIN ==========
 function doLogin(){
   const u=document.getElementById('loginUser').value.trim();
   const p=document.getElementById('loginPass').value.trim();
   if(u==='admin'&&p==='admin123'){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('adminLayout').classList.add('show');
-    document.getElementById('adminUser').textContent='Admin';
     sessionStorage.setItem('adminLoggedIn','1');
     refreshAll();
+    initImageSections();
   } else {
     document.getElementById('errorMsg').style.display='block';
+    document.getElementById('loginPass').value='';
   }
 }
 function doLogout(){
@@ -357,30 +496,39 @@ function doLogout(){
   document.getElementById('loginUser').value='';
   document.getElementById('loginPass').value='';
 }
+document.getElementById('logoutBtn').onclick=doLogout;
+
 if(sessionStorage.getItem('adminLoggedIn')){
   document.getElementById('loginPage').style.display='none';
   document.getElementById('adminLayout').classList.add('show');
-  document.getElementById('adminUser').textContent='Admin';
   refreshAll();
+  initImageSections();
 }
 
-// ============ NAV ============
-function showSection(id){
+// ========== NAV ==========
+document.querySelectorAll('.nav-item[data-section]').forEach(el=>{
+  el.addEventListener('click',function(){
+    navTo(this.dataset.section);
+  });
+});
+
+function navTo(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.nav-item[data-section]').forEach(n=>n.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
-  event.currentTarget.classList.add('active');
-  document.getElementById('topbarTitle').textContent = event.currentTarget.textContent.trim();
+  const navEl=document.querySelector('.nav-item[data-section="'+id+'"]');
+  if(navEl){navEl.classList.add('active');document.getElementById('topbarTitle').textContent=navEl.textContent.trim();}
   closeSidebar();
   if(id==='feeders') renderFeedersTable();
   if(id==='transformers') renderTxForms();
   if(id==='equipment') renderEqTable();
   if(id==='dashboard') refreshDashboard();
+  if(id==='images'){renderFeederImages();renderTxImages();renderEqImages();}
 }
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
 
-// ============ DASHBOARD ============
+// ========== DASHBOARD ==========
 function refreshDashboard(){
   feeders=getData('feeders',defaultFeeders);
   equipment=getData('equipment',defaultEquipment);
@@ -394,27 +542,26 @@ function refreshDashboard(){
 }
 function refreshAll(){refreshDashboard();renderFeedersTable();renderTxForms();renderEqTable();}
 
-// ============ FEEDERS ============
+// ========== FEEDERS ==========
 function renderFeedersTable(){
   feeders=getData('feeders',defaultFeeders);
-  const tbody=document.getElementById('feedersTbody');
-  tbody.innerHTML=feeders.map(f=>`
+  const typeLabel={incoming:'Incoming','33kv':'33kV Out','11kv':'11kV Out'};
+  document.getElementById('feedersTbody').innerHTML=feeders.map(f=>`
     <tr>
       <td><strong>${f.code}</strong></td>
       <td>${f.name}</td>
-      <td>${{incoming:'Incoming',  '33kv':'33kV Out','11kv':'11kV Out'}[f.type]||f.type}</td>
+      <td><span class="badge badge-primary">${typeLabel[f.type]||f.type}</span></td>
       <td>${f.voltage}</td>
       <td><span class="badge ${f.status==='ON'?'badge-success':'badge-danger'}">${f.status}</span></td>
       <td>${f.current}</td>
       <td>${f.load}</td>
-      <td style="white-space:nowrap">
+      <td><div class="actions-cell">
         <button class="btn btn-sm btn-outline" onclick="openEditFeeder('${f.id}')">Edit</button>
-        <button class="btn btn-sm" style="background:#fee2e2;color:var(--danger);margin-left:4px" onclick="deleteFeeder('${f.id}')">Del</button>
-        <button class="btn btn-sm btn-outline" style="margin-left:4px" onclick="toggleFeederStatus('${f.id}')">${f.status==='ON'?'Trip':'Restore'}</button>
-      </td>
+        <button class="btn btn-sm" style="background:#fee2e2;color:var(--danger);border:none;cursor:pointer;font-family:inherit;font-weight:600;border-radius:6px;padding:5px 12px" onclick="deleteFeeder('${f.id}')">Del</button>
+        <button class="btn btn-sm btn-outline" onclick="toggleFeederStatus('${f.id}')">${f.status==='ON'?'Trip':'Restore'}</button>
+      </div></td>
     </tr>`).join('');
 }
-
 function openAddFeeder(){
   document.getElementById('modalTitle').textContent='Add New Feeder';
   document.getElementById('modalBody').innerHTML=feederForm(null);
@@ -422,19 +569,26 @@ function openAddFeeder(){
 }
 function openEditFeeder(id){
   const f=feeders.find(x=>x.id===id);
+  if(!f) return;
   document.getElementById('modalTitle').textContent='Edit Feeder — '+f.code;
   document.getElementById('modalBody').innerHTML=feederForm(f);
   document.getElementById('modalOverlay').classList.add('open');
 }
 function feederForm(f){
-  const v=(k,d='')=>f?f[k]||'':d;
-  return `
-  <div class="form-row">
+  const v=(k,d='')=>f?f[k]||d:d;
+  return `<div class="form-grid">
     <div class="form-group"><label>Feeder Code</label><input id="f_code" value="${v('code')}" placeholder="F-01"></div>
     <div class="form-group"><label>Feeder Name</label><input id="f_name" value="${v('name')}" placeholder="Pump"></div>
-    <div class="form-group"><label>Type</label><select id="f_type"><option value="incoming" ${v('type')==='incoming'?'selected':''}>Incoming</option><option value="33kv" ${v('type')==='33kv'?'selected':''}>33kV Outgoing</option><option value="11kv" ${v('type')==='11kv'?'selected':''}>11kV Outgoing</option></select></div>
+    <div class="form-group"><label>Type</label><select id="f_type">
+      <option value="incoming" ${v('type')==='incoming'?'selected':''}>Incoming</option>
+      <option value="33kv" ${v('type')==='33kv'?'selected':''}>33kV Outgoing</option>
+      <option value="11kv" ${v('type')==='11kv'?'selected':''}>11kV Outgoing</option>
+    </select></div>
     <div class="form-group"><label>Voltage</label><input id="f_voltage" value="${v('voltage','11 kV')}" placeholder="11 kV"></div>
-    <div class="form-group"><label>Status</label><select id="f_status"><option value="ON" ${v('status')==='ON'?'selected':''}>ON</option><option value="OFF" ${v('status')==='OFF'?'selected':''}>OFF</option></select></div>
+    <div class="form-group"><label>Status</label><select id="f_status">
+      <option value="ON" ${v('status')==='ON'?'selected':''}>ON</option>
+      <option value="OFF" ${v('status')==='OFF'?'selected':''}>OFF</option>
+    </select></div>
     <div class="form-group"><label>Current</label><input id="f_current" value="${v('current','—')}" placeholder="100A"></div>
     <div class="form-group"><label>Load</label><input id="f_load" value="${v('load','—')}" placeholder="65%"></div>
     <div class="form-group"><label>Area</label><input id="f_area" value="${v('area')}" placeholder="Area name"></div>
@@ -448,46 +602,53 @@ function feederForm(f){
     <div class="form-group"><label>CT Ratio</label><input id="f_ct" value="${v('ctRatio')}" placeholder="200/1"></div>
     <div class="form-group"><label>PT Ratio</label><input id="f_pt" value="${v('ptRatio')}" placeholder="11000/110"></div>
     <div class="form-group"><label>LA Rating</label><input id="f_la" value="${v('la')}" placeholder="12 kV"></div>
-    <div class="form-group form-full"><label>Remarks</label><textarea id="f_remarks" rows="2">${v('remarks')}</textarea></div>
+    <div class="form-group form-full"><label>Remarks</label><textarea id="f_remarks">${v('remarks')}</textarea></div>
   </div>
   <div class="form-actions">
-    <button class="btn btn-primary" onclick="saveFeeder('${f?f.id:''}')">Save Feeder</button>
+    <button class="btn btn-primary" onclick="saveFeeder('${f?f.id:''}')">💾 Save Feeder</button>
     <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
   </div>`;
 }
 function saveFeeder(id){
   const o={code:g('f_code'),name:g('f_name'),type:g('f_type'),voltage:g('f_voltage'),status:g('f_status'),current:g('f_current'),load:g('f_load'),area:g('f_area'),source:g('f_source'),destination:g('f_dest'),length:g('f_length'),conductor:g('f_conductor'),consumers:g('f_consumers'),pf:g('f_pf'),cbModel:g('f_cb'),ctRatio:g('f_ct'),ptRatio:g('f_pt'),la:g('f_la'),remarks:g('f_remarks')};
   if(id){o.id=id; const i=feeders.findIndex(f=>f.id===id); feeders[i]=o;}
-  else {o.id='F-'+Date.now(); feeders.push(o);}
-  setData('feeders',feeders); renderFeedersTable(); refreshDashboard(); closeModal(); toast('Feeder saved!');
+  else{o.id='F-'+Date.now();feeders.push(o);}
+  setData('feeders',feeders);renderFeedersTable();refreshDashboard();closeModal();toast('Feeder saved!','success');
 }
 function deleteFeeder(id){
   if(!confirm('Delete this feeder?')) return;
   feeders=feeders.filter(f=>f.id!==id);
-  setData('feeders',feeders); renderFeedersTable(); refreshDashboard(); toast('Feeder deleted.');
+  setData('feeders',feeders);renderFeedersTable();refreshDashboard();toast('Feeder deleted.','danger');
 }
 function toggleFeederStatus(id){
   const f=feeders.find(x=>x.id===id);
   f.status=f.status==='ON'?'OFF':'ON';
   if(f.status==='OFF'){f.current='0A';f.load='0%';}
-  setData('feeders',feeders); renderFeedersTable(); toast('Feeder status updated.');
+  setData('feeders',feeders);renderFeedersTable();toast('Status updated.','success');
 }
 
-// ============ TRANSFORMERS ============
+// ========== TRANSFORMERS ==========
 function renderTxForms(){
   transformers=getData('transformers',defaultTransformers);
   document.getElementById('txForms').innerHTML=transformers.map(t=>`
     <div class="card" style="margin-bottom:16px">
       <div style="font-size:15px;font-weight:700;margin-bottom:16px;color:var(--primary)">${t.name}</div>
-      <div class="form-row">
-        <div class="form-group"><label>Status</label><select id="tx_status_${t.id}"><option value="ON" ${t.status==='ON'?'selected':''}>ON</option><option value="OFF" ${t.status==='OFF'?'selected':''}>OFF</option></select></div>
-        <div class="form-group"><label>Load %</label><input id="tx_load_${t.id}" value="${t.load}" placeholder="72%"></div>
-        <div class="form-group"><label>Oil Level</label><select id="tx_oil_${t.id}"><option ${t.oilLevel==='Normal'?'selected':''}>Normal</option><option ${t.oilLevel==='Low'?'selected':''}>Low</option><option ${t.oilLevel==='Critical'?'selected':''}>Critical</option></select></div>
-        <div class="form-group"><label>Temperature (°C)</label><input id="tx_temp_${t.id}" value="${t.temp}" placeholder="55°C"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Status</label><select id="tx_status_${t.id}">
+          <option value="ON" ${t.status==='ON'?'selected':''}>ON</option>
+          <option value="OFF" ${t.status==='OFF'?'selected':''}>OFF</option>
+        </select></div>
+        <div class="form-group"><label>Load</label><input id="tx_load_${t.id}" value="${t.load}" placeholder="72%"></div>
+        <div class="form-group"><label>Oil Level</label><select id="tx_oil_${t.id}">
+          <option ${t.oilLevel==='Normal'?'selected':''}>Normal</option>
+          <option ${t.oilLevel==='Low'?'selected':''}>Low</option>
+          <option ${t.oilLevel==='Critical'?'selected':''}>Critical</option>
+        </select></div>
+        <div class="form-group"><label>Temperature</label><input id="tx_temp_${t.id}" value="${t.temp}" placeholder="55°C"></div>
         <div class="form-group"><label>Last Maintenance</label><input id="tx_maint_${t.id}" value="${t.lastMaint}" placeholder="dd MMM yyyy"></div>
         <div class="form-group"><label>Make</label><input id="tx_make_${t.id}" value="${t.make}" placeholder="BHEL"></div>
       </div>
-      <button class="btn btn-primary" onclick="saveTx('${t.id}')">Save ${t.id}</button>
+      <button class="btn btn-primary" onclick="saveTx('${t.id}')">💾 Save ${t.id}</button>
     </div>`).join('');
 }
 function saveTx(id){
@@ -498,10 +659,10 @@ function saveTx(id){
   t.temp=document.getElementById('tx_temp_'+id).value;
   t.lastMaint=document.getElementById('tx_maint_'+id).value;
   t.make=document.getElementById('tx_make_'+id).value;
-  setData('transformers',transformers); toast('Transformer '+id+' saved!');
+  setData('transformers',transformers);toast('Transformer '+id+' saved!','success');
 }
 
-// ============ EQUIPMENT ============
+// ========== EQUIPMENT ==========
 function renderEqTable(){
   equipment=getData('equipment',defaultEquipment);
   document.getElementById('eqTbody').innerHTML=equipment.map(e=>`
@@ -513,10 +674,10 @@ function renderEqTable(){
       <td>${e.model}</td>
       <td>${e.voltage}</td>
       <td><span class="badge ${e.status==='Healthy'?'badge-success':'badge-danger'}">${e.status}</span></td>
-      <td style="white-space:nowrap">
+      <td><div class="actions-cell">
         <button class="btn btn-sm btn-outline" onclick="openEditEq('${e.id}')">Edit</button>
-        <button class="btn btn-sm" style="background:#fee2e2;color:var(--danger);margin-left:4px" onclick="deleteEq('${e.id}')">Del</button>
-      </td>
+        <button class="btn btn-sm" style="background:#fee2e2;color:var(--danger);border:none;cursor:pointer;font-family:inherit;font-weight:600;border-radius:6px;padding:5px 12px" onclick="deleteEq('${e.id}')">Del</button>
+      </div></td>
     </tr>`).join('');
 }
 function openAddEquipment(){
@@ -531,20 +692,29 @@ function openEditEq(id){
   document.getElementById('modalOverlay').classList.add('open');
 }
 function eqForm(e){
-  const v=(k,d='')=>e?e[k]||'':d;
-  return `<div class="form-row">
+  const v=(k,d='')=>e?e[k]||d:d;
+  return `<div class="form-grid">
     <div class="form-group"><label>ID</label><input id="eq_id" value="${v('id')}" placeholder="CB-08"></div>
-    <div class="form-group"><label>Category</label><select id="eq_cat"><option value="CB" ${v('cat')==='CB'?'selected':''}>Circuit Breaker</option><option value="CT" ${v('cat')==='CT'?'selected':''}>Current Transformer</option><option value="PT" ${v('cat')==='PT'?'selected':''}>Potential Transformer</option><option value="LA" ${v('cat')==='LA'?'selected':''}>Lightning Arrester</option></select></div>
+    <div class="form-group"><label>Category</label><select id="eq_cat">
+      <option value="CB" ${v('cat')==='CB'?'selected':''}>Circuit Breaker (CB)</option>
+      <option value="CT" ${v('cat')==='CT'?'selected':''}>Current Transformer (CT)</option>
+      <option value="PT" ${v('cat')==='PT'?'selected':''}>Potential Transformer (PT)</option>
+      <option value="LA" ${v('cat')==='LA'?'selected':''}>Lightning Arrester (LA)</option>
+    </select></div>
     <div class="form-group form-full"><label>Name</label><input id="eq_name" value="${v('name')}" placeholder="Equipment name"></div>
     <div class="form-group"><label>Make</label><input id="eq_make" value="${v('make')}" placeholder="ABB"></div>
     <div class="form-group"><label>Model</label><input id="eq_model" value="${v('model')}" placeholder="VD4 12"></div>
     <div class="form-group"><label>Voltage</label><input id="eq_voltage" value="${v('voltage')}" placeholder="33 kV"></div>
     <div class="form-group"><label>Rating</label><input id="eq_rating" value="${v('rating')}" placeholder="400A"></div>
     <div class="form-group"><label>Year</label><input id="eq_year" value="${v('year','2010')}" placeholder="2010"></div>
-    <div class="form-group"><label>Status</label><select id="eq_status"><option value="Healthy" ${v('status')==='Healthy'?'selected':''}>Healthy</option><option value="Faulty" ${v('status')==='Faulty'?'selected':''}>Faulty</option><option value="Under Test" ${v('status')==='Under Test'?'selected':''}>Under Test</option></select></div>
+    <div class="form-group"><label>Status</label><select id="eq_status">
+      <option value="Healthy" ${v('status')==='Healthy'?'selected':''}>Healthy</option>
+      <option value="Faulty" ${v('status')==='Faulty'?'selected':''}>Faulty</option>
+      <option value="Under Test" ${v('status')==='Under Test'?'selected':''}>Under Test</option>
+    </select></div>
   </div>
   <div class="form-actions">
-    <button class="btn btn-primary" onclick="saveEq('${e?e.id:''}')">Save Equipment</button>
+    <button class="btn btn-primary" onclick="saveEq('${e?e.id:''}')">💾 Save Equipment</button>
     <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
   </div>`;
 }
@@ -552,27 +722,179 @@ function saveEq(oldId){
   const o={id:g('eq_id'),cat:g('eq_cat'),name:g('eq_name'),make:g('eq_make'),model:g('eq_model'),voltage:g('eq_voltage'),rating:g('eq_rating'),year:g('eq_year'),status:g('eq_status')};
   if(oldId){const i=equipment.findIndex(e=>e.id===oldId);equipment[i]=o;}
   else equipment.push(o);
-  setData('equipment',equipment); renderEqTable(); refreshDashboard(); closeModal(); toast('Equipment saved!');
+  setData('equipment',equipment);renderEqTable();refreshDashboard();closeModal();toast('Equipment saved!','success');
 }
 function deleteEq(id){
   if(!confirm('Delete this equipment?')) return;
   equipment=equipment.filter(e=>e.id!==id);
-  setData('equipment',equipment); renderEqTable(); refreshDashboard(); toast('Equipment deleted.');
+  setData('equipment',equipment);renderEqTable();refreshDashboard();toast('Equipment deleted.','danger');
 }
 
-// ============ UTILS ============
+// ========== IMAGE MANAGEMENT ==========
+// Image key => {label, sublabel} mapping
+const heroImageDefs=[
+  {key:'hero_dashboard',label:'Dashboard Hero',sublabel:'Main page banner (index.html)'},
+  {key:'hero_about',label:'About Page Hero',sublabel:'About substation banner'},
+];
+const galleryImageDefs=[
+  {key:'gallery_1',label:'Gallery 1',sublabel:'Substation overview'},
+  {key:'gallery_2',label:'Gallery 2',sublabel:'Switchyard'},
+  {key:'gallery_3',label:'Gallery 3',sublabel:'Transformer'},
+  {key:'gallery_4',label:'Gallery 4',sublabel:'Control Room'},
+  {key:'gallery_5',label:'Gallery 5',sublabel:'Panels'},
+  {key:'gallery_6',label:'Gallery 6',sublabel:'Circuit Breakers'},
+];
+const eqImageDefs=[
+  {key:'img_eq_CB',label:'Circuit Breaker',sublabel:'Used for all CB entries'},
+  {key:'img_eq_CT',label:'Current Transformer',sublabel:'Used for all CT entries'},
+  {key:'img_eq_PT',label:'Potential Transformer',sublabel:'Used for all PT entries'},
+  {key:'img_eq_LA',label:'Lightning Arrester',sublabel:'Used for all LA entries'},
+];
+
+function initImageSections(){
+  renderStaticImages('heroImagesGrid', heroImageDefs);
+  renderStaticImages('galleryImagesGrid', galleryImageDefs);
+  renderTxImages();
+  renderEqImages();
+  renderFeederImages();
+}
+
+function renderStaticImages(gridId, defs){
+  const grid=document.getElementById(gridId);
+  if(!grid) return;
+  grid.innerHTML=defs.map(d=>buildImgItem(d.key, d.label, d.sublabel)).join('');
+  defs.forEach(d=>attachImgHandler(d.key));
+}
+
+function renderFeederImages(){
+  feeders=getData('feeders',defaultFeeders);
+  const grid=document.getElementById('feederImagesGrid');
+  if(!grid) return;
+  grid.innerHTML=feeders.map(f=>buildImgItem('img_feeder_'+f.id, f.code+' — '+f.name, f.area)).join('');
+  feeders.forEach(f=>attachImgHandler('img_feeder_'+f.id));
+}
+
+function renderTxImages(){
+  transformers=getData('transformers',defaultTransformers);
+  const grid=document.getElementById('txImagesGrid');
+  if(!grid) return;
+  grid.innerHTML=transformers.map(t=>buildImgItem('img_tx_'+t.id, t.name, t.rating+' · '+t.voltage)).join('');
+  transformers.forEach(t=>attachImgHandler('img_tx_'+t.id));
+}
+
+function renderEqImages(){
+  const grid=document.getElementById('eqImagesGrid');
+  if(!grid) return;
+  grid.innerHTML=eqImageDefs.map(d=>buildImgItem(d.key, d.label, d.sublabel)).join('');
+  eqImageDefs.forEach(d=>attachImgHandler(d.key));
+}
+
+function buildImgItem(key, label, sublabel){
+  const stored=getImg(key);
+  const hasImg=!!stored;
+  return `
+  <div class="img-upload-item" id="item_${key}">
+    <div>
+      <div class="img-label">${label}</div>
+      <div class="img-sublabel">${sublabel||''}</div>
+    </div>
+    <div class="img-preview-wrap ${hasImg?'has-img':''}" onclick="document.getElementById('file_${key}').click()" id="wrap_${key}">
+      ${hasImg?`<img src="${stored}" alt="${label}" id="preview_${key}">`:`<img id="preview_${key}" style="display:none">`}
+      <div class="upload-placeholder">
+        <span class="upload-icon">📷</span>
+        <span>Click to upload</span>
+        <span style="font-size:10px;color:#b0bec5;margin-top:2px">JPG, PNG, WEBP</span>
+      </div>
+      <div class="img-overlay">
+        <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();document.getElementById('file_${key}').click()">Change</button>
+        ${hasImg?`<button class="btn btn-sm btn-danger" onclick="event.stopPropagation();removeImgItem('${key}')">Remove</button>`:''}
+      </div>
+    </div>
+    <input type="file" accept="image/*" class="img-file-input" id="file_${key}" onchange="handleImgUpload(event,'${key}')">
+    <div class="img-status" id="status_${key}">${hasImg?'✓ Image saved':''}</div>
+  </div>`;
+}
+
+function attachImgHandler(key){
+  // Handlers already inline via onchange; this is for future extensibility
+}
+
+function handleImgUpload(event, key){
+  const file=event.target.files[0];
+  if(!file) return;
+  
+  // Validate file size (warn if >500KB)
+  if(file.size>2*1024*1024){
+    toast('Image is large ('+Math.round(file.size/1024)+'KB). Consider compressing for better storage.','danger');
+  }
+  
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const dataUrl=e.target.result;
+    setImg(key, dataUrl);
+    
+    // Update preview
+    const preview=document.getElementById('preview_'+key);
+    const wrap=document.getElementById('wrap_'+key);
+    const status=document.getElementById('status_'+key);
+    if(preview){preview.src=dataUrl;preview.style.display='';wrap.classList.add('has-img');}
+    if(status){status.style.display='block';status.textContent='✓ Image saved';}
+    
+    // Refresh overlay to show Remove button
+    const item=document.getElementById('item_'+key);
+    const overlay=item.querySelector('.img-overlay');
+    if(overlay) overlay.innerHTML=`
+      <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();document.getElementById('file_${key}').click()">Change</button>
+      <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();removeImgItem('${key}')">Remove</button>`;
+    
+    // Also update upload-placeholder hide
+    const ph=item.querySelector('.upload-placeholder');
+    if(ph) ph.style.display='none';
+    
+    toast('Image uploaded successfully!','success');
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeImgItem(key){
+  if(!confirm('Remove this image?')) return;
+  removeImg(key);
+  const preview=document.getElementById('preview_'+key);
+  const wrap=document.getElementById('wrap_'+key);
+  const status=document.getElementById('status_'+key);
+  if(preview){preview.src='';preview.style.display='none';}
+  if(wrap){wrap.classList.remove('has-img');}
+  if(status){status.style.display='none';}
+  const item=document.getElementById('item_'+key);
+  const overlay=item.querySelector('.img-overlay');
+  if(overlay) overlay.innerHTML=`<button class="btn btn-sm btn-primary" onclick="event.stopPropagation();document.getElementById('file_${key}').click()">Upload</button>`;
+  const ph=item.querySelector('.upload-placeholder');
+  if(ph) ph.style.display='';
+  toast('Image removed.','danger');
+}
+
+// ========== UTILS ==========
 function g(id){const el=document.getElementById(id);return el?el.value:'';}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2800);}
-function resetAll(){
-  if(!confirm('Reset ALL data to factory defaults? This cannot be undone.')) return;
-  localStorage.removeItem('feeders'); localStorage.removeItem('transformers'); localStorage.removeItem('equipment');
-  feeders=defaultFeeders; transformers=defaultTransformers; equipment=defaultEquipment;
-  refreshAll(); toast('Data reset to defaults.');
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show '+(type||'');
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>t.className='toast',3000);
 }
-function updateTime(){const n=new Date();document.getElementById('currentTime').textContent=n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
-setInterval(updateTime,1000); updateTime();
-function openAddFeeder(){document.getElementById('modalTitle').textContent='Add New Feeder';document.getElementById('modalBody').innerHTML=feederForm(null);document.getElementById('modalOverlay').classList.add('open');}
+function resetAll(){
+  if(!confirm('Reset ALL data to factory defaults? Images will NOT be cleared. This cannot be undone.')) return;
+  localStorage.removeItem('feeders');localStorage.removeItem('transformers');localStorage.removeItem('equipment');
+  feeders=defaultFeeders;transformers=defaultTransformers;equipment=defaultEquipment;
+  refreshAll();toast('Data reset to defaults.','success');
+}
+function updateTime(){
+  const n=new Date();
+  const el=document.getElementById('currentTime');
+  if(el) el.textContent=n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+}
+setInterval(updateTime,1000);updateTime();
 </script>
 </body>
 </html>
