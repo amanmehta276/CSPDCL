@@ -7,7 +7,7 @@
 <style>
   /* ============ RESET & BASE ============ */
   *{margin:0;padding:0;box-sizing:border-box}
-  img{max-width:100%;height:auto;display:block;object-fit:cover}
+  img{max-width:100%;height:auto;display:block}
   :root{
     --primary:#005BAC;--success:#16A34A;--warning:#D97706;--danger:#DC2626;
     --bg:#F5F7FA;--card:#FFFFFF;--sidebar:#0D1B2E;--text:#1E293B;--border:#E2E8F0;
@@ -52,12 +52,12 @@
   .stat-card .stat-value{font-size:28px;font-weight:700;color:var(--primary)}
   .stat-card .stat-info{font-size:12px;color:#64748b}
 
-  /* ============ HERO IMAGES ============ */
-  .hero-img-wrap{width:100%;height:220px;border-radius:8px;border:1px solid var(--border);overflow:hidden;margin-bottom:24px;background:#dbeafe}
-  .hero-img-wrap img{width:100%;height:100%;object-fit:cover}
-  .hero-placeholder{width:100%;height:220px;background:linear-gradient(135deg,#0D1B2E 0%,#1e3a5f 100%);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;color:#7a9cc0;font-size:14px;border:1px solid var(--border);text-align:center;flex-direction:column;gap:8px}
-  .hero-placeholder .big-text{font-size:28px;font-weight:700;color:#fff}
-  .hero-placeholder .sm-text{font-size:12px;color:#7a9cc0}
+  /* ============ HERO (wide banner images, e.g. 1044x336 / 1156x520) ============ */
+  .hero-wrap{width:100%;aspect-ratio:21/6;max-height:260px;min-height:140px;border-radius:8px;overflow:hidden;margin-bottom:24px;border:1px solid var(--border);position:relative;background:#0D1B2E}
+  .hero-fallback{position:absolute;inset:0;background:linear-gradient(135deg,#0D1B2E 0%,#1e3a5f 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;text-align:center;padding:16px}
+  .hero-fallback .big-text{font-size:28px;font-weight:700;color:#fff}
+  .hero-fallback .sm-text{font-size:12px;color:#7a9cc0}
+  .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:1}
 
   /* ============ STATUS ROW ============ */
   .status-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px}
@@ -75,8 +75,6 @@
 
   /* ============ ABOUT ============ */
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-  .about-img-wrap{width:100%;height:200px;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-bottom:16px;background:#f1f5f9}
-  .about-img-wrap img{width:100%;height:100%;object-fit:cover}
   .info-table{width:100%;border-collapse:collapse}
   .info-table tr{border-bottom:1px solid var(--border)}
   .info-table td{padding:10px 4px;font-size:13.5px;word-break:break-word}
@@ -88,31 +86,28 @@
   .sld-container:active{cursor:grabbing}
   .sld-hint{display:none;font-size:12px;color:#64748b;margin-bottom:8px;text-align:center;background:#f0f9ff;padding:6px 12px;border-radius:6px;border:1px solid #bae6fd}
   .sld-svg{width:780px;min-width:780px;display:block;touch-action:pan-x pan-y;transform-origin:0 0}
-  @media(max-width:768px){
-    .sld-hint{display:block}
-    .sld-container{padding:12px;cursor:default}
-  }
+  @media(max-width:768px){.sld-hint{display:block}.sld-container{padding:12px;cursor:default}}
   .sld-elem{cursor:pointer}
   .sld-elem:hover rect,.sld-elem:hover line{opacity:.8}
 
-  /* ============ FEEDERS ============ */
+  /* ============ FEEDERS (feeder photos are wide, ~1156x520 ≈ 2.2:1) ============ */
   .feeders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
   .feeder-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:.15s}
   .feeder-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-2px)}
-  .feeder-img-wrap{width:100%;height:120px;overflow:hidden;position:relative}
-  .feeder-img-wrap img{width:100%;height:100%;object-fit:cover}
-  .feeder-img-fallback{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700}
+  .feeder-img-wrap{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:#eef2f7}
+  .feeder-img-wrap img.feeder-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:1}
+  .feeder-img-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;position:relative;z-index:0;text-align:center;padding:8px}
   .feeder-body{padding:14px}
   .feeder-name{font-size:14px;font-weight:700;margin-bottom:6px}
   .feeder-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:4px}
   .feeder-info{font-size:12px;color:#64748b;margin-bottom:2px}
 
-  /* ============ TRANSFORMERS ============ */
+  /* ============ TRANSFORMERS (mixed aspect ratios — use contain so nothing is cropped) ============ */
   .transformer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
   .tx-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-  .tx-img-wrap{width:100%;height:150px;overflow:hidden;position:relative}
-  .tx-img-wrap img{width:100%;height:100%;object-fit:cover}
-  .tx-img-fallback{width:100%;height:150px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:48px;color:#cbd5e1}
+  .tx-img-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:#f1f5f9}
+  .tx-img-wrap img.tx-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:1}
+  .tx-img-fallback{font-size:48px;color:#cbd5e1;z-index:0}
   .tx-body{padding:16px}
   .tx-name{font-size:16px;font-weight:700;margin-bottom:12px}
   .tx-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;flex-wrap:wrap;gap:4px}
@@ -127,13 +122,13 @@
   .eq-table tr{cursor:pointer;transition:.1s}
   .eq-table tr:hover td{background:#f8fafc}
 
-  /* ============ GALLERY ============ */
+  /* ============ GALLERY (mixed aspect ratios — contain keeps full photo visible) ============ */
   .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
-  .gallery-item{border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:40px;cursor:pointer;border:1px solid var(--border);position:relative}
-  .gallery-item img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-  .gallery-item .gallery-emoji{position:relative;z-index:1}
+  .gallery-item{border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:#f1f5f9;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border);position:relative}
+  .gallery-item .gallery-emoji{font-size:40px;position:relative;z-index:1}
+  .gallery-item img.gallery-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:2;background:#f1f5f9}
   .gallery-item:hover .gallery-overlay{opacity:1}
-  .gallery-overlay{position:absolute;inset:0;background:rgba(0,91,172,.7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;opacity:0;transition:.2s;z-index:2}
+  .gallery-overlay{position:absolute;inset:0;background:rgba(0,91,172,.7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;opacity:0;transition:.2s;z-index:3}
 
   /* ============ REPORTS ============ */
   .reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
@@ -143,7 +138,7 @@
   .report-title{font-size:14px;font-weight:700;margin-bottom:4px}
   .report-desc{font-size:12px;color:#64748b}
 
-  /* ============ MODAL ============ */
+  /* ============ MODAL (equipment photos are mixed portrait/landscape — contain) ============ */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
   .modal-overlay.open{display:flex}
   .modal{background:var(--card);border-radius:10px;max-width:580px;width:100%;margin:auto;max-height:calc(100vh - 32px);overflow-y:auto;position:relative}
@@ -151,9 +146,9 @@
   .modal-title{font-size:16px;font-weight:700;word-break:break-word;padding-right:8px}
   .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#64748b;line-height:1;flex-shrink:0}
   .modal-body{padding:20px}
-  .modal-img-wrap{width:100%;height:180px;border-radius:6px;overflow:hidden;margin-bottom:16px;background:#dbeafe;position:relative}
-  .modal-img-wrap img{width:100%;height:100%;object-fit:cover}
-  .modal-img-fallback{width:100%;height:160px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px}
+  .modal-img-wrap{width:100%;aspect-ratio:16/9;max-height:260px;border-radius:6px;overflow:hidden;margin-bottom:16px;position:relative;display:flex;align-items:center;justify-content:center}
+  .modal-img-wrap img.modal-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:1}
+  .modal-img-fallback{font-size:48px;z-index:0;position:relative}
   .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
   .detail-row{padding:8px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
   .detail-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
@@ -174,15 +169,11 @@
   .eq-category-title{font-size:15px;font-weight:700;color:var(--primary);margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--border)}
 
   /* ============ RESPONSIVE ============ */
-
-  /* Tablet */
   @media(max-width:900px){
     .about-grid{grid-template-columns:1fr}
     .feeders-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
     .transformer-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
   }
-
-  /* Mobile / Tablet sidebar collapse */
   @media(max-width:768px){
     .sidebar{left:calc(-1 * var(--sidebar-w));box-shadow:none}
     .sidebar.open{left:0;box-shadow:4px 0 20px rgba(0,0,0,.3)}
@@ -196,9 +187,8 @@
     .status-row{grid-template-columns:repeat(2,1fr)}
     .detail-grid{grid-template-columns:1fr}
     .about-grid{grid-template-columns:1fr}
-    .hero-placeholder .big-text{font-size:20px}
-    .hero-placeholder{height:180px}
-    .hero-img-wrap{height:180px}
+    .hero-fallback .big-text{font-size:20px}
+    .hero-wrap{aspect-ratio:16/9;max-height:200px}
     .sld-hint{display:block}
     .section-title{font-size:17px}
     .stat-card .stat-value{font-size:22px}
@@ -206,9 +196,8 @@
     .modal-overlay{padding:8px}
     .reports-grid{grid-template-columns:1fr 1fr}
     .gallery-grid{grid-template-columns:repeat(2,1fr)}
+    .modal-img-wrap{aspect-ratio:4/3;max-height:220px}
   }
-
-  /* Small mobile */
   @media(max-width:480px){
     .cards-grid{grid-template-columns:1fr 1fr}
     .feeders-grid{grid-template-columns:1fr 1fr}
@@ -218,11 +207,9 @@
     .gallery-grid{grid-template-columns:repeat(2,1fr)}
     .topbar-right .admin-link{display:none}
     .tab-btn{padding:8px 10px;font-size:12px}
-    .modal-img-wrap{height:140px}
-    .modal-img-fallback{height:120px}
+    .hero-wrap{aspect-ratio:4/3;max-height:170px}
+    .feeder-img-wrap{aspect-ratio:4/3}
   }
-
-  /* Very small */
   @media(max-width:360px){
     .cards-grid{grid-template-columns:1fr}
     .feeders-grid{grid-template-columns:1fr}
@@ -256,7 +243,7 @@
   <header class="topbar">
     <div style="display:flex;align-items:center;gap:12px;min-width:0">
       <button class="hamburger" onclick="toggleSidebar()">☰</button>
-      <div class="topbar-title" id="topbarTitle">Aman Mehta</div>
+      <div class="topbar-title" id="topbarTitle">Nawapara Rajim</div>
     </div>
     <div class="topbar-right">
       <span id="currentTime" class="topbar-time"></span>
@@ -272,21 +259,16 @@
       <div class="section-title">Nawapara Rajim</div>
       <div class="section-sub">Nawapara Rajim 33/11 kV Substation — Live Overview</div>
 
-      <!-- Hero image with fallback — fallback always visible, image overlays if it loads -->
-      <div style="position:relative;width:100%;height:220px;border-radius:8px;overflow:hidden;margin-bottom:24px;border:1px solid var(--border)" id="dashHeroWrap">
-        <!-- Fallback always rendered underneath -->
-        <div class="hero-placeholder" style="position:absolute;inset:0;margin:0;border-radius:0;border:none;height:100%">
+      <div class="hero-wrap" id="dashHero">
+        <div class="hero-fallback">
           <div class="big-text">⚡ 33/11 kV</div>
           <div class="sm-text">NAWAPARA RAJIM SUBSTATION · CSPDCL · RAIPUR ZONE</div>
           <div class="sm-text" style="margin-top:4px">Installed Capacity: 2 × 5 MVA</div>
         </div>
-        <!-- Image on top — disappears silently on error -->
-        <img src="images/substation-hero.jpg" alt="Nawapara Rajim Substation" loading="lazy"
-          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1"
-          onerror="this.style.display='none'">
+        <img class="hero-img" id="dashHeroImg" src="" alt="Nawapara Rajim Substation" loading="lazy" style="display:none" onerror="this.style.display='none'">
       </div>
 
-      <div class="cards-grid" id="dashboardCards">
+      <div class="cards-grid">
         <div class="stat-card"><div class="stat-label">Total Feeders</div><div class="stat-value" id="dc-total">16</div><div class="stat-info">Incoming + Outgoing</div></div>
         <div class="stat-card"><div class="stat-label">Incoming Feeders</div><div class="stat-value text-primary" id="dc-incoming">3</div><div class="stat-info">33 kV Incoming</div></div>
         <div class="stat-card"><div class="stat-label">Outgoing Feeders</div><div class="stat-value text-success" id="dc-outgoing">13</div><div class="stat-info">33kV + 11kV</div></div>
@@ -498,37 +480,8 @@
     <div class="section" id="sec-gallery">
       <div class="section-title">Gallery</div>
       <div class="section-sub">Substation photo gallery</div>
-      <div class="gallery-grid">
-        <div class="gallery-item">
-          <img src="images/gallery/substation.jpg" alt="Substation" loading="lazy" onerror="this.style.display='none'">
-          <span class="gallery-emoji">🏭</span>
-          <div class="gallery-overlay">Substation</div>
-        </div>
-        <div class="gallery-item">
-          <img src="images/gallery/switchyard.jpg" alt="Switchyard" loading="lazy" onerror="this.style.display='none'">
-          <span class="gallery-emoji">⚡</span>
-          <div class="gallery-overlay">Switchyard</div>
-        </div>
-        <div class="gallery-item">
-          <img src="images/gallery/transformer.jpg" alt="Transformer" loading="lazy" onerror="this.style.display='none'">
-          <span class="gallery-emoji">🔌</span>
-          <div class="gallery-overlay">Transformer</div>
-        </div>
-        <div class="gallery-item">
-          <img src="images/gallery/control-room.jpg" alt="Control Room" loading="lazy" onerror="this.style.display='none'">
-          <span class="gallery-emoji">🖥️</span>
-          <div class="gallery-overlay">Control Room</div>
-        </div>
-        <div class="gallery-item">
-          <img src="images/gallery/panels.jpg" alt="Panels" loading="lazy" onerror="this.style.display='none'">
-          <span class="gallery-emoji">📊</span>
-          <div class="gallery-overlay">Panels</div>
-        </div>
-        <div class="gallery-item">
-          <img src="images/gallery/circuit-breakers.jpg" alt="Circuit Breakers" loading="lazy" onerror="this.style.display='none'">
-          <span class="gallery-emoji">⚙️</span>
-          <div class="gallery-overlay">Circuit Breakers</div>
-        </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Rendered by JS -->
       </div>
     </div>
 
@@ -537,18 +490,15 @@
       <div class="section-title">About Substation</div>
       <div class="section-sub">Nawapara Rajim 33/11 kV Substation — CSPDCL</div>
 
-      <!-- About hero image with fallback -->
-      <div style="position:relative;width:100%;height:180px;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-bottom:0">
-        <div class="hero-placeholder" style="position:absolute;inset:0;margin:0;border-radius:0;border:none;height:100%">
+      <div class="hero-wrap" style="aspect-ratio:16/9;max-height:220px;margin-bottom:20px">
+        <div class="hero-fallback">
           <div class="big-text" style="font-size:20px">🏭 Nawapara Rajim Substation</div>
           <div class="sm-text">Nawapara Rajim, Chhattisgarh · Since 2010</div>
         </div>
-        <img src="images/substation-about.jpg" alt="Nawapara Rajim Substation Overview" loading="lazy"
-          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1"
-          onerror="this.style.display='none'">
+        <img class="hero-img" id="aboutHeroImg" src="" alt="Nawapara Rajim Substation Overview" loading="lazy" style="display:none" onerror="this.style.display='none'">
       </div>
 
-      <div class="about-grid" style="margin-top:20px">
+      <div class="about-grid">
         <div class="card">
           <table class="info-table">
             <tr><td>Substation Name</td><td>Nawapara Rajim 33/11 kV Substation</td></tr>
@@ -616,6 +566,59 @@
 </div>
 
 <script>
+// ============ IMAGE HELPER ============
+// Checks localStorage first (admin-uploaded), then falls back to built-in images
+function getDefaultImg(key) {
+  const defaults = {
+    hero_dashboard: 'images/substation-hero.jpg',
+    hero_about: 'images/subastation-about.jpg',
+    gallery_1: 'images/gallery/substation.jpg',
+    gallery_2: 'images/gallery/switchyard.jpg',
+    gallery_3: 'images/gallery/control-room.jpg',
+    gallery_4: 'images/gallery/panels.jpg',
+    gallery_5: 'images/gallery/circuit-breakers.jpg',
+    gallery_6: 'images/gallery/substation.jpg',
+    img_eq_CB: 'images/equipment/CB.jpg',
+    img_eq_CT: 'images/equipment/CT.jpg',
+    img_eq_PT: 'images/equipment/PT.jpg',
+    img_eq_LA: 'images/equipment/LA.jpg'
+  };
+
+  if (key && key.startsWith('img_feeder_')) {
+    return key.includes('I-') ? 'images/feeders/I.jpg' : 'images/feeders/F.jpg';
+  }
+  if (key && key.startsWith('img_tx_')) {
+    return key.endsWith('T2') ? 'images/transformers/T2.jpg' : 'images/transformers/T1.jpg';
+  }
+  return defaults[key] || null;
+}
+
+function getImg(key) {
+  return localStorage.getItem('img_' + key) || getDefaultImg(key);
+}
+
+// Inject image into an <img> element; hide if none
+function applyImg(imgEl, key) {
+  const data = getImg(key);
+  if (data) {
+    imgEl.src = data;
+    imgEl.style.display = '';
+  } else {
+    imgEl.style.display = 'none';
+  }
+}
+
+// Build modal image HTML — uses admin image if available, else emoji fallback
+function modalImgHTML(key, fallbackEmoji, bg) {
+  const data = getImg(key);
+  return `<div class="modal-img-wrap" style="background:${bg||'#f1f5f9'}">
+    ${data
+      ? `<img class="modal-photo" src="${data}" alt="" loading="lazy" onerror="this.style.display='none'">`
+      : ''}
+    <div class="modal-img-fallback" ${data ? 'style="display:none"' : ''}>${fallbackEmoji}</div>
+  </div>`;
+}
+
 // ============ DATA ============
 const defaultFeeders = [
   {id:'I-ABH',code:'I.ABHANPUR',name:'Abhanpur Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'280A',load:'65%',area:'Abhanpur GSS',source:'Abhanpur 132/33 kV GSS',destination:'33 kV Bus',length:'18 km',conductor:'Panther ACSR',consumers:'—',pf:'0.92',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Primary source'},
@@ -635,12 +638,10 @@ const defaultFeeders = [
   {id:'F-07',code:'F-07',name:'Ganj Road',type:'11kv',voltage:'11 kV',status:'OFF',current:'0A',load:'0%',area:'Ganj Road',source:'11 kV Bus',destination:'Ganj Road',length:'4 km',conductor:'Rabbit ACSR',consumers:'980',pf:'—',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Tripped — relay operated'},
   {id:'F-08',code:'F-08',name:'Nawapara',type:'11kv',voltage:'11 kV',status:'ON',current:'88A',load:'59%',area:'Nawapara',source:'11 kV Bus',destination:'Nawapara Town',length:'2.5 km',conductor:'Weasel ACSR',consumers:'1100',pf:'0.91',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Town feeder'},
 ];
-
 const defaultTransformers = [
   {id:'T1',name:'Transformer T1',rating:'5 MVA',voltage:'33/11 kV',vector:'Dyn11',cooling:'ONAN',make:'BHEL',status:'ON',load:'72%',oilLevel:'Normal',temp:'58°C',lastMaint:'15 Mar 2024'},
   {id:'T2',name:'Transformer T2',rating:'5 MVA',voltage:'33/11 kV',vector:'Dyn11',cooling:'ONAN',make:'BHEL',status:'ON',load:'68%',oilLevel:'Normal',temp:'55°C',lastMaint:'15 Mar 2024'},
 ];
-
 const defaultEquipment = [
   {cat:'CB',id:'CB-01',name:'Incoming CB — Abhanpur',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
   {cat:'CB',id:'CB-02',name:'Incoming CB — Paragaon',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
@@ -667,26 +668,49 @@ let feeders=getData('feeders',defaultFeeders);
 let transformers=getData('transformers',defaultTransformers);
 let equipment=getData('equipment',defaultEquipment);
 
-// ============ IMAGE HELPER ============
-function imgWithFallback(src, alt, fallbackHTML, wrapClass, wrapStyle){
-  return `<div class="${wrapClass}" style="${wrapStyle||''}">
-    <img src="${src}" alt="${alt}" loading="lazy"
-      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-    <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:28px;font-weight:700;${wrapStyle||''}">${fallbackHTML}</div>
-  </div>`;
+// ============ INIT HERO IMAGES ============
+function initHeroImages(){
+  // Dashboard hero
+  applyImg(document.getElementById('dashHeroImg'), 'hero_dashboard');
+  // About hero
+  applyImg(document.getElementById('aboutHeroImg'), 'hero_about');
 }
+initHeroImages();
+
+// ============ GALLERY ============
+const galleryDefs=[
+  {key:'gallery_1',emoji:'🏭',label:'Substation'},
+  {key:'gallery_2',emoji:'⚡',label:'Switchyard'},
+  {key:'gallery_3',emoji:'🔌',label:'Transformer'},
+  {key:'gallery_4',emoji:'🖥️',label:'Control Room'},
+  {key:'gallery_5',emoji:'📊',label:'Panels'},
+  {key:'gallery_6',emoji:'⚙️',label:'Circuit Breakers'},
+];
+function renderGallery(){
+  document.getElementById('galleryGrid').innerHTML=galleryDefs.map(g=>{
+    const data=getImg(g.key);
+    return `<div class="gallery-item">
+      <span class="gallery-emoji">${g.emoji}</span>
+      ${data?`<img class="gallery-photo" src="${data}" alt="${g.label}" loading="lazy" onerror="this.style.display='none'">`:'' }
+      <div class="gallery-overlay">${g.label}</div>
+    </div>`;
+  }).join('');
+}
+renderGallery();
 
 // ============ NAV ============
 function showSection(id, e){
-  const evt = e || event;
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
-  evt.currentTarget.classList.add('active');
-  document.getElementById('topbarTitle').textContent=evt.currentTarget.textContent.trim();
+  if(e) e.currentTarget.classList.add('active');
+  document.getElementById('topbarTitle').textContent=(e?e.currentTarget.textContent.trim():'Nawapara Rajim');
   if(id==='feeders') renderFeeders('all');
   if(id==='transformers') renderTransformers();
   if(id==='equipment') renderEquipment();
+  if(id==='gallery') renderGallery();
+  if(id==='dashboard') initHeroImages();
+  if(id==='about') applyImg(document.getElementById('aboutHeroImg'),'hero_about');
   closeSidebar();
 }
 
@@ -710,18 +734,17 @@ function renderFeeders(tab){
   else if(tab==='33kv') list=feeders.filter(f=>f.type==='33kv');
   else if(tab==='11kv') list=feeders.filter(f=>f.type==='11kv');
 
-  const bgMap={incoming:'#dbeafe',['33kv']:'#e0f2fe',['11kv']:'#dcfce7'};
-  const colMap={incoming:'#005BAC',['33kv']:'#0369a1',['11kv']:'#16A34A'};
+  const bgMap={incoming:'#dbeafe','33kv':'#e0f2fe','11kv':'#dcfce7'};
+  const colMap={incoming:'#005BAC','33kv':'#0369a1','11kv':'#16A34A'};
 
   grid.innerHTML=list.map(f=>{
     const bg=bgMap[f.type]||'#dbeafe';
     const col=colMap[f.type]||'#005BAC';
-    const imgSrc=`images/feeders/${f.id}.jpg`;
+    const imgData=getImg('img_feeder_'+f.id);
     return `<div class="feeder-card" onclick="openFeederModal('${f.id}')">
       <div class="feeder-img-wrap" style="background:${bg}">
-        <img src="${imgSrc}" alt="${f.name}" loading="lazy"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="feeder-img-fallback" style="display:none;background:${bg};color:${col}">${f.code}</div>
+        ${imgData?`<img class="feeder-photo" src="${imgData}" alt="${f.name}" loading="lazy" onerror="this.style.display='none'">`:'' }
+        <div class="feeder-img-fallback" style="background:${bg};color:${col}">${f.code}</div>
       </div>
       <div class="feeder-body">
         <div class="feeder-name">${f.name}</div>
@@ -739,19 +762,14 @@ function renderFeeders(tab){
 
 function openFeederModal(id){
   const f=feeders.find(x=>x.id===id);if(!f) return;
-  const bgMap={incoming:'#dbeafe',['33kv']:'#e0f2fe',['11kv']:'#dcfce7'};
-  const colMap={incoming:'#005BAC',['33kv']:'#0369a1',['11kv']:'#16A34A'};
+  const bgMap={incoming:'#dbeafe','33kv':'#e0f2fe','11kv':'#dcfce7'};
+  const colMap={incoming:'#005BAC','33kv':'#0369a1','11kv':'#16A34A'};
   const bg=bgMap[f.type]||'#dbeafe';
   const col=colMap[f.type]||'#005BAC';
-  const imgSrc=`images/feeders/${f.id}.jpg`;
 
   document.getElementById('modalTitle').textContent=f.code+' — '+f.name;
   document.getElementById('modalBody').innerHTML=`
-    <div class="modal-img-wrap" style="background:${bg}">
-      <img src="${imgSrc}" alt="${f.name}" loading="lazy"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:${col}">${f.code}</div>
-    </div>
+    ${modalImgHTML('img_feeder_'+f.id, `<span style="font-size:36px;font-weight:700;color:${col}">${f.code}</span>`, bg)}
     <div class="detail-grid">
       ${[['Source',f.source],['Destination',f.destination],['Length',f.length],['Conductor',f.conductor],['Consumers',f.consumers],['Current',f.current],['Load',f.load],['Power Factor',f.pf],['CB Model',f.cbModel],['CT Ratio',f.ctRatio],['PT Ratio',f.ptRatio],['LA Rating',f.la],['Status',f.status],['Remarks',f.remarks]].map(([l,v])=>`
       <div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val ${l==='Status'?(v==='ON'?'text-success':'text-danger'):''}">${v}</div></div>`).join('')}
@@ -764,12 +782,11 @@ function renderTransformers(){
   transformers=getData('transformers',defaultTransformers);
   const g=document.getElementById('txGrid');
   g.innerHTML=transformers.map(t=>{
-    const imgSrc=`images/transformers/${t.id}.jpg`;
+    const imgData=getImg('img_tx_'+t.id);
     return `<div class="tx-card">
       <div class="tx-img-wrap">
-        <img src="${imgSrc}" alt="${t.name}" loading="lazy"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="tx-img-fallback" style="display:none">🔌</div>
+        ${imgData?`<img class="tx-photo" src="${imgData}" alt="${t.name}" loading="lazy" onerror="this.style.display='none'">`:'' }
+        <div class="tx-img-fallback">🔌</div>
       </div>
       <div class="tx-body">
         <div class="tx-name">${t.name} <span class="badge ${t.status==='ON'?'badge-success':'badge-danger'}" style="font-size:11px">${t.status}</span></div>
@@ -801,17 +818,12 @@ function openEqModal(id){
   const e=equipment.find(x=>x.id===id);if(!e) return;
   const emojiMap={CB:'⚡',CT:'🔄',PT:'📐',LA:'🛡️'};
   const emoji=emojiMap[e.cat]||'⚙️';
-  // Image path: images/equipment/CB-01.jpg or category fallback images/equipment/CB.jpg
-  const imgSrc=`images/equipment/${e.id}.jpg`;
-  const catImgSrc=`images/equipment/${e.cat}.jpg`;
+  // Use category-level image key (img_eq_CB, img_eq_CT etc)
+  const imgKey='img_eq_'+e.cat;
 
   document.getElementById('modalTitle').textContent=e.id+' — '+e.name;
   document.getElementById('modalBody').innerHTML=`
-    <div class="modal-img-wrap" style="background:#f1f5f9">
-      <img src="${imgSrc}" alt="${e.name}" loading="lazy"
-        onerror="if(this.src.indexOf('${e.id}')>-1){this.src='${catImgSrc}';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}"
-      <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:48px">${emoji}</div>
-    </div>
+    ${modalImgHTML(imgKey, `<span style="font-size:48px">${emoji}</span>`, '#f1f5f9')}
     <div class="detail-grid">
       ${[['ID',e.id],['Name',e.name],['Category',e.cat],['Make',e.make],['Model',e.model],['Voltage',e.voltage],['Rating',e.rating],['Year',e.year],['Status',e.status]].map(([l,v])=>`
       <div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val ${l==='Status'?(v==='Healthy'?'text-success':'text-danger'):''}">${v}</div></div>`).join('')}
@@ -825,14 +837,9 @@ function showSLDInfo(name){
   const tx=transformers.find(t=>t.id===name);
   if(feeder){openFeederModal(feeder.id);return;}
   if(tx){
-    const imgSrc=`images/transformers/${tx.id}.jpg`;
     document.getElementById('modalTitle').textContent=tx.name;
     document.getElementById('modalBody').innerHTML=`
-      <div class="modal-img-wrap" style="background:#fef9c3">
-        <img src="${imgSrc}" alt="${tx.name}" loading="lazy"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:48px">🔌</div>
-      </div>
+      ${modalImgHTML('img_tx_'+tx.id, '<span style="font-size:48px">🔌</span>', '#fef9c3')}
       <div class="detail-grid">
         ${[['ID',tx.id],['Rating',tx.rating],['Voltage Ratio',tx.voltage],['Vector Group',tx.vector],['Cooling',tx.cooling],['Make',tx.make],['Status',tx.status],['Load',tx.load],['Temperature',tx.temp],['Last Maintenance',tx.lastMaint]].map(([l,v])=>`
         <div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val ${l==='Status'?(v==='ON'?'text-success':'text-danger'):''}">${v}</div></div>`).join('')}
@@ -853,47 +860,23 @@ function closeModalOutside(e){if(e.target===document.getElementById('modalOverla
   const container=document.getElementById('sldContainer');
   const svg=container?container.querySelector('.sld-svg'):null;
   if(!container||!svg) return;
-
-  let scale=1,minScale=0.5,maxScale=4;
-  let originX=0,originY=0;
-  // For pinch
-  let lastDist=0;
-  // For pan
-  let isPanning=false,startX=0,startY=0,scrollLeft=0,scrollTop=0;
-
+  let scale=1,lastDist=0;
   function applyScale(newScale,cx,cy){
-    // cx,cy = point in container coords to zoom toward
-    const rect=container.getBoundingClientRect();
-    const containerScrollX=container.scrollLeft;
-    const containerScrollY=container.scrollTop;
-    // SVG point before
-    const svgX=(containerScrollX+cx)/scale;
-    const svgY=(containerScrollY+cy)/scale;
-    scale=Math.min(maxScale,Math.max(minScale,newScale));
+    const svgX=(container.scrollLeft+cx)/scale;
+    const svgY=(container.scrollTop+cy)/scale;
+    scale=Math.min(4,Math.max(0.5,newScale));
     svg.style.transform=`scale(${scale})`;
     svg.style.transformOrigin='0 0';
-    // Adjust scroll so zoom centers on pinch point
     container.scrollLeft=svgX*scale-cx;
     container.scrollTop=svgY*scale-cy;
   }
-
-  // Touch pinch
   container.addEventListener('touchstart',function(e){
-    if(e.touches.length===2){
-      lastDist=Math.hypot(
-        e.touches[0].clientX-e.touches[1].clientX,
-        e.touches[0].clientY-e.touches[1].clientY
-      );
-    }
+    if(e.touches.length===2) lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
   },{passive:true});
-
   container.addEventListener('touchmove',function(e){
     if(e.touches.length===2){
       e.preventDefault();
-      const dist=Math.hypot(
-        e.touches[0].clientX-e.touches[1].clientX,
-        e.touches[0].clientY-e.touches[1].clientY
-      );
+      const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
       if(lastDist>0){
         const rect=container.getBoundingClientRect();
         const midX=((e.touches[0].clientX+e.touches[1].clientX)/2)-rect.left;
@@ -903,23 +886,14 @@ function closeModalOutside(e){if(e.target===document.getElementById('modalOverla
       lastDist=dist;
     }
   },{passive:false});
-
-  container.addEventListener('touchend',function(e){
-    if(e.touches.length<2) lastDist=0;
-  },{passive:true});
-
-  // Mouse wheel zoom (desktop)
+  container.addEventListener('touchend',function(e){if(e.touches.length<2)lastDist=0;},{passive:true});
   container.addEventListener('wheel',function(e){
     if(e.ctrlKey||e.metaKey){
       e.preventDefault();
       const rect=container.getBoundingClientRect();
-      const cx=e.clientX-rect.left;
-      const cy=e.clientY-rect.top;
-      applyScale(scale*(e.deltaY<0?1.1:0.9),cx,cy);
+      applyScale(scale*(e.deltaY<0?1.1:0.9),e.clientX-rect.left,e.clientY-rect.top);
     }
   },{passive:false});
-
-  // Set initial SVG width for scroll to work
   svg.style.display='block';
   svg.style.transformOrigin='0 0';
 })();
