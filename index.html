@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nawapara Rajim 33/11 kV Substation — CSPDCL</title>
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="shortcut icon" type="image/webp" href="images/cspdcl.webp">
+<link rel="apple-touch-icon" href="images/cspdcl.webp">
 <style>
   /* ============ RESET & BASE ============ */
   *{margin:0;padding:0;box-sizing:border-box}
@@ -106,7 +109,7 @@
   .transformer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
   .tx-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
   .tx-img-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:#f1f5f9}
-  .tx-img-wrap img.tx-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:1}
+  .tx-img-wrap img.tx-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:1}
   .tx-img-fallback{font-size:48px;color:#cbd5e1;z-index:0}
   .tx-body{padding:16px}
   .tx-name{font-size:16px;font-weight:700;margin-bottom:12px}
@@ -126,7 +129,7 @@
   .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
   .gallery-item{border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:#f1f5f9;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border);position:relative}
   .gallery-item .gallery-emoji{font-size:40px;position:relative;z-index:1}
-  .gallery-item img.gallery-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:2;background:#f1f5f9}
+  .gallery-item img.gallery-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:2;background:#f1f5f9}
   .gallery-item:hover .gallery-overlay{opacity:1}
   .gallery-overlay{position:absolute;inset:0;background:rgba(0,91,172,.7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;opacity:0;transition:.2s;z-index:3}
 
@@ -147,7 +150,7 @@
   .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#64748b;line-height:1;flex-shrink:0}
   .modal-body{padding:20px}
   .modal-img-wrap{width:100%;aspect-ratio:16/9;max-height:260px;border-radius:6px;overflow:hidden;margin-bottom:16px;position:relative;display:flex;align-items:center;justify-content:center}
-  .modal-img-wrap img.modal-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:1}
+  .modal-img-wrap img.modal-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:1}
   .modal-img-fallback{font-size:48px;z-index:0;position:relative}
   .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
   .detail-row{padding:8px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
@@ -216,15 +219,20 @@
     .status-row{grid-template-columns:1fr}
   }
 </style>
+
+
 </head>
 <body>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="logo">⚡ NAWAPARA RAJIM</div>
-    <div class="sub-logo">33/11 kV Substation · CSPDCL</div>
+  <div class="sidebar-header" style="display:flex;align-items:center;gap:10px">
+    <img id="sidebarLogo" src="images/cspdcl-logo.png" alt="CSPDCL Logo" style="width:38px;height:38px;object-fit:contain;flex-shrink:0" onerror="this.style.display='none'">
+    <div>
+      <div class="logo">⚡ NAWAPARA RAJIM</div>
+      <div class="sub-logo">33/11 kV Substation · CSPDCL</div>
+    </div>
   </div>
   <nav>
     <div class="nav-item active" onclick="showSection('dashboard',event)"><span class="icon">▦</span> Dashboard</div>
@@ -243,6 +251,7 @@
   <header class="topbar">
     <div style="display:flex;align-items:center;gap:12px;min-width:0">
       <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <img src="images/cspdcl.webp" alt="CSPDCL" style="width:26px;height:26px;object-fit:contain;flex-shrink:0" onerror="this.style.display='none'">
       <div class="topbar-title" id="topbarTitle">Nawapara Rajim</div>
     </div>
     <div class="topbar-right">
@@ -570,14 +579,14 @@
 // Checks localStorage first (admin-uploaded), then falls back to built-in images
 function getDefaultImg(key) {
   const defaults = {
-    hero_dashboard: 'images/substation-hero.jpg',
-    hero_about: 'images/subastation-about.jpg',
+    hero_dashboard: 'images/substation-h2.jpg',
+    hero_about: 'images/subastation-.jpg',
     gallery_1: 'images/gallery/substation.jpg',
     gallery_2: 'images/gallery/switchyard.jpg',
-    gallery_3: 'images/gallery/control-room.jpg',
-    gallery_4: 'images/gallery/panels.jpg',
-    gallery_5: 'images/gallery/circuit-breakers.jpg',
-    gallery_6: 'images/gallery/substation.jpg',
+    gallery_3: 'images/transformers/T2.jpg',
+    gallery_4: 'images/gallery/control-room.jpg',
+    gallery_5: 'images/gallery/panels.jpg',
+    gallery_6: 'images/gallery/circuit-breakers.jpg',
     img_eq_CB: 'images/equipment/CB.jpg',
     img_eq_CT: 'images/equipment/CT.jpg',
     img_eq_PT: 'images/equipment/PT.jpg',
@@ -589,6 +598,10 @@ function getDefaultImg(key) {
   }
   if (key && key.startsWith('img_tx_')) {
     return key.endsWith('T2') ? 'images/transformers/T2.jpg' : 'images/transformers/T1.jpg';
+  }
+  // Any gallery image beyond the first 6 falls back to a numbered file in images/gallery/
+  if (key && key.startsWith('gallery_') && !defaults[key]) {
+    return 'images/gallery/' + key.replace('gallery_', 'photo-') + '.jpg';
   }
   return defaults[key] || null;
 }
@@ -678,19 +691,24 @@ function initHeroImages(){
 initHeroImages();
 
 // ============ GALLERY ============
-const galleryDefs=[
-  {key:'gallery_1',emoji:'🏭',label:'Substation'},
-  {key:'gallery_2',emoji:'⚡',label:'Switchyard'},
-  {key:'gallery_3',emoji:'🔌',label:'Transformer'},
-  {key:'gallery_4',emoji:'🖥️',label:'Control Room'},
-  {key:'gallery_5',emoji:'📊',label:'Panels'},
-  {key:'gallery_6',emoji:'⚙️',label:'Circuit Breakers'},
+// Unlimited photos: the list itself lives in localStorage under 'gallery' (array of {id,label,emoji}),
+// same pattern as feeders/transformers/equipment. The admin panel can push new entries with a new
+// unique id, then save the matching photo under img_gallery_<id> using window/localStorage.setItem.
+const defaultGallery=[
+  {id:'1',emoji:'🏭',label:'Substation'},
+  {id:'2',emoji:'⚡',label:'Switchyard'},
+  {id:'3',emoji:'🔌',label:'Transformer'},
+  {id:'4',emoji:'🖥️',label:'Control Room'},
+  {id:'5',emoji:'📊',label:'Panels'},
+  {id:'6',emoji:'⚙️',label:'Circuit Breakers'},
 ];
+let galleryItems=getData('gallery',defaultGallery);
 function renderGallery(){
-  document.getElementById('galleryGrid').innerHTML=galleryDefs.map(g=>{
-    const data=getImg(g.key);
+  galleryItems=getData('gallery',defaultGallery);
+  document.getElementById('galleryGrid').innerHTML=galleryItems.map(g=>{
+    const data=getImg('gallery_'+g.id);
     return `<div class="gallery-item">
-      <span class="gallery-emoji">${g.emoji}</span>
+      <span class="gallery-emoji">${g.emoji||'📷'}</span>
       ${data?`<img class="gallery-photo" src="${data}" alt="${g.label}" loading="lazy" onerror="this.style.display='none'">`:'' }
       <div class="gallery-overlay">${g.label}</div>
     </div>`;
