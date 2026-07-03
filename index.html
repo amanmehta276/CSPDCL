@@ -282,7 +282,7 @@
         <div class="stat-card"><div class="stat-label">Incoming Feeders</div><div class="stat-value text-primary" id="dc-incoming">3</div><div class="stat-info">33 kV Incoming</div></div>
         <div class="stat-card"><div class="stat-label">Outgoing Feeders</div><div class="stat-value text-success" id="dc-outgoing">13</div><div class="stat-info">33kV + 11kV</div></div>
         <div class="stat-card"><div class="stat-label">Transformers</div><div class="stat-value text-primary" id="dc-tx">2</div><div class="stat-info">2 × 5 MVA, ON</div></div>
-        <div class="stat-card"><div class="stat-label">Equipment</div><div class="stat-value" id="dc-eq">24</div><div class="stat-info">CB, CT, PT, LA</div></div>
+        <div class="stat-card"><div class="stat-label">Equipment</div><div class="stat-value" id="dc-eq">18</div><div class="stat-info">CB, CT, PT, LA</div></div>
         <div class="stat-card"><div class="stat-label">System Status</div><div class="stat-value text-success" style="font-size:18px">NORMAL</div><div class="stat-info">All systems operational</div></div>
       </div>
 
@@ -530,7 +530,7 @@
           <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--primary)">Substation Summary</div>
           <p style="font-size:13.5px;line-height:1.7;color:#475569">The Nawapara Rajim 33/11 kV Substation is operated by Chhattisgarh State Power Distribution Company Limited (CSPDCL) under the Rajim Division, Raipur Circle. Commissioned in 2010, it plays a vital role in distributing power to Nawapara Rajim and surrounding rural and urban areas.</p>
           <br>
-          <p style="font-size:13.5px;line-height:1.7;color:#475569">The substation is equipped with two 5 MVA power transformers operating at 33/11 kV, with three incoming feeders sourced from major grid substations and thirteen outgoing feeders serving residential, agricultural, commercial, and industrial consumers.</p>
+          <p style="font-size:13.5px;line-height:1.7;color:#475569">The substation is equipped with two 5 MVA power transformers operating at 33/11 kV, with two incoming feeders at 33 kV (one continuous incomer and one feedback incomer), and twelve outgoing feeders — four at 33 kV and eight at 11 kV — serving residential, agricultural, commercial, and industrial consumers.</p>
           <br>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
             <div style="background:#f0f9ff;border-radius:6px;padding:12px;text-align:center">
@@ -538,7 +538,7 @@
               <div style="font-size:11px;color:#64748b">Total Capacity</div>
             </div>
             <div style="background:#f0fdf4;border-radius:6px;padding:12px;text-align:center">
-              <div style="font-size:22px;font-weight:700;color:var(--success)">13</div>
+              <div style="font-size:22px;font-weight:700;color:var(--success)">12</div>
               <div style="font-size:11px;color:#64748b">Outgoing Feeders</div>
             </div>
           </div>
@@ -633,15 +633,17 @@ function modalImgHTML(key, fallbackEmoji, bg) {
 }
 
 // ============ DATA ============
+// Per CSPDCL Nawapara-Rajim Vocational Training Report:
+// 2 incomers (33 kV) — 1st continuous, 2nd feedback
+// 12 feeders total — 4 at 33 kV, 8 at 11 kV
+// 2 power transformers, 5 MVA each
 const defaultFeeders = [
-  {id:'I-ABH',code:'I.ABHANPUR',name:'Abhanpur Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'280A',load:'65%',area:'Abhanpur GSS',source:'Abhanpur 132/33 kV GSS',destination:'33 kV Bus',length:'18 km',conductor:'Panther ACSR',consumers:'—',pf:'0.92',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Primary source'},
-  {id:'I-PAR',code:'I.PARAGAON',name:'Paragaon Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'210A',load:'48%',area:'Paragaon GSS',source:'Paragaon 132/33 kV GSS',destination:'33 kV Bus',length:'22 km',conductor:'Panther ACSR',consumers:'—',pf:'0.91',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Alternate source'},
-  {id:'I-ASH',code:'I.ASHRAM',name:'Ashram Incoming',type:'incoming',voltage:'33 kV',status:'OFF',current:'0A',load:'0%',area:'Ashram GSS',source:'Ashram 132/33 kV GSS',destination:'33 kV Bus',length:'14 km',conductor:'Panther ACSR',consumers:'—',pf:'—',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Standby source'},
+  {id:'I-ABH',code:'I.ABHANPUR',name:'Abhanpur Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'280A',load:'65%',area:'Abhanpur GSS',source:'Abhanpur 132/33 kV GSS',destination:'33 kV Bus',length:'18 km',conductor:'Panther ACSR',consumers:'—',pf:'0.92',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Continuous incomer'},
+  {id:'I-PAR',code:'I.PARAGAON',name:'Paragaon Incoming',type:'incoming',voltage:'33 kV',status:'ON',current:'210A',load:'48%',area:'Paragaon GSS',source:'Paragaon 132/33 kV GSS',destination:'33 kV Bus',length:'22 km',conductor:'Panther ACSR',consumers:'—',pf:'0.91',cbModel:'ABB VCB',ctRatio:'400/1',ptRatio:'33000/110',la:'36 kV',remarks:'Feedback incomer'},
   {id:'F-09',code:'F-09',name:'Gobra',type:'33kv',voltage:'33 kV',status:'ON',current:'95A',load:'55%',area:'Gobra Area',source:'33 kV Bus',destination:'Gobra',length:'12 km',conductor:'Rabbit ACSR',consumers:'1240',pf:'0.89',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Rural feeder'},
   {id:'F-10',code:'F-10',name:'Abhanpur',type:'33kv',voltage:'33 kV',status:'ON',current:'110A',load:'62%',area:'Abhanpur Area',source:'33 kV Bus',destination:'Abhanpur',length:'8 km',conductor:'Rabbit ACSR',consumers:'2100',pf:'0.91',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Town feeder'},
   {id:'F-11',code:'F-11',name:'Hanuman Agro',type:'33kv',voltage:'33 kV',status:'ON',current:'78A',load:'45%',area:'Agro Belt',source:'33 kV Bus',destination:'Hanuman Agro',length:'15 km',conductor:'Rabbit ACSR',consumers:'890',pf:'0.87',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Agricultural feeder'},
   {id:'F-12',code:'F-12',name:'Champaran (33kV)',type:'33kv',voltage:'33 kV',status:'OFF',current:'0A',load:'0%',area:'Champaran',source:'33 kV Bus',destination:'Champaran',length:'19 km',conductor:'Rabbit ACSR',consumers:'1560',pf:'—',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Under maintenance'},
-  {id:'F-13',code:'F-13',name:'Rice Mill',type:'33kv',voltage:'33 kV',status:'ON',current:'130A',load:'70%',area:'Industrial Area',source:'33 kV Bus',destination:'Rice Mill',length:'6 km',conductor:'Dog ACSR',consumers:'320',pf:'0.93',cbModel:'Siemens VCB',ctRatio:'200/1',ptRatio:'33000/110',la:'36 kV',remarks:'Industrial feeder'},
   {id:'F-01',code:'F-01',name:'Pump',type:'11kv',voltage:'11 kV',status:'ON',current:'85A',load:'58%',area:'Pump Area',source:'11 kV Bus',destination:'Pump Station',length:'4 km',conductor:'Rabbit ACSR',consumers:'340',pf:'0.88',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Irrigation pumps'},
   {id:'F-02',code:'F-02',name:'Pond',type:'11kv',voltage:'11 kV',status:'ON',current:'62A',load:'42%',area:'Pond Area',source:'11 kV Bus',destination:'Pond Colony',length:'3.5 km',conductor:'Rabbit ACSR',consumers:'780',pf:'0.90',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Residential'},
   {id:'F-03',code:'F-03',name:'Champaran (11kV)',type:'11kv',voltage:'11 kV',status:'ON',current:'95A',load:'64%',area:'Champaran',source:'11 kV Bus',destination:'Champaran Town',length:'7 km',conductor:'Weasel ACSR',consumers:'1900',pf:'0.91',cbModel:'L&T VCB',ctRatio:'150/1',ptRatio:'11000/110',la:'12 kV',remarks:'Mixed load'},
@@ -658,20 +660,18 @@ const defaultTransformers = [
 const defaultEquipment = [
   {cat:'CB',id:'CB-01',name:'Incoming CB — Abhanpur',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
   {cat:'CB',id:'CB-02',name:'Incoming CB — Paragaon',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
-  {cat:'CB',id:'CB-03',name:'Incoming CB — Ashram',make:'ABB',model:'VD4 12',voltage:'33 kV',rating:'400A',year:'2010',status:'Healthy'},
   {cat:'CB',id:'CB-04',name:'T1 HV CB',make:'Siemens',model:'3AH3',voltage:'33 kV',rating:'630A',year:'2010',status:'Healthy'},
   {cat:'CB',id:'CB-05',name:'T2 HV CB',make:'Siemens',model:'3AH3',voltage:'33 kV',rating:'630A',year:'2010',status:'Healthy'},
   {cat:'CB',id:'CB-06',name:'T1 LV CB',make:'L&T',model:'Unigear ZS1',voltage:'11 kV',rating:'800A',year:'2010',status:'Healthy'},
   {cat:'CB',id:'CB-07',name:'T2 LV CB',make:'L&T',model:'Unigear ZS1',voltage:'11 kV',rating:'800A',year:'2010',status:'Faulty'},
-  {cat:'CT',id:'CT-01',name:'CT — Incoming Abhanpur',make:'BHEL',model:'EMU-33',voltage:'33 kV',rating:'400/1A',year:'2010',status:'Healthy'},
-  {cat:'CT',id:'CT-02',name:'CT — T1 HV',make:'BHEL',model:'EMU-33',voltage:'33 kV',rating:'200/1A',year:'2010',status:'Healthy'},
-  {cat:'CT',id:'CT-03',name:'CT — T1 LV',make:'BHEL',model:'EMU-11',voltage:'11 kV',rating:'800/1A',year:'2010',status:'Healthy'},
-  {cat:'CT',id:'CT-04',name:'CT — Bus PT',make:'BHEL',model:'EMU-11',voltage:'11 kV',rating:'600/1A',year:'2010',status:'Healthy'},
-  {cat:'PT',id:'PT-01',name:'PT — 33 kV Bus',make:'BHEL',model:'EPT-33',voltage:'33/√3 kV',rating:'50 VA',year:'2010',status:'Healthy'},
-  {cat:'PT',id:'PT-02',name:'PT — 11 kV Bus',make:'BHEL',model:'EPT-11',voltage:'11/√3 kV',rating:'50 VA',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-01',name:'CT — Incoming Abhanpur',make:'BHEL',model:'EMU-33',voltage:'33 kV',rating:'400/1A, Cl. 0.5',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-02',name:'CT — T1 HV',make:'BHEL',model:'EMU-33',voltage:'33 kV',rating:'200/1A, Cl. 0.5',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-03',name:'CT — T1 LV',make:'BHEL',model:'EMU-11',voltage:'11 kV',rating:'800/1A, Cl. 0.5',year:'2010',status:'Healthy'},
+  {cat:'CT',id:'CT-04',name:'CT — Bus PT',make:'BHEL',model:'EMU-11',voltage:'11 kV',rating:'600/1A, Cl. 0.5',year:'2010',status:'Healthy'},
+  {cat:'PT',id:'PT-01',name:'PT — 33 kV Bus',make:'BHEL',model:'EPT-33',voltage:'33/√3 kV',rating:'50 VA, Cl. 1.0',year:'2010',status:'Healthy'},
+  {cat:'PT',id:'PT-02',name:'PT — 11 kV Bus',make:'BHEL',model:'EPT-11',voltage:'11/√3 kV',rating:'50 VA, Cl. 1.0',year:'2010',status:'Healthy'},
   {cat:'LA',id:'LA-01',name:'LA — Incoming Abhanpur',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
   {cat:'LA',id:'LA-02',name:'LA — Incoming Paragaon',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
-  {cat:'LA',id:'LA-03',name:'LA — Incoming Ashram',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
   {cat:'LA',id:'LA-04',name:'LA — T1 HV',make:'Elpro',model:'ZnO Polymer',voltage:'33 kV',rating:'36 kV',year:'2010',status:'Healthy'},
   {cat:'LA',id:'LA-05',name:'LA — 11 kV Bus',make:'Elpro',model:'ZnO Polymer',voltage:'11 kV',rating:'12 kV',year:'2010',status:'Healthy'},
 ];
