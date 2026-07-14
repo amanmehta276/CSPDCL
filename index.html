@@ -89,7 +89,7 @@
   .sld-container{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;overflow:auto;-webkit-overflow-scrolling:touch;cursor:grab}
   .sld-container:active{cursor:grabbing}
   .sld-hint{display:none;font-size:12px;color:#64748b;margin-bottom:8px;text-align:center;background:#f0f9ff;padding:6px 12px;border-radius:6px;border:1px solid #bae6fd}
-  .sld-svg{width:780px;min-width:780px;display:block;touch-action:pan-x pan-y;transform-origin:0 0}
+  .sld-svg{width:1040px;min-width:1040px;display:block;touch-action:pan-x pan-y;transform-origin:0 0}
   @media(max-width:768px){.sld-hint{display:block}.sld-container{padding:12px;cursor:default}}
   .sld-elem{cursor:pointer}
   .sld-elem:hover rect,.sld-elem:hover line{opacity:.8}
@@ -167,6 +167,27 @@
   /* ============ SIDEBAR OVERLAY ============ */
   .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150}
   .sidebar-overlay.open{display:block}
+
+  /* ============ CREDIT / ABOUT PORTAL ============ */
+  .credit-card{background:linear-gradient(135deg,#0D1B2E 0%,#1e3a5f 100%);border-radius:8px;padding:20px;color:#fff;margin-top:16px}
+  .credit-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .credit-photo-wrap{width:64px;height:64px;border-radius:50%;flex-shrink:0;position:relative;border:2px solid rgba(255,255,255,.25);overflow:hidden;background:#1e3a5f}
+  .credit-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+  .credit-photo-fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#7ec4ff}
+  .credit-icon{width:18px;height:18px;flex-shrink:0}
+  .credit-title{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#7ec4ff;margin-bottom:2px}
+  .credit-name{font-size:16px;font-weight:700;color:#fff}
+  .credit-role{font-size:12px;color:#9db9d6;margin-top:2px}
+  .credit-card p{font-size:13px;line-height:1.75;color:#b9cee4}
+  .credit-card a{color:#7ec4ff;text-decoration:none;font-weight:600}
+  .credit-card a:hover{text-decoration:underline}
+  .credit-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .credit-badge{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:5px 12px;border-radius:20px;font-size:11px;color:#cfe3f7}
+  .credit-badge svg{width:13px;height:13px;flex-shrink:0}
+  .sidebar-credit{padding:14px 16px;font-size:10.5px;color:#5c7fa3;border-top:1px solid #1e3a5f;line-height:1.5;display:flex;align-items:center;gap:8px}
+  .sidebar-credit .sc-photo{width:26px;height:26px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid #1e3a5f}
+  .sidebar-credit a{color:#7ec4ff;text-decoration:none}
+  .sidebar-credit a:hover{text-decoration:underline}
 
   /* ============ UTILITY ============ */
   .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -246,6 +267,13 @@
     <div class="nav-item" onclick="showSection('reports',event)"><span class="icon">📋</span> Reports</div>
   </nav>
   <div style="padding:16px;font-size:11px;color:#4a6580;border-top:1px solid #1e3a5f">CSPDCL · Rajim Division</div>
+  <div class="sidebar-credit">
+    <span class="sc-photo-wrap" style="width:26px;height:26px;border-radius:50%;flex-shrink:0;position:relative;overflow:hidden;background:#1e3a5f;border:1px solid #1e3a5f;display:flex;align-items:center;justify-content:center">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#7ec4ff" stroke-width="1.8" width="15" height="15"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <img class="sc-photo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" src="images/vyom.jpg" alt="Vyom" onerror="this.style.display='none'">
+    </span>
+    <div>Built by <a href="https://byvyomtech.netlify.app" target="_blank" rel="noopener">VyomsTech</a><br>Aman Mehta · EEE Vocational Project</div>
+  </div>
 </aside>
 
 <div class="main">
@@ -305,156 +333,201 @@
       <div class="section-sub">Nawapara Rajim 33/11 kV Substation — Click elements for details</div>
       <div class="sld-hint">📱 Pinch to zoom · Scroll to pan</div>
       <div class="sld-container" id="sldContainer">
-        <svg class="sld-svg" viewBox="0 0 780 600" xmlns="http://www.w3.org/2000/svg">
+        <svg class="sld-svg" viewBox="0 0 1040 630" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#005BAC"/>
             </marker>
+            <marker id="arrowOut" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#EA580C"/>
+            </marker>
           </defs>
-          <rect width="780" height="600" fill="#f8fafc"/>
-          <text x="390" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#0D1B2E">NAWAPARA RAJIM 33/11 kV SUBSTATION — SINGLE LINE DIAGRAM</text>
-          <text x="390" y="44" text-anchor="middle" font-size="10" fill="#64748b">CSPDCL · Rajim Division · Raipur Circle</text>
-          <rect x="80" y="200" width="620" height="10" fill="#005BAC" rx="2"/>
-          <text x="40" y="208" font-size="11" font-weight="700" fill="#005BAC">33 kV BUS</text>
+          <rect width="1040" height="630" fill="#f8fafc"/>
+          <text x="520" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#0D1B2E">NAWAPARA RAJIM 33/11 kV SUBSTATION — SINGLE LINE DIAGRAM</text>
+          <text x="520" y="42" text-anchor="middle" font-size="10" fill="#64748b">CSPDCL · Rajim Division · Raipur Circle</text>
+
+          <!-- ============ 33 kV BUS ============ -->
+          <rect x="50" y="200" width="950" height="10" fill="#005BAC" rx="2"/>
+          <text x="10" y="208" font-size="11" font-weight="700" fill="#005BAC">33 kV BUS</text>
+
+          <!-- ============ INCOMING (above bus) ============ -->
           <g class="sld-elem" onclick="showSLDInfo('I.ABHANPUR')" style="cursor:pointer">
-            <rect x="90" y="80" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
-            <text x="140" y="100" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.ABHANPUR</text>
-            <line x1="140" y1="110" x2="140" y2="200" stroke="#005BAC" stroke-width="2"/>
-            <rect x="128" y="150" width="24" height="14" rx="3" fill="#16A34A"/>
-            <text x="140" y="161" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <text x="140" y="72" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+            <text x="150" y="68" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+            <rect x="100" y="76" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
+            <text x="150" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.ABHANPUR</text>
+            <line x1="150" y1="106" x2="150" y2="145" stroke="#005BAC" stroke-width="2"/>
+            <rect x="138" y="145" width="24" height="14" rx="3" fill="#16A34A"/>
+            <text x="150" y="155" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <line x1="150" y1="159" x2="150" y2="199" stroke="#005BAC" stroke-width="2" marker-end="url(#arrow)"/>
           </g>
           <g class="sld-elem" onclick="showSLDInfo('I.PARAGAON')" style="cursor:pointer">
-            <rect x="220" y="80" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
-            <text x="270" y="100" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.PARAGAON</text>
-            <line x1="270" y1="110" x2="270" y2="200" stroke="#005BAC" stroke-width="2"/>
-            <rect x="258" y="150" width="24" height="14" rx="3" fill="#16A34A"/>
-            <text x="270" y="161" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <text x="270" y="72" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+            <text x="430" y="68" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+            <rect x="380" y="76" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
+            <text x="430" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.PARAGAON</text>
+            <line x1="430" y1="106" x2="430" y2="145" stroke="#005BAC" stroke-width="2"/>
+            <rect x="418" y="145" width="24" height="14" rx="3" fill="#16A34A"/>
+            <text x="430" y="155" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <line x1="430" y1="159" x2="430" y2="199" stroke="#005BAC" stroke-width="2" marker-end="url(#arrow)"/>
           </g>
           <g class="sld-elem" onclick="showSLDInfo('I.ASHRAM')" style="cursor:pointer">
-            <rect x="350" y="80" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
-            <text x="400" y="100" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.ASHRAM</text>
-            <line x1="400" y1="110" x2="400" y2="200" stroke="#005BAC" stroke-width="2"/>
-            <rect x="388" y="150" width="24" height="14" rx="3" fill="#16A34A"/>
-            <text x="400" y="161" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <text x="400" y="72" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+            <text x="710" y="68" text-anchor="middle" font-size="9" fill="#64748b">132/33kV GSS</text>
+            <rect x="660" y="76" width="100" height="30" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1.5"/>
+            <text x="710" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#005BAC">I.ASHRAM</text>
+            <line x1="710" y1="106" x2="710" y2="145" stroke="#005BAC" stroke-width="2"/>
+            <rect x="698" y="145" width="24" height="14" rx="3" fill="#16A34A"/>
+            <text x="710" y="155" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <line x1="710" y1="159" x2="710" y2="199" stroke="#005BAC" stroke-width="2" marker-end="url(#arrow)"/>
           </g>
-          <g class="sld-elem" onclick="showSLDInfo('T1')" style="cursor:pointer">
-            <line x1="560" y1="200" x2="560" y2="230" stroke="#1E293B" stroke-width="2"/>
-            <circle cx="560" cy="248" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
-            <text x="560" y="253" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">T1</text>
-            <circle cx="560" cy="285" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
-            <text x="560" y="290" text-anchor="middle" font-size="10" fill="#64748b">5MVA</text>
-            <line x1="560" y1="303" x2="560" y2="330" stroke="#1E293B" stroke-width="2"/>
-            <text x="560" y="240" text-anchor="start" font-size="9" fill="#64748b" dx="22">33/11kV</text>
-          </g>
-          <g class="sld-elem" onclick="showSLDInfo('T2')" style="cursor:pointer">
-            <line x1="660" y1="200" x2="660" y2="230" stroke="#1E293B" stroke-width="2"/>
-            <circle cx="660" cy="248" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
-            <text x="660" y="253" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">T2</text>
-            <circle cx="660" cy="285" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
-            <text x="660" y="290" text-anchor="middle" font-size="10" fill="#64748b">5MVA</text>
-            <line x1="660" y1="303" x2="660" y2="330" stroke="#1E293B" stroke-width="2"/>
-          </g>
-          <rect x="80" y="330" width="620" height="10" fill="#16A34A" rx="2"/>
-          <text x="40" y="338" font-size="11" font-weight="700" fill="#16A34A">11 kV BUS</text>
-          <text x="100" y="190" font-size="9" fill="#DC2626" font-weight="600">33kV OUT→</text>
-          <g class="sld-elem" onclick="showSLDInfo('F-01 Pump')" style="cursor:pointer">
-            <line x1="100" y1="340" x2="100" y2="380" stroke="#16A34A" stroke-width="1.5"/>
-            <rect x="83" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
-            <text x="100" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <rect x="78" y="380" width="44" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
-            <text x="100" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-01</text>
-            <text x="100" y="404" text-anchor="middle" font-size="8" fill="#64748b">Pump</text>
-          </g>
-          <g class="sld-elem" onclick="showSLDInfo('F-02 Pond')" style="cursor:pointer">
-            <line x1="175" y1="340" x2="175" y2="380" stroke="#16A34A" stroke-width="1.5"/>
-            <rect x="158" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
-            <text x="175" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <rect x="153" y="380" width="44" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
-            <text x="175" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-02</text>
-            <text x="175" y="404" text-anchor="middle" font-size="8" fill="#64748b">Pond</text>
-          </g>
-          <g class="sld-elem" onclick="showSLDInfo('F-03 Champaran')" style="cursor:pointer">
-            <line x1="250" y1="340" x2="250" y2="380" stroke="#16A34A" stroke-width="1.5"/>
-            <rect x="233" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
-            <text x="250" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <rect x="225" y="380" width="50" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
-            <text x="250" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-03</text>
-            <text x="250" y="404" text-anchor="middle" font-size="8" fill="#64748b">Champaran</text>
-          </g>
-          <g class="sld-elem" onclick="showSLDInfo('F-04 Hightech')" style="cursor:pointer">
-            <line x1="325" y1="340" x2="325" y2="380" stroke="#16A34A" stroke-width="1.5"/>
-            <rect x="308" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
-            <text x="325" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <rect x="303" y="380" width="44" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
-            <text x="325" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-04</text>
-            <text x="325" y="404" text-anchor="middle" font-size="8" fill="#64748b">Hightech</text>
-          </g>
-          <g class="sld-elem" onclick="showSLDInfo('F-05 New Town')" style="cursor:pointer">
-            <line x1="400" y1="340" x2="400" y2="380" stroke="#16A34A" stroke-width="1.5"/>
-            <rect x="383" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
-            <text x="400" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <rect x="376" y="380" width="48" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
-            <text x="400" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-05</text>
-            <text x="400" y="404" text-anchor="middle" font-size="8" fill="#64748b">New Town</text>
-          </g>
-          <g class="sld-elem" onclick="showSLDInfo('F-06 Rajim')" style="cursor:pointer">
-            <line x1="475" y1="340" x2="475" y2="380" stroke="#16A34A" stroke-width="1.5"/>
-            <rect x="458" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
-            <text x="475" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <rect x="453" y="380" width="44" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
-            <text x="475" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-06</text>
-            <text x="475" y="404" text-anchor="middle" font-size="8" fill="#64748b">Rajim</text>
-          </g>
-          <g class="sld-elem" onclick="showSLDInfo('F-07 Ganj Road')" style="cursor:pointer">
-            <line x1="550" y1="340" x2="550" y2="380" stroke="#16A34A" stroke-width="1.5"/>
-            <rect x="533" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
-            <text x="550" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <rect x="524" y="380" width="52" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
-            <text x="550" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-07</text>
-            <text x="550" y="404" text-anchor="middle" font-size="8" fill="#64748b">Ganj Road</text>
-          </g>
-          <g class="sld-elem" onclick="showSLDInfo('F-08 Nawapara')" style="cursor:pointer">
-            <line x1="640" y1="340" x2="640" y2="380" stroke="#16A34A" stroke-width="1.5"/>
-            <rect x="623" y="355" width="34" height="14" rx="3" fill="#16A34A"/>
-            <text x="640" y="365" text-anchor="middle" font-size="9" fill="#fff">CB</text>
-            <rect x="616" y="380" width="48" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
-            <text x="640" y="394" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-08</text>
-            <text x="640" y="404" text-anchor="middle" font-size="8" fill="#64748b">Nawapara</text>
-          </g>
-          <rect x="80" y="440" width="620" height="140" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
-          <text x="100" y="462" font-size="12" font-weight="700" fill="#005BAC">33 kV OUTGOING FEEDERS</text>
+
+          <!-- ============ 33 kV OUTGOING FEEDERS — tapped directly off the bus, arrow shows power leaving ============ -->
           <g class="sld-elem" onclick="showSLDInfo('F-09 Gobra')" style="cursor:pointer">
-            <rect x="100" y="470" width="100" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
-            <text x="150" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-09 Gobra</text>
+            <line x1="100" y1="210" x2="100" y2="224" stroke="#EA580C" stroke-width="2.5" marker-end="url(#arrowOut)"/>
+            <rect x="88" y="224" width="24" height="14" rx="3" fill="#EA580C"/>
+            <text x="100" y="234" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <line x1="100" y1="238" x2="100" y2="254" stroke="#EA580C" stroke-width="1.5"/>
+            <rect x="52" y="254" width="96" height="30" rx="4" fill="#ffedd5" stroke="#EA580C" stroke-width="1.5"/>
+            <text x="100" y="268" text-anchor="middle" font-size="10" font-weight="700" fill="#C2410C">F-09</text>
+            <text x="100" y="280" text-anchor="middle" font-size="8.5" fill="#9a3412">Gobra</text>
           </g>
           <g class="sld-elem" onclick="showSLDInfo('F-10 Abhanpur')" style="cursor:pointer">
-            <rect x="215" y="470" width="110" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
-            <text x="270" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-10 Abhanpur</text>
+            <line x1="270" y1="210" x2="270" y2="224" stroke="#EA580C" stroke-width="2.5" marker-end="url(#arrowOut)"/>
+            <rect x="258" y="224" width="24" height="14" rx="3" fill="#EA580C"/>
+            <text x="270" y="234" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <line x1="270" y1="238" x2="270" y2="254" stroke="#EA580C" stroke-width="1.5"/>
+            <rect x="222" y="254" width="96" height="30" rx="4" fill="#ffedd5" stroke="#EA580C" stroke-width="1.5"/>
+            <text x="270" y="268" text-anchor="middle" font-size="10" font-weight="700" fill="#C2410C">F-10</text>
+            <text x="270" y="280" text-anchor="middle" font-size="8.5" fill="#9a3412">Abhanpur</text>
           </g>
           <g class="sld-elem" onclick="showSLDInfo('F-11 Hanuman Agro')" style="cursor:pointer">
-            <rect x="340" y="470" width="120" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
-            <text x="400" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-11 Hanuman Agro</text>
+            <line x1="440" y1="210" x2="440" y2="224" stroke="#EA580C" stroke-width="2.5" marker-end="url(#arrowOut)"/>
+            <rect x="428" y="224" width="24" height="14" rx="3" fill="#EA580C"/>
+            <text x="440" y="234" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <line x1="440" y1="238" x2="440" y2="254" stroke="#EA580C" stroke-width="1.5"/>
+            <rect x="392" y="254" width="96" height="30" rx="4" fill="#ffedd5" stroke="#EA580C" stroke-width="1.5"/>
+            <text x="440" y="268" text-anchor="middle" font-size="10" font-weight="700" fill="#C2410C">F-11</text>
+            <text x="440" y="280" text-anchor="middle" font-size="8.5" fill="#9a3412">Hanuman Agro</text>
           </g>
           <g class="sld-elem" onclick="showSLDInfo('F-12 Champaran')" style="cursor:pointer">
-            <rect x="475" y="470" width="115" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
-            <text x="532" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-12 Champaran</text>
+            <line x1="610" y1="210" x2="610" y2="224" stroke="#EA580C" stroke-width="2.5" marker-end="url(#arrowOut)"/>
+            <rect x="598" y="224" width="24" height="14" rx="3" fill="#EA580C"/>
+            <text x="610" y="234" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <line x1="610" y1="238" x2="610" y2="254" stroke="#EA580C" stroke-width="1.5"/>
+            <rect x="562" y="254" width="96" height="30" rx="4" fill="#ffedd5" stroke="#EA580C" stroke-width="1.5"/>
+            <text x="610" y="268" text-anchor="middle" font-size="10" font-weight="700" fill="#C2410C">F-12</text>
+            <text x="610" y="280" text-anchor="middle" font-size="8.5" fill="#9a3412">Champaran</text>
           </g>
           <g class="sld-elem" onclick="showSLDInfo('F-13 Rice Mill')" style="cursor:pointer">
-            <rect x="605" y="470" width="80" height="24" rx="4" fill="#dbeafe" stroke="#005BAC" stroke-width="1"/>
-            <text x="645" y="486" text-anchor="middle" font-size="10" font-weight="600" fill="#005BAC">F-13 Rice Mill</text>
+            <line x1="780" y1="210" x2="780" y2="224" stroke="#EA580C" stroke-width="2.5" marker-end="url(#arrowOut)"/>
+            <rect x="768" y="224" width="24" height="14" rx="3" fill="#EA580C"/>
+            <text x="780" y="234" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <line x1="780" y1="238" x2="780" y2="254" stroke="#EA580C" stroke-width="1.5"/>
+            <rect x="732" y="254" width="96" height="30" rx="4" fill="#ffedd5" stroke="#EA580C" stroke-width="1.5"/>
+            <text x="780" y="268" text-anchor="middle" font-size="10" font-weight="700" fill="#C2410C">F-13</text>
+            <text x="780" y="280" text-anchor="middle" font-size="8.5" fill="#9a3412">Rice Mill</text>
           </g>
-          <rect x="100" y="505" width="10" height="10" fill="#005BAC" rx="2"/>
-          <text x="116" y="515" font-size="9" fill="#64748b">33 kV Feeder</text>
-          <rect x="200" y="505" width="10" height="10" fill="#16A34A" rx="2"/>
-          <text x="216" y="515" font-size="9" fill="#64748b">11 kV Feeder</text>
-          <rect x="300" y="505" width="10" height="10" fill="#D97706" rx="2"/>
-          <text x="316" y="515" font-size="9" fill="#64748b">Transformer</text>
-          <circle cx="405" cy="510" r="6" fill="none" stroke="#16A34A" stroke-width="1.5"/>
-          <text x="416" y="515" font-size="9" fill="#64748b">Winding</text>
-          <text x="390" y="555" text-anchor="middle" font-size="9" fill="#94a3b8">Click on any element for details | CSPDCL — Nawapara Rajim Substation</text>
+
+          <!-- ============ TRANSFORMERS ============ -->
+          <g class="sld-elem" onclick="showSLDInfo('T1')" style="cursor:pointer">
+            <line x1="880" y1="210" x2="880" y2="230" stroke="#1E293B" stroke-width="2"/>
+            <circle cx="880" cy="248" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
+            <text x="880" y="253" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">T1</text>
+            <circle cx="880" cy="285" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
+            <text x="880" y="290" text-anchor="middle" font-size="10" fill="#64748b">5MVA</text>
+            <line x1="880" y1="303" x2="880" y2="345" stroke="#1E293B" stroke-width="2"/>
+            <text x="904" y="222" text-anchor="start" font-size="9" fill="#64748b">33/11kV</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('T2')" style="cursor:pointer">
+            <line x1="970" y1="210" x2="970" y2="230" stroke="#1E293B" stroke-width="2"/>
+            <circle cx="970" cy="248" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
+            <text x="970" y="253" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">T2</text>
+            <circle cx="970" cy="285" r="18" fill="none" stroke="#D97706" stroke-width="2.5"/>
+            <text x="970" y="290" text-anchor="middle" font-size="10" fill="#64748b">5MVA</text>
+            <line x1="970" y1="303" x2="970" y2="345" stroke="#1E293B" stroke-width="2"/>
+          </g>
+
+          <!-- ============ 11 kV BUS ============ -->
+          <rect x="50" y="345" width="950" height="10" fill="#16A34A" rx="2"/>
+          <text x="10" y="353" font-size="11" font-weight="700" fill="#16A34A">11 kV BUS</text>
+
+          <!-- ============ 11 kV OUTGOING FEEDERS ============ -->
+          <g class="sld-elem" onclick="showSLDInfo('F-01 Pump')" style="cursor:pointer">
+            <line x1="90" y1="355" x2="90" y2="390" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="73" y="390" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="90" y="400" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="58" y="410" width="64" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="90" y="424" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-01</text>
+            <text x="90" y="434" text-anchor="middle" font-size="8" fill="#64748b">Pump</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-02 Pond')" style="cursor:pointer">
+            <line x1="215" y1="355" x2="215" y2="390" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="198" y="390" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="215" y="400" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="183" y="410" width="64" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="215" y="424" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-02</text>
+            <text x="215" y="434" text-anchor="middle" font-size="8" fill="#64748b">Pond</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-03 Champaran')" style="cursor:pointer">
+            <line x1="340" y1="355" x2="340" y2="390" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="323" y="390" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="340" y="400" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="308" y="410" width="64" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="340" y="424" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-03</text>
+            <text x="340" y="434" text-anchor="middle" font-size="8" fill="#64748b">Champaran</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-04 Hightech')" style="cursor:pointer">
+            <line x1="465" y1="355" x2="465" y2="390" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="448" y="390" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="465" y="400" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="433" y="410" width="64" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="465" y="424" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-04</text>
+            <text x="465" y="434" text-anchor="middle" font-size="8" fill="#64748b">Hightech</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-05 New Town')" style="cursor:pointer">
+            <line x1="590" y1="355" x2="590" y2="390" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="573" y="390" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="590" y="400" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="558" y="410" width="64" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="590" y="424" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-05</text>
+            <text x="590" y="434" text-anchor="middle" font-size="8" fill="#64748b">New Town</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-06 Rajim')" style="cursor:pointer">
+            <line x1="715" y1="355" x2="715" y2="390" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="698" y="390" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="715" y="400" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="683" y="410" width="64" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="715" y="424" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-06</text>
+            <text x="715" y="434" text-anchor="middle" font-size="8" fill="#64748b">Rajim</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-07 Ganj Road')" style="cursor:pointer">
+            <line x1="840" y1="355" x2="840" y2="390" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="823" y="390" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="840" y="400" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="808" y="410" width="64" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="840" y="424" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-07</text>
+            <text x="840" y="434" text-anchor="middle" font-size="8" fill="#64748b">Ganj Road</text>
+          </g>
+          <g class="sld-elem" onclick="showSLDInfo('F-08 Nawapara')" style="cursor:pointer">
+            <line x1="965" y1="355" x2="965" y2="390" stroke="#16A34A" stroke-width="1.5"/>
+            <rect x="948" y="390" width="34" height="14" rx="3" fill="#16A34A"/>
+            <text x="965" y="400" text-anchor="middle" font-size="9" fill="#fff">CB</text>
+            <rect x="933" y="410" width="64" height="28" rx="4" fill="#dcfce7" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="965" y="424" text-anchor="middle" font-size="9" font-weight="700" fill="#16A34A">F-08</text>
+            <text x="965" y="434" text-anchor="middle" font-size="8" fill="#64748b">Nawapara</text>
+          </g>
+
+          <!-- ============ LEGEND ============ -->
+          <rect x="60" y="470" width="10" height="10" fill="#005BAC" rx="2"/>
+          <text x="76" y="480" font-size="9" fill="#64748b">33 kV Incoming</text>
+          <rect x="200" y="470" width="10" height="10" fill="#EA580C" rx="2"/>
+          <text x="216" y="480" font-size="9" fill="#64748b">33 kV Outgoing</text>
+          <rect x="345" y="470" width="10" height="10" fill="#16A34A" rx="2"/>
+          <text x="361" y="480" font-size="9" fill="#64748b">11 kV Feeder</text>
+          <rect x="475" y="470" width="10" height="10" fill="#D97706" rx="2"/>
+          <text x="491" y="480" font-size="9" fill="#64748b">Transformer</text>
+          <circle cx="600" cy="475" r="6" fill="none" stroke="#16A34A" stroke-width="1.5"/>
+          <text x="611" y="480" font-size="9" fill="#64748b">Winding</text>
+          <text x="520" y="500" text-anchor="middle" font-size="9" fill="#94a3b8">Arrows show direction of power flow — click any element for details</text>
+          <text x="520" y="516" text-anchor="middle" font-size="9" fill="#94a3b8">CSPDCL — Nawapara Rajim Substation</text>
         </svg>
       </div>
     </div>
@@ -543,6 +616,41 @@
               <div style="font-size:11px;color:#64748b">Outgoing Feeders</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- ABOUT THIS PORTAL / CREDIT -->
+      <div class="credit-card">
+        <div class="credit-header">
+          <span class="credit-photo-wrap">
+            <img class="credit-photo" src="images/aman.jpeg" alt="Aman Mehta (Vyom)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="credit-photo-fallback">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            </span>
+          </span>
+          <div>
+            <div class="credit-title">About the Developer</div>
+            <div class="credit-name">Aman Mehta </div>
+            <div class="credit-role"> EEE Student, Government Engineering College/ Chhattisgarh Institute of Technology, Raipur</div>
+          </div>
+        </div>
+        <p>This portal is designed and built by <a href="https://byvyomtech.netlify.app" target="_blank" rel="noopener">Vyom</a>, a full-stack developer with a strong interest in taking real engineering data out of paper registers and making it interactive. Alongside his EEE coursework, he runs <a href="https://byvyomtech.netlify.app" target="_blank" rel="noopener">VyomsTech</a>, building web apps, dashboards, and tools for local businesses and technical projects.</p>
+        <br>
+        <p>This substation portal grew out of his 6th-semester vocational training at CSPDCL's Nawapara Rajim 33/11 kV Substation. Instead of leaving the training report as a static document, he modeled the substation's actual single line diagram, feeder network, transformers, and protection equipment into a live, clickable dashboard — so anyone can explore how power actually flows through the 33/11 kV system, feeder by feeder.</p>
+        <br>
+        <div class="credit-badges">
+          <span class="credit-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+            CSPDCL Vocational Training Project
+          </span>
+          <span class="credit-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+            GEC Raipur · EEE
+          </span>
+          <span class="credit-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20M9 20l1-4h4l1 4"/></svg>
+            VyomsTech
+          </span>
         </div>
       </div>
     </div>
