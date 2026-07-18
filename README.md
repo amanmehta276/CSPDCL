@@ -45,7 +45,7 @@ This project takes the substation's actual single line diagram, feeder network, 
 
 | Feeders | Transformers |
 |---|---|
-| ![Feeders](images/feeders/f.jpg) | ![Transformers](images/transformers/T1.jpg) |
+| ![Feeders](images/feeders/F.jpg) | ![Transformers](images/transformers/T1.jpg) |
 
 | Equipment | Gallery |
 |---|---|
