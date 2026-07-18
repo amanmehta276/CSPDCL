@@ -40,25 +40,25 @@ This project takes the substation's actual single line diagram, feeder network, 
 
 ## 📸 Screenshots
 
-<!-- Add your images below. Just replace the paths with your actual image files (e.g. images/screenshot-dashboard.png) -->
+<!-- Drop screenshots into images/screenshots/ with these exact filenames -->
 
 | Dashboard | Single Line Diagram |
 |---|---|
-| ![Dashboard](images/screenshot-dashboard.png) | ![SLD](images/screenshot-sld.png) |
+| ![Dashboard](images/screenshots/dashboard.png) | ![SLD](images/screenshots/sld.png) |
 
 | Feeders | Transformers |
 |---|---|
-| ![Feeders](images/screenshot-feeders.png) | ![Transformers](images/screenshot-transformers.png) |
+| ![Feeders](images/screenshots/feeders.png) | ![Transformers](images/screenshots/transformers.png) |
 
 | Equipment | Gallery |
 |---|---|
-| ![Equipment](images/screenshot-equipment.png) | ![Gallery](images/screenshot-gallery.png) |
+| ![Equipment](images/screenshots/equipment.png) | ![Gallery](images/screenshots/gallery.png) |
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⚡⎯⎯⎯⎯⎯⎯⎯⎯
 
 ## 🗺️ Additional Single Line Diagram
 
-<!-- Add your separately-made SLD image here (replace path with your actual file) -->
+<!-- Hand-drawn/separate SLD — drop it at images/sld.jpeg -->
 
 ![Single Line Diagram](images/sld.jpeg)
 
@@ -66,7 +66,7 @@ This project takes the substation's actual single line diagram, feeder network, 
 
 ## 🎓 Vocational Training Certificate
 
-<!-- Add your CSPDCL vocational training certificate image here -->
+<!-- Certificate — drop it at images/certificate.jpeg -->
 
 ![Vocational Training Certificate](images/certificate.jpeg)
 
@@ -97,6 +97,27 @@ This project takes the substation's actual single line diagram, feeder network, 
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⚡⎯⎯⎯⎯⎯⎯⎯⎯
 
+## 📁 Image Folder Structure
+
+```
+images/
+├── screenshots/
+│   ├── dashboard.png
+│   ├── sld.png
+│   ├── feeders.png
+│   ├── transformers.png
+│   ├── equipment.png
+│   └── gallery.png
+├── sld.jpeg            ← separate/hand-drawn SLD
+├── certificate.jpeg     ← vocational training certificate
+├── feeders/
+├── transformers/
+├── gallery/
+└── equipment/
+```
+
+⎯⎯⎯⎯⎯⎯⎯⎯⚡⎯⎯⎯⎯⎯⎯⎯⎯
+
 ## 🚀 Deployment
 
 This is a static site — no build step required.
@@ -111,7 +132,7 @@ To run locally, just open `index.html` in a browser — no server needed.
 
 ## 👤 Credits
 
-**Built by Aman Mehta **
+Built by Aman Mehta
 Founder, [VyomsTech](https://vyomstech.netlify.app) · EEE Student, Government Engineering College, Raipur
 
 Developed as part of CSPDCL vocational training documentation.
