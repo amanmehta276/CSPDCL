@@ -42,17 +42,14 @@ This project takes the substation's actual single line diagram, feeder network, 
 
 <!-- Drop screenshots into images/screenshots/ with these exact filenames -->
 
-| Dashboard | Single Line Diagram |
-|---|---|
-| ![Dashboard](images/screenshots/dashboard.png) | ![SLD](images/screenshots/sld.png) |
 
 | Feeders | Transformers |
 |---|---|
-| ![Feeders](images/screenshots/feeders.png) | ![Transformers](images/screenshots/transformers.png) |
+| ![Feeders](images/feeders/f.jpg) | ![Transformers](images/transformers/T1.jpg) |
 
 | Equipment | Gallery |
 |---|---|
-| ![Equipment](images/screenshots/equipment.png) | ![Gallery](images/screenshots/gallery.png) |
+| ![Equipment](images/equipment/CB.jpg) | ![Gallery](images/substation-h2.jpg) |
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⚡⎯⎯⎯⎯⎯⎯⎯⎯
 
